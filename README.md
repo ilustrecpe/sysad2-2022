@@ -1,6 +1,7 @@
+
 ### Name: John Adrian Luyun
 
-## Contact Information
+# Contact Information
 
 ### Email: mjapluyun@tip.edu.ph
 
