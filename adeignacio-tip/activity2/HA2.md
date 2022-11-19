@@ -5,4 +5,4 @@ About Myself
 > ##### Interest: **Computer Troubleshooting** 
 > ##### E-mail Address: **madeignacio@tip.edu.ph**
 > ##### Computer Specifications
-> ⋅⋅* Processor
+⋅⋅* Unordered sub-list.
