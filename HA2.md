@@ -1,11 +1,18 @@
 ### Hi there 👋
 
+#### Name: John Wesley C. Cal
 
+#### Field of Expertise:: Systems administration, Computer Networks 
 
-#### Fullname: John Wesley C. Cal
-#### Year level: 3rd Year 
-#### Interest: Basketball, Computer games, Movies, and Music 
-#### Email Address : mjwccal@tip.edu.ph 
-#### Computer Specs: Intel core i5-8400, Ram = 8gb,Windows 10 x64
+#### Research Areas: N/A
 
+#### Contact Information 
+
+#### Email: mjwccal@tip.edu.ph
+
+#### Website: N/A
+
+#### Additional Contact Information:
+
+#### 09152303499 - Globe
 
