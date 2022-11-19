@@ -2,7 +2,7 @@
 
 #### Name: John Wesley C. Cal
 
-#### Field of Expertise:: Systems administration, Computer Networks 
+#### Field of Expertise: Systems administration, Computer Networks 
 
 #### Research Areas: N/A
 
@@ -12,7 +12,7 @@
 
 #### Website: N/A
 
-#### Additional Contact Information:
+#### Additional Contact Information
 
 #### 09152303499 - Globe
 
