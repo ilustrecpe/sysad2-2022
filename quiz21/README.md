@@ -43,18 +43,19 @@
 ### Step 2 — Organizing Servers Into Groups and Subgroups
 ##### A host can be part of multiple groups. The following inventory file in INI format demonstrates a setup with four groups: webservers, dbservers, development, and production. You’ll notice that the servers are grouped by two different qualities: their purpose (web and database), and how they’re being used (development and production).
 ------------------
-|##### [webservers]
-203.0.113.111
-203.0.113.112
-|fgdfg
-[dbservers]
-203.0.113.113
-server_hostname
-
-[development]
-203.0.113.111
-203.0.113.113
-
-[production]
-203.0.113.112
-server_hostname
+###### [webservers]
+###### 203.0.113.111
+###### 203.0.113.112
+###### 
+###### [dbservers]
+###### 203.0.113.113
+###### server_hostname
+###### 
+###### [development]
+###### 203.0.113.111
+###### 203.0.113.113
+###### 
+###### [production]
+###### 203.0.113.112
+###### server_hostname
+------------------
