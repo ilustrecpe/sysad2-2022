@@ -1,0 +1,7 @@
+---
+  - name: Install vsftpd
+    apt:
+      name: vsftpd
+      state: latest
+      update_cache: yes 
+    become: yes
