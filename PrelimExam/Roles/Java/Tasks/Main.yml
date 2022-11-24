@@ -1,0 +1,4 @@
+- name: Java
+  apt:
+    name: default-jdk
+    update_cache: yes

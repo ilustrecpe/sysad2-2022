@@ -1,0 +1,7 @@
+---
+- name: MOTD
+  vars:
+   variable1: 'Ansible Managed node by gabmedel'
+  ansible.builtin.template:
+    src: /root/sysad2-2022/PrelimExam/Roles/MOTD/Files/MOTD.j2
+    dest: /etc/motd
