@@ -1,0 +1,29 @@
+- name: Installing LAMP stack on Ubuntu
+  become: yes
+
+  tasks:
+    - name: Installing Apache
+      apt:
+        - name: apache2
+        update_cache: yes
+
+    - name: Installing MySQL
+      apt:
+        - name: mysql-server
+        update_cache: yes
+
+    - name: Installing PHP
+     apt:
+       - name: php
+       update_cache: yes
+
+    - name: Installing libApache
+      apt:
+        - name: libapache2-mod-php
+        update_cache: yes
+
+    - name: Installing PHP-MySQL
+      apt:
+        - name: php-mysql
+          update_cache: yes
+          
