@@ -1,0 +1,9 @@
+[ubuntu]
+10.0.2.15
+
+[ubuntu:vars]
+ansible_ssh_user=mjlrhabla-tip
+ansible_ssh_pass=roomA227
+
+
+
