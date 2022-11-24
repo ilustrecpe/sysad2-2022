@@ -64,6 +64,15 @@
 
 ##### To use an alias, include a variable named ansible_host after the alias name, containing the corresponding IP address or hostname of the server that should respond to that alias:
 ------------------
-####### ~/ansible/inventory
+###### ~/ansible/inventory
 ------------------
+### Step 4 — Setting Up Host Variables
+##### It is possible to use the inventory file to set up variables that will change Ansible’s default behavior when connecting and executing commands on your nodes. This is in fact what we did in the previous step, when setting up host aliases. The ansible_host variable tells Ansible where to find the remote nodes, in case an alias is used to refer to that server.
 
+##### Inventory variables can be set per host or per group. In addition to customizing Ansible’s default settings, these variables are also accessible from your playbooks, which enables further customization for individual hosts and groups.
+------------------
+###### server1 ansible_host=203.0.113.111 ansible_user=sammy
+###### server2 ansible_host=203.0.113.112 ansible_user=sammy
+###### server3 ansible_host=203.0.113.113 ansible_user=myuser
+###### server4 ansible_host=server_hostname ansible_user=myuser
+------------------
