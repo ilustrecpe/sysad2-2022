@@ -62,6 +62,7 @@ You’ll see the default Ubuntu 20.04 Apache web page, which is there for inform
 
 If you see this page, then your web server is now correctly installed and accessible through your firewall.
 
+
 ### How To Find your Server’s Public IP Address ###
 If you do not know what your server’s public IP address is, there are a number of ways you can find it. Usually, this is the address you use to connect to your server through SSH.
 
