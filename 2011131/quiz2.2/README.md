@@ -1,21 +1,18 @@
-### DIRECTORY CONTENT ###
+<h1>Summary</h1>
 
-ANSIBLE.CFG
+ansible.cfg
 -Contains the ansible configuration, passed here is the inventory file to specify managed nodes
 and HOST_KEY_CHECKING=False since SSH credentials were used
 
-INVENTORY
+inventory
 -Contains the managed node's IP address and SSH credentials  
 
-QUIZ22.YAML
+quiz2.2.yaml
 -Contains the playbook command for package automation
 
-### ANSIBLE AUTOMATION FOR INSTALLING PACKAGES ###
-
-List of Packages Installed:
+Installed packages:
 Apache2
 mysql-server
 PHP
 libapache2-mod-php
 php-mysql
-
