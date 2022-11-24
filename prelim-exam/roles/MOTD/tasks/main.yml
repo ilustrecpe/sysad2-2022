@@ -1,0 +1,7 @@
+---
+- name: For MOTD
+  vars:
+   variable1: 'Ansible'
+  ansible.builtin.template:
+    src: /root/sysad2-2022/Prelim-exam/roles/MOTD/files/MOTD.j2
+    dest: /etc/motd
