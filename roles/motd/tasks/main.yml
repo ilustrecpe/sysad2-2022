@@ -1,0 +1,8 @@
+---
+
+- name: Role 3 (Change motd)
+  vars:
+   variable1: 'Ansible Managed node by Lorenz Laurenciano'
+  ansible.builtin.template:
+    src: /root/sysad2-2022/roles/motd/files/motd.j2
+    dest: /etc/motd
