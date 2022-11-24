@@ -1,0 +1,7 @@
+- name: MOTD
+
+  vars:
+    declared_variable: "Ansible Managed node by luyun-tip"
+
+  ansible.builtin.debug:
+    msg: "Message of the day"

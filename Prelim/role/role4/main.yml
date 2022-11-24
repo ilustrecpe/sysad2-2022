@@ -1,0 +1,4 @@
+- name: Create a user
+  ansible.builtin.user:
+    name: luyun-tip
+    group: admin
