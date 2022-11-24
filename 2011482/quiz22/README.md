@@ -1,4 +1,4 @@
-### DIRECTORY CONTENT ###
+#### DIRECTORY CONTENT ####
 
 **ANSIBLE.CFG**
 'Includes the ansible config, and the inventory file used to define managed nodes is passed here'
@@ -9,7 +9,7 @@
 **QUIZ22.YAML**
 'Includes the package, and playbook command'
 
-### ANSIBLE AUTOMATION FOR INSTALLING PACKAGES ###
+#### INSTALLING PACKAGES ####
 
 **Packages Installed:**
 
