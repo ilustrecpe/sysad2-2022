@@ -1,12 +1,12 @@
 
-##Hands-on Prelim Exam##
+# Hands-on Prelim Exam
 
-Tools Needed:
+#### Tools Needed:
 1. VM with Alpine, Git and Ansible installed
 
 2. Web browser
 
-Procedure:
+#### Procedure:
 1. Fork this repository https://github.com/ilustrecpe/sysad2-2022.gitLinks to an external site.
 
 2. Clone your new repository in your VM https://github.com/< your username >/sysad2-12021.git
