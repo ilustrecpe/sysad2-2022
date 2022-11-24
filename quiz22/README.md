@@ -5,7 +5,7 @@ Start by updating the package manager cache. If this is the first time you’re 
 
 `sudo apt update`
 
-Then, install Apache with:
+Then, install Apache with: 
 
 `sudo apt install apache2`
 
