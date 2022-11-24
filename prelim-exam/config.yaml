@@ -1,0 +1,30 @@
+- name: Configuration
+
+    role_name: Python
+    hosts: all
+    become: true
+    roles:
+      - Python
+
+    role_name: Java
+    hosts: all
+    become: true
+    roles:
+      - Java
+    
+    role_name: MOTD
+    hosts: all
+    become: true
+    roles:
+      - Change_MOTD
+
+    role_name: User
+    hosts: all
+    become: true
+    roles:
+      - Create_User
+
+
+
+      
+
