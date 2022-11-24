@@ -101,31 +101,35 @@ and improve security. It checks the strength of password
 and allows the users to set only those passwords which are
 secure enough. Would you like to setup VALIDATE PASSWORD plugin?
 
-Press y|Y for Yes, any other key for No:```
+Press y|Y for Yes, any other key for No:
+```
 
-If you answer “yes”, you’ll be asked to select a level of password validation. Keep in mind that if you enter 2 for the strongest level, you will receive errors when attempting to set any password which does not contain numbers, upper and lowercase letters, and special characters, or which is based on common dictionary words.
+If you answer “yes”, you’ll be asked to select a level of password validation. Keep in mind that if you enter `2` for the strongest level, you will receive errors when attempting to set any password which does not contain numbers, upper and lowercase letters, and special characters, or which is based on common dictionary words.
 
-There are three levels of password validation policy:
+```There are three levels of password validation policy:
 
 LOW    Length >= 8
 MEDIUM Length >= 8, numeric, mixed case, and special characters
-STRONG Length >= 8, numeric, mixed case, special characters and dictionary              file
+STRONG Length >= 8, numeric, mixed case, special characters and dictionary              
 
 Please enter 0 = LOW, 1 = MEDIUM and 2 = STRONG: 1
-Regardless of whether you chose to set up the VALIDATE PASSWORD PLUGIN, your server will next ask you to select and confirm a password for the MySQL root user. This is not to be confused with the system root. The database root user is an administrative user with full privileges over the database system. Even though the default authentication method for the MySQL root user dispenses the use of a password, even when one is set, you should define a strong password here as an additional safety measure. We’ll talk about this in a moment.
+```
+Regardless of whether you chose to set up the `VALIDATE PASSWORD PLUGIN`, your server will next ask you to select and confirm a password for the MySQL **root** user. This is not to be confused with the **system root**. The database root user is an administrative user with full privileges over the database system. Even though the default authentication method for the MySQL root user dispenses the use of a password, **even when one is set**, you should define a strong password here as an additional safety measure. We’ll talk about this in a moment.
 
-If you enabled password validation, you’ll be shown the password strength for the root password you just entered and your server will ask if you want to continue with that password. If you are happy with your current password, enter Y for “yes” at the prompt:
+If you enabled password validation, you’ll be shown the password strength for the root password you just entered and your server will ask if you want to continue with that password. If you are happy with your current password, enter `Y` for “yes” at the prompt:
 
-Estimated strength of the password: 100 
+````Estimated strength of the password: 100 
 Do you wish to continue with the password provided?(Press y|Y for Yes, any other key for No) : y
-For the rest of the questions, press Y and hit the ENTER key at each prompt. This will remove some anonymous users and the test database, disable remote root logins, and load these new rules so that MySQL immediately respects the changes you have made.
+````
+For the rest of the questions, press Y and hit the `ENTER` key at each prompt. This will remove some anonymous users and the test database, disable remote root logins, and load these new rules so that MySQL immediately respects the changes you have made.
 
 When you’re finished, test if you’re able to log in to the MySQL console by typing:
 
-sudo mysql
+`sudo mysql`
+
 This will connect to the MySQL server as the administrative database user root, which is inferred by the use of sudo when running this command. You should see output like this:
 
-Output
+```Output
 Welcome to the MySQL monitor.  Commands end with ; or \g.
 Your MySQL connection id is 22
 Server version: 8.0.19-0ubuntu5 (Ubuntu)
@@ -139,13 +143,38 @@ owners.
 Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
 mysql> 
+```
 To exit the MySQL console, type:
 
-exit
-Notice that you didn’t need to provide a password to connect as the root user, even though you have defined one when running the mysql_secure_installation script. That is because the default authentication method for the administrative MySQL user is unix_socket instead of password. Even though this might look like a security concern at first, it makes the database server more secure because the only users allowed to log in as the root MySQL user are the system users with sudo privileges connecting from the console or through an application running with the same privileges. In practical terms, that means you won’t be able to use the administrative database root user to connect from your PHP application. Setting a password for the root MySQL account works as a safeguard, in case the default authentication method is changed from unix_socket to password.
+`mysql> exit`
+
+Notice that you didn’t need to provide a password to connect as the **root** user, even though you have defined one when running the `mysql_secure_installation script`. That is because the default authentication method for the administrative MySQL user is `unix_socket` instead of `password`. Even though this might look like a security concern at first, it makes the database server more secure because the only users allowed to log in as the **root** MySQL user are the system users with sudo privileges connecting from the console or through an application running with the same privileges. In practical terms, that means you won’t be able to use the administrative database root user to connect from your PHP application. Setting a `password` for the root MySQL account works as a safeguard, in case the default authentication method is changed from `unix_socket` to password.
 
 For increased security, it’s best to have dedicated user accounts with less expansive privileges set up for every database, especially if you plan on having multiple databases hosted on your server.
 
+```
 Note: At the time of this writing, the native MySQL PHP library mysqlnd doesn’t support caching_sha2_authentication, the default authentication method for MySQL 8. For that reason, when creating database users for PHP applications on MySQL 8, you’ll need to make sure they’re configured to use mysql_native_password instead. We’ll demonstrate how to do that in Step 6.
+```
 
 Your MySQL server is now installed and secured. Next, we’ll install PHP, the final component in the LAMP stack.
+
+# Step 3 — Installing PHP#
+You have Apache installed to serve your content and MySQL installed to store and manage your data. PHP is the component of our setup that will process code to display dynamic content to the final user. In addition to the `php` package, you’ll need `php-mysql`, a PHP module that allows PHP to communicate with MySQL-based databases. You’ll also need `libapache2-mod-php` to enable Apache to handle PHP files. Core PHP packages will automatically be installed as dependencies.
+
+To install these packages, run:
+
+```sudo apt install php libapache2-mod-php php-mysql```
+Once the installation is finished, you can run the following command to confirm your PHP version:
+
+```php -v```
+
+````Output
+PHP 7.4.3 (cli) (built: Jul  5 2021 15:13:35) ( NTS )
+Copyright (c) The PHP Group
+Zend Engine v3.4.0, Copyright (c) Zend Technologies
+    with Zend OPcache v7.4.3, Copyright (c), by Zend Technologies
+At this point, your LAMP stack is fully operational, but before you can test your setup with a PHP script, it’s best to set up a proper Apache Virtual Host to hold your website’s files and folders. We’ll do that in the next step.
+````
+At this point, your LAMP stack is fully operational, but before you can test your setup with a PHP script, it’s best to set up a proper Apache Virtual Host to hold your website’s files and folders. We’ll do that in the next step.
+
+
