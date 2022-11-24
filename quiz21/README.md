@@ -4,10 +4,10 @@
 
 ##### Access your home folder and create a new directory to hold your Ansible files:
 
-------------------
-###### cd ~
-###### mkdir ansible
-------------------
+
+  cd ~
+  mkdir ansible
+
 
 ##### Move to that directory and open a new inventory file using your text editor of choice. Here, we’ll use nano:
 
