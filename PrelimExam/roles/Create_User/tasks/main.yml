@@ -1,0 +1,8 @@
+---
+
+- name: User Connection
+  vars:
+   variable1: 'User_Cal'
+
+  ansible.builtin.user:
+    name: "{{ variable1 }}"
