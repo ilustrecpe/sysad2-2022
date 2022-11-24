@@ -1,0 +1,7 @@
+- name: MOTD
+
+  vars:
+    declared_variable: "Ansible Managed node by PipoyTheBest7"
+
+  ansible.builtin.debug:
+    msg: "HELLO WORLD"
