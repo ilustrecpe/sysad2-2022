@@ -43,50 +43,27 @@
 ### Step 2 — Organizing Servers Into Groups and Subgroups
 ##### A host can be part of multiple groups. The following inventory file in INI format demonstrates a setup with four groups: webservers, dbservers, development, and production. You’ll notice that the servers are grouped by two different qualities: their purpose (web and database), and how they’re being used (development and production).
 ------------------
-<dl>
-  <dd>[webservers]
-203.0.113.111
-203.0.113.112
- </dd>
-  
-  <dd>[dbservers]
-203.0.113.113
-server_hostname
-  </dd>
-  
-  <dd>[development]
-203.0.113.111
-203.0.113.113
-  </dd>
-  
-  <dd>[production]
-203.0.113.112
-server_hostname
-  </dd>
-</dl>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+###### [webservers]
+###### 203.0.113.111
+###### 203.0.113.112
+-
+###### [dbservers]
+###### 203.0.113.113
+###### server_hostname
+-
+###### [development]
+###### 203.0.113.111
+###### 203.0.113.113
+-
+###### [production]
+###### 203.0.113.112
+###### server_hostname
 ------------------
+### Step 3 — Setting Up Host Aliases
+##### You can use aliases to name servers in a way that facilitates referencing those servers later, when running commands and playbooks.
 
+##### To use an alias, include a variable named ansible_host after the alias name, containing the corresponding IP address or hostname of the server that should respond to that alias:
+------------------
+####### ~/ansible/inventory
+------------------
 
