@@ -4,3 +4,4 @@
 [ubuntu:vars]
 ansible_ssh_user=ubuntu-2012081
 ansible_ssh_pass=123
+
