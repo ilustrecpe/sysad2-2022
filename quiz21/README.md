@@ -48,19 +48,19 @@
   <dd>203.0.113.111</dd>
   <dd>203.0.113.112</dd>
   
-  <dd></dd>
+  <dd>    </dd>
   
   <dd>[dbservers]</dd>
   <dd>203.0.113.113</dd>
   <dd>server_hostname</dd>
   
-  <dd></dd>
+  <dd>   </dd>
   
   <dd>[development]</dd>
   <dd>203.0.113.111</dd>
   <dd>203.0.113.113</dd>
   
-  <dd></dd>
+  <dd>    </dd>
   
   <dd>[production]</dd>
   <dd>203.0.113.112</dd>
