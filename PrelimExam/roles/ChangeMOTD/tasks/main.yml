@@ -1,6 +1,6 @@
 ---
 
-- name: Creating MOTD
+- name:  MOTD Creation
   vars:
    variable1: 'Cal Ansible Managed node '
   ansible.builtin.template:
