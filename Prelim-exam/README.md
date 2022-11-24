@@ -1,3 +1,3 @@
 ### PRELIMS EXAM ###
 
-![alt text](https://imgur.com/a/riGS3UZ/
+![alt text](https://imgur.com/a/riGS3UZ/)
