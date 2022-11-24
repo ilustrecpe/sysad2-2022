@@ -5,4 +5,4 @@
   - Upon installation of ansible, you can check the ansible version by typing "ansible --version" to see the default location of the inventory. Ansible creates an inventory file which is usually located at /etc/ansible/host. To create an ansible inventory, create a new directory to put the inventory. After that you can use a text edtior like vim or nano to create the inventory. The common formats used in inventory are .ini and .yaml.
 
 # How to create an Ad-hoc Ansible command with setup and shell module
-  - 
+  - Adhoc commands are used to execute task instantly and not needed to save for later. Tasks can be easily done like pinging all the hosts to check if they are running, copying a file, rebooting servers, installing a package through Ansible Ad-hoc Commands. 
