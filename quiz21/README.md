@@ -57,4 +57,4 @@ server_hostname
 
 [production]
 203.0.113.112
-server_hostname|
+server_hostname
