@@ -7,6 +7,15 @@
 
   cd ~
   mkdir ansible
+  
+  
+    ANSIBLE_CONFIG (environment variable if set)
+
+    ansible.cfg (in the current directory)
+
+    ~/.ansible.cfg (in the home directory)
+
+    /etc/ansible/ansible.cfg
 
 
 ##### Move to that directory and open a new inventory file using your text editor of choice. Here, we’ll use nano:
