@@ -1,0 +1,10 @@
+- name: Python3 Installation
+  apt:
+    name: python3
+    update_cache: yes
+
+- name: pip Installation
+  apt:
+    name: python3-pip
+    update_cache: yes
+
