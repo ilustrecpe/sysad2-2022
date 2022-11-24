@@ -13,10 +13,10 @@ QUIZ22.YAML
 ### ANSIBLE AUTOMATION FOR INSTALLING PACKAGES ###
 
 List of Packages Installed:
--Apache2
--mysql-server
--PHP
--libapache2-mod-php
--php-mysql
+Apache2
+mysql-server
+PHP
+libapache2-mod-php
+php-mysql
 
 
