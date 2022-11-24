@@ -1,0 +1,9 @@
+---
+
+- name: Adding user
+  vars:
+    variable: 'User_Apayor'
+
+  ansible.builtin.user:
+    name: "{{variable1}}
+

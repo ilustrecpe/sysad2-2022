@@ -1,0 +1,8 @@
+---
+
+- name: Creating MOTD
+  vars:
+    variable1: 'Ansible Managed Node by Apayor'
+  ansible.builtin.template:
+    src: /root/sysad2-2022/prelim-exam/roles/ChangeMOTD/files/MOTD.j2
+    dest: /etc/motd
