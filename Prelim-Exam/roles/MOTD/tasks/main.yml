@@ -1,0 +1,8 @@
+---
+
+- name: Creating MOTD
+  vars:
+   variable1: 'Ansible Managed node by mvfdcapiral'
+  ansible.builtin.template:
+    src: /root/sysad2-2022/Preliminary-exam/roles/MOTD/tasks/main.yml
+    dest: /etc/motd
