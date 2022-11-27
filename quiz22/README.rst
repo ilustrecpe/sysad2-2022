@@ -1,12 +1,12 @@
 #######
-Hands-on Prelim Exam
+Quiz 2.2: Ansible Playbooks
 #######
 
-Lorenz P. Laurenciano
+Objective:
 
-CPE307 - CPE31S1A
+Transform this procedure_ as a playbook.
 
-Managing Enterprise Servers
+.. _procedure: https://www.digitalocean.com/community/tutorials/how-to-install-linux-apache-mysql-php-lamp-stack-on-ubuntu-20-04
 
 
 
@@ -17,56 +17,59 @@ Example Playbook
 
 
 
-**Role 1 (python): pip3 && python3 force unistall to reinstall to latest**
-
-.. code-block:: yaml
-
-    - name: install the package, force upgrade
-  apt: 
-    name: python3
-    state: latest
-    
-    - name: install the package, force reinstall to the latest version
-  pip: 
-    name: python3
-    state: forcereinstall
-    
-**Role 2 (Java): install open-jdk**
-
-          
-.. code-block:: yaml
-
-    - name: Installing java
-      apt:
-        name: openjdk-8-jre
-        update_cache: yes
- 
- 
- 
-**Role 3 (change motd): change default motd to Ansible Managed node by @renzlaurennn**
-
+**Install Apache**
 
 .. code-block:: yaml
 
    ---
+   - hosts: all
+     become: yes
+     tasks:
+        - name: Install apache
+          apt:
+            name: apache2
+    
+**Install MySQL Server**
 
-   - name: Role 3 (Change motd)
-  vars:
-   variable1: 'Ansible Managed node by @renzlaurennn'
-  ansible.builtin.template:
-    src: /root/sysad2-2022/roles/motd/files/motd.j2
-    dest: /etc/motd
           
-**Role 4 (create_user): create a user with a variable defined in config.yaml**
+.. code-block:: yaml
+
+    - name: Install mysql-server
+      apt:
+        name: mysql-server
+        update_cache: yes
+ 
+ 
+ 
+**Install PHP**
 
 
 .. code-block:: yaml
 
-    ---
 
-    - name: Adding user
-      vars:
-        variable1: 'User_Lorenz'
+   - name: Install PHP
+      apt:
+        name: php
+        update_cache: yes
+          
+**Install libapache**
 
-      ansible.builtin.user:
-        name: "{{ variable1 }}"
+
+.. code-block:: yaml
+
+
+    - name: Install libapache
+      apt:
+        name: libapache2-mod-php
+        update_cache: yes
+
+**Install PHP MySQL**
+
+
+.. code-block:: yaml
+
+
+    - name: Install php-mysql
+      apt:
+        name: php-mysql
+        update_cache: yes
