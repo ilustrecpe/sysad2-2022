@@ -22,7 +22,7 @@ the ``tux`` and ``sysstat`` that are included in configuration is linux utilitie
 
 
 ================
-Command to run the playbook main.yml
+Command to execute the playbook main.yml
 ================
 
 ``$ ansible-playbook -u tux -b main.yml``
