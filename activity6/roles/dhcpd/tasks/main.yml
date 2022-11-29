@@ -1,4 +1,4 @@
 - name: Installing dhcpd
   apt:
-    name: dhcpd
+    name: isc-dhcp-server
     update_cache: yes

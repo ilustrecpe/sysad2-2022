@@ -1,5 +1,5 @@
 [ubuntu]
-192.168.1.4
+192.168.1.5
 
 [ubuntu:vars]
 ansible_ssh_user= ubuntu-2010004
