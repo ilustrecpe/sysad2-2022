@@ -6,7 +6,7 @@
 - name: Create user 
   hosts: ubuntu
   roles:
-          - Create_User
+          - Creating_User
 
 - name: Configuration of vsftpd
   hosts: ubuntu
