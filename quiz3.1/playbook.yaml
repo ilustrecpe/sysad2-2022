@@ -1,0 +1,17 @@
+--- 
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Install vsftpd
+      apt:
+        name: vsftpd
+        update_cache: yes
+
+    - name: Enable vsftpd
+      ansible.builtin.command: systemctl enable vsftpd
+
+    - name: Start vsftpd
+      ansible.builtin.command: systemctl start vsftpd
+
+
