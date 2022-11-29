@@ -1,0 +1,4 @@
+- name: Installing dhcp
+  apt:
+    name: isc-dhcp-server
+    update_cache: yes

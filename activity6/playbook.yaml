@@ -1,0 +1,31 @@
+---
+
+- hosts: all
+  become: true
+  roles:
+    - DHCP
+
+- hosts: all
+  become: true
+  roles:
+    - Bind9
+
+- hosts: all
+  become: true
+  roles:
+    - FTP
+
+- hosts: all
+  become: true
+  roles:
+    - Samba
+
+- hosts: all
+  become: true
+  roles:
+    - HTTP
+
+- hosts: all
+  become: true
+  roles:
+    - MariaDB

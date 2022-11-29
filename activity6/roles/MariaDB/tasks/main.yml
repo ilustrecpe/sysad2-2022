@@ -1,0 +1,31 @@
+---
+
+- name: Install apache
+  apt:
+    name: apache2
+    update_cache: yes
+
+- name: Install Mysql
+  apt:
+    name: mysql-server
+    update_cache: yes
+
+- name: Install php
+  apt:
+    name: mysql-server
+    update_cache: yes
+
+- name: Install libapache2
+  apt:
+    name: libapache2-mod-php
+    update_cache: yes
+
+- name: Install php mysql
+  apt:
+    name: php-mysql
+    update_cache: yes
+
+- name: Install mariadb
+  apt:
+    name: mariadb-server
+    update_cache: yes
