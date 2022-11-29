@@ -1,1 +1,13 @@
 
+---
+- hosts: all
+  tasks:
+  - name: Package installation
+    dnf:
+      name:
+        - sysstat
+        - httpd
+        - mariadb-server
+        - vsftpd
+        - samba
+      state: latest
