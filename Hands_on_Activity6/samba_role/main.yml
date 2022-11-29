@@ -1,0 +1,12 @@
+- name: Samba service Installation
+  tasks:
+    - name: samba installation
+      apt:
+        - name: samba
+          update_cache: yes
+
+    - name: smbfs installation
+      apt:
+        - name: smbfs
+          update_cache: yes
+
