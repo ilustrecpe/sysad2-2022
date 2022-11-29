@@ -33,7 +33,7 @@ Example Playbook
 
 
 
-** All Roles: Installing several packages in one playbook main.yml **
+**All Roles: Installing several packages in one playbook main.yml**
 
 
 .. code-block:: yaml
