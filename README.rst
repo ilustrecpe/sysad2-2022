@@ -33,7 +33,7 @@ Example Playbook
 
 
 
-**Role 1 (dhcpd): pip3 && python3 force unistall to reinstall to latest**
+**All Roles: Installing several packages in one playbook main.yml
 
 
 .. code-block:: yaml
