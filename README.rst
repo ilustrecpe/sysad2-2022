@@ -19,7 +19,7 @@ Example Playbook
 
 
 
-**Role 1 (python): pip3 && python3 force unistall to reinstall to latest**
+**Role 1 (dhcpd): pip3 && python3 force unistall to reinstall to latest**
 
 .. code-block:: yaml
 
@@ -33,7 +33,7 @@ Example Playbook
     name: python3
     state: forcereinstall
     
-**Role 2 (Java): install open-jdk**
+**Role 2 (bind9): install open-jdk**
 
           
 .. code-block:: yaml
@@ -45,7 +45,7 @@ Example Playbook
  
  
  
-**Role 3 (change motd): change default motd to Ansible Managed node by @renzlaurennn**
+**Role 3 (vsftpd): change default motd to Ansible Managed node by @renzlaurennn**
 
 
 .. code-block:: yaml
@@ -59,7 +59,7 @@ Example Playbook
     src: /root/sysad2-2022/roles/motd/files/motd.j2
     dest: /etc/motd
           
-**Role 4 (create_user): create a user with a variable defined in config.yaml**
+**Role 4 (samba): create a user with a variable defined in config.yaml**
 
 
 .. code-block:: yaml
@@ -72,3 +72,18 @@ Example Playbook
 
       ansible.builtin.user:
         name: "{{ variable1 }}"
+        
+ **Role 4 (httpd): create a user with a variable defined in config.yaml**
+
+
+.. code-block:: yaml
+
+    ---
+
+    - name: Adding user
+      vars:
+        variable1: 'User_Lorenz'
+
+      ansible.builtin.user:
+        name: "{{ variable1 }}"
+
