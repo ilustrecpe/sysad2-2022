@@ -15,7 +15,7 @@ Example Playbook
 
 
 
-**Role 1 (python): dhcpd, **
+**Role 1 (python):  **
 
 .. code-block:: yaml
 
@@ -41,7 +41,7 @@ Example Playbook
  
  
  
-**Role 3 , vsftpd**
+**Role 3**
 
 
 .. code-block:: yaml
@@ -70,7 +70,7 @@ Example Playbook
         name: "{{ variable1 }}"
         
  
- **Role 4, httpd,**
+ **Role 4**
 
 
 .. code-block:: yaml
@@ -84,7 +84,7 @@ Example Playbook
       ansible.builtin.user:
         name: "{{ variable1 }}"
 
-**Role 4 maria**
+**Role 4 **
 
 
 .. code-block:: yaml
