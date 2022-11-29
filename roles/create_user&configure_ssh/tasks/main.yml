@@ -1,5 +1,5 @@
 ---
-# tasks file for roles/create_u&configure_ssh
+# tasks file for roles/create_user&configure_ssh
 - name: Create new User
   user:
           name: user1
