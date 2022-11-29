@@ -2,7 +2,7 @@
 # tasks file for roles/vsftpd_config_and_directories
 - name: Directory for FTP
   file:
-          path: ~/gerald/ftp
+          path: ~/wesley/ftp
           state: directory
           owner: nobody
           group: nogroup
@@ -10,10 +10,10 @@
 
 - name: Creating directory for ftp
   file:
-          path: ~/gerald/ftp/files
+          path: ~/wesley/ftp/files
           state: directory
-          owner: gerald
-          group: gerald
+          owner: wesley
+          group: cal
 
 - name: Copying vsftpd.conf
   copy:
