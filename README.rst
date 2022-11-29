@@ -1,14 +1,14 @@
 #######
-Hands-on Prelim Exam
+Hands-on Activity 6: Install, configure, and manage enterprise services via Ansible 
 #######
 
-Lorenz P. Laurenciano
-
-CPE307 - CPE31S1A
-
-Managing Enterprise Servers
+================
+Objectives
+================
 
 
+
+Create a workflow that installs, configure, and manages enterprise services via Ansible being Infrastructure as code tool.
 
 
 ================
