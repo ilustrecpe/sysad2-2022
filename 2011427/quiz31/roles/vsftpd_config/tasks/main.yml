@@ -1,0 +1,28 @@
+---
+# tasks file for roles/vsftpd_config_and_directories
+- name: Directory for FTP
+  file:
+          path: ~/gerald/ftp
+          state: directory
+          owner: nobody
+          group: nogroup
+          mode: '0555'
+
+- name: Creating directory for ftp
+  file:
+          path: ~/gerald/ftp/files
+          state: directory
+          owner: gerald
+          group: gerald
+
+- name: Copying vsftpd.conf
+  copy:
+          src: vsftpd.conf
+          dest: /etc/vsftpd.conf
+          register: vsftpd_config
+
+- name: Restarting the vsftpd.conf
+  service:
+          name: vsftpd
+          state: restarted
+          when: vsftpd_config.changed
