@@ -15,7 +15,7 @@ Example Playbook
 
 
 
-**Role 1 (python):  **
+**Role 1 (python)**
 
 .. code-block:: yaml
 
