@@ -10,10 +10,10 @@
 
 - name: Creating directory for ftp
   file:
-          path: ~/gerald/ftp/files
+          path: ~/kcsia-tip/ftp/files
           state: directory
-          owner: gerald
-          group: gerald
+          owner: kcsia-tip
+          group: kcsia-tip
 
 - name: Copying vsftpd.conf
   copy:
