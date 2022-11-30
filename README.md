@@ -1,7 +1,7 @@
 
-#######
-Hands-on Prelim Exam
-#######
+
+# Hands-on Prelim Exam
+
 
 Lorenz P. Laurenciano
 
@@ -9,12 +9,12 @@ CPE307 - CPE31S1A
 
 Managing Enterprise Servers
  
-================
-Example Playbook
-================
+
+## Example Playbook
 
 
-   ---
+
+
 **Role 1 (python)**
 
 
