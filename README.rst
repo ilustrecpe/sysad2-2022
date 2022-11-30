@@ -29,7 +29,7 @@ Example Playbook
     name: python3
     state: forcereinstall
     
-**Role 2 bind9**
+**Role 2 **
 
           
 .. code-block:: yaml
@@ -55,7 +55,7 @@ Example Playbook
     src: /root/sysad2-2022/roles/motd/files/motd.j2
     dest: /etc/motd
           
-**Role 4, samba**
+**Role 4**
 
 
 .. code-block:: yaml
@@ -70,31 +70,4 @@ Example Playbook
         name: "{{ variable1 }}"
         
  
- **Role 4**
-
-
-.. code-block:: yaml
-
-    ---
-
-    - name: Adding user
-      vars:
-        variable1: 'User_Lorenz'
-
-      ansible.builtin.user:
-        name: "{{ variable1 }}"
-
-**Role 4 **
-
-
-.. code-block:: yaml
-
-    ---
-
-    - name: Adding user
-      vars:
-        variable1: 'User_Lorenz'
-
-      ansible.builtin.user:
-        name: "{{ variable1 }}"
-
+ 
