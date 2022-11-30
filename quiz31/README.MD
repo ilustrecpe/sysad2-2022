@@ -5,6 +5,10 @@
 
 Create a playbook that installs an vsftpd server.
 
+## To execute the command type:
+
+``` ansible-playbook install-vsftpd.yml ```
+
 ### vsftpd playbook
 
 ``` 
