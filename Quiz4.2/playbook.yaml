@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: true
+  pre_tasks:
+  - name: Updating apt
+    apt:
+      upgrade: dist
+      update_cache: yes
+
+- hosts: Ubuntu
+  become: true
+  roles:
+    - Prometheus
+
+- hosts: Ubuntu
+  become: true
+  roles:
+    - Telegraf
+
+- hosts: Ubuntu
+  become: true
+  roles:
+    - Grafana
+
