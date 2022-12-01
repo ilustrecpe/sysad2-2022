@@ -1,0 +1,25 @@
+--- 
+
+- name: Download the source code for a release of NRPE and extract it
+  unarchive:
+    src: "{{ nrpe_dwld_url }}"
+    dest: "/home/{{ vm_user }}"
+    copy: no
+
+  tags:
+    - dwld_nrpe
+
+- name: Configure NRPE
+  command: ./configure --enable-command-args --with-nagios-user={{ user }} --with-nagios-group={{ nagios_group }} --with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu
+  args:
+    chdir: "/home/{{ vm_user }}/nrpe-{{ nrpe_version }}"
+  tags:
+    -cfg_nrpe
+ 
+- name: Compile NRPE
+  command: "{{ item ]}"
+  args:
+    chdir: "/home/{{ vm_user }}/nrpe-{{ nrpe_version }}"
+  with-items:
+    - make all
+    - make install
