@@ -2,5 +2,5 @@
 192.168.100.4
 
 [ubuntu:vars]
-ansible_ssh_user=mgascuevas-tip
+ansible_ssh_user=mgalodriga-tip
 ansible_ssh_pass=12345678
