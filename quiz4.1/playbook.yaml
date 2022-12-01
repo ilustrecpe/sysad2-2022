@@ -1,0 +1,105 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+    - name: Install Nagios Core
+      apt:
+        pkg:
+          - wget
+          - unzip
+          - curl
+          - openssl
+          - build-essential
+          - libgd-dev
+          - libssl-dev
+          - libapache2-mod-php
+          - php-gd
+          - php
+          - apache2
+    - name: Download Nagios Core Setup
+      ansible.builtin.command: wget https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.6.tar.gz
+
+    - name: Extract downloaded files
+      ansible.builtin.command: sudo tar -zxvf nagios-4.4.6.tar.gz
+
+    - name: Navigate setup directory
+      ansible.builtin.command: "sudo ./configure"
+      args:
+        chdir: "nagios-4.4.6"
+
+    - name: Compile the main program and CGIs
+      ansible.builtin.command: "sudo make all"
+      args:
+        chdir: "nagios-4.4.6"
+
+    - name: Make and install group and user
+      ansible.builtin.command: "sudo make install-groups-users"
+      args:
+        chdir: "nagios-4.4.6"
+    
+    - name: Add www-data directories
+      ansible.builtin.command: "sudo usermod -a -G nagios www-data"
+      args:
+        chdir: "nagios-4.4.6"
+
+    - name: Install Nagios
+      ansible.builtin.command: "sudo make install"
+      args:
+        chdir: "nagios-4.4.6"
+
+    - name: Initialize all the installation configuration scripts
+      ansible.builtin.command: "sudo make install-init"
+      args:
+        chdir: "nagios-4.4.6"
+
+    - name: Install permission on configs' directory
+      ansible.builtin.command: "sudo make install-commandmode"
+      args:
+        chdir: "nagios-4.4.6"
+
+    - name: Install sample config files
+      ansible.builtin.command: "sudo make install-config"
+      args:
+        chdir: "nagios-4.4.6"
+
+     - name: Install apache files
+       ansible.builtin.command: "sudo make install-webconf"
+       args:
+         chdir: "nagios-4.4.6"
+
+    - name: Enable apache rewrite mode
+      ansible.builtin.command: "sudo a2enmod rewrite"
+      args:
+        chdir: "nagios-4.4.6"
+
+    - name: Enable CGI config
+      ansible.builtin.command: "sudo a2enmod cgi"
+      args:
+        chdir: "nagios-4.4.6"
+
+    - name: Restart apache service
+      ansible.builtin.command: "sudo systemctl restart apache2"
+      args:
+        chdir: "nagios-4.4.6"
+
+    - name: Download Nagios Core Plugin
+      ansible.builtin.command: wget https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
+
+    - name: Extract downloaded plugin
+      ansible.builtin.command: sudo tar -zxvf nagios-plugins-2.3.3.tar.gz
+
+    - name: Run plugin configure 
+      ansible.builtin.command: "sudo ./configure --with-nagios-user=nagios --with-nagios-group=nagios"
+      args:
+        chdir: "nagios-plugins-2.3.3/"
+
+    - name: Compile Nagios Core Plugin
+      ansible.builtin.command: "sudo make"
+      args:
+        chdir: "nagios-plugins-2.3.3/"
+
+    - name: Install plugins
+      ansible.builtin.command: "sudo make install"
+      args:
+        chdir: "nagios-plugins-2.3.3/"
