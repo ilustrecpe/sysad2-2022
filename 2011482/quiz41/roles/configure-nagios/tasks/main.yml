@@ -1,0 +1,65 @@
+---
+- name: Uncomment Nagios server config directory line 
+  lineinfile:
+    dest: /usr/local/nagios/etc/nagios.cfg
+    state: present
+    regexp: "^cfg_dir=/usr/local/nagios/etc/server$"
+    line: "vfg_dir=/usr/local/nagios/etc/servers"
+    backrefs: yes
+    tags:
+      - uncomment
+
+- name: Create directory to store config file for each server
+  file: path=/usr/local/nagios/etc/servers state=directory mode=0755
+  tags:
+    - create_dir
+
+- name: Add check_nrpe command to Nagios config
+  blockinfile:
+    dest: /usr/local/nagios/etc/objects/command.cfg
+    insterafter: EOF
+    content: |
+      defne command {
+        command_name check_nrpe
+        command_line $USER1$/check_nrpe -H $HOSTADDRESS$ -c $ARG1$
+      }
+    tags:
+      - add_command
+
+- name: Enable the Apache Rewrite and CGI modules
+  command: "{{ item }}"
+  with_items:
+    - a2enmod rewrite
+    - a2enmod cgi
+  tags:
+    -a2enmod
+
+  -name: Crete admin username and password for authentication
+  htpasswd:
+    path: /usr/local/nagios/etc/ht[asswd.users
+    name: "{{ username }}"
+    password: "{{ password }}"
+    crypt_scheme: md5_crypt
+    tags:
+    - htpasswd
+
+ - name: Create symbolic link of nagios.conf to sites-enabld directory and allow nagios to start automatically
+   file: src= {{ item.src }} dest= {{ item.dest }} state=link force=yes
+   with items:
+     - { src: '/etc/apache2/sites-available/nagios.conf', dest: '/etc/apache2/sites-enbled/nagios.conf' }
+     - { src: 'etc/init.d/nagios', dest: '/etc/rcS.d/S99nagios' }
+       tags: 
+     - symlink_services
+
+ - name: Restart all services
+   service: name = {{ item }} state = restarted
+   with_items:
+     - nagios
+     - apache2
+  tags: 
+     - symlink_services
+
+
+
+
+
