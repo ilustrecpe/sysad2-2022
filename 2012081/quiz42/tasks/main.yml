@@ -1,0 +1,48 @@
+---
+- name: Add grafana repositories
+  copy:
+    src: grafana.repo
+    dest: /etc/yum.repos.d/
+
+- name: Install grafana
+  yum:
+    name: grafana
+    state: latest
+    update_cache: yes
+
+- name: Start grafana
+  serveice:
+    name: grafana-server
+    state: started
+
+- name: Add prometheus repositories
+  copy:
+    src: prometheus.repo
+    dest: /etc/yum.repos.d/
+
+- name: Install prometheus
+  yum:
+    name: prometheus2
+    state: latest
+    update_cache: yes
+
+- name: Start prometheus
+  service:
+    name: prometheus
+    state: started
+
+- name: Add influxdata repository
+  copy:
+    src: influxdb.repo
+    dest: /etc/yum.repos.d/
+
+- name: Install telegraf
+  yum:
+    name: telegraf
+    state: latest
+    update_cache: yes
+
+- name: Start telegraf
+  service:
+    name: telegraf
+    state: started
