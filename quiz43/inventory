@@ -4,3 +4,30 @@
 [ubuntu:vars]
 ansible_ssh_user = ubuntu-2010053
 ansible_ssh_pass = ubuntu-2010053
+
+[all:children]
+elastic
+kibana
+logstash
+
+[all:vars]
+ansible_ssh_user=vagrant
+ansible_ssh_private_key_file=/.vagrant.d/insecure_private_key
+ansible_ssh_port=22
+
+[elastic:children]
+elastic_master
+elastic_datanode
+
+[elastic_master]
+elk1 ansible_ssh_host=192.168.56.1
+elk4 ansible_ssh_host=192.168.56.4
+
+[elastic_datanode]
+elk5 ansible_ssh_host=192.168.56.5
+
+[kibana]
+elk2 ansible_ssh_host=192.168.56.2
+
+[logstash]
+elk3 ansible_ssh_host=192.168.56.3
