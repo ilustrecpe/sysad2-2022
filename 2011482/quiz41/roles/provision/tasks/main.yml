@@ -1,0 +1,51 @@
+---
+- name: Update apt cache
+  apt: update_cache=yes
+
+- name: Create nagcmd and nagios Groups
+  group: name= "{{ item }}" state=present
+  with_items:
+    - "{{ nagcmd_group }}"
+    - "{{ nagios_group }}"
+  tags:
+    - group
+
+  - nam: create nagios User and add to nagcmd Group
+    user: name = {{ user }} group= {{ nagcmd_group }}
+    tags: 
+  - group
+
+  - name: check if build dependencies are installed
+    command: bash -c "dkpg --get-selections | grep {{ item }}"
+    with_items:
+      - build-essential
+      - libgd2-xpm-dev
+      - openss1
+      - libss1-dev
+      - xinetd
+      - apache2-utils
+      - python-passlib
+      - unzip
+
+    ignore_errors: true
+    register: build_dependencies_installed
+    tags:
+      - build_setup
+
+      - name: Update repo cache and install build dependencies
+        apt: name = {{ item }} state=present force=yes
+        with_items:
+          - build-essential
+          - libgd2-xpm-dev
+          - openss1
+          - libss1-dev
+          - xinetd
+          - apache2-utils
+          - python-passlib
+          - unzip
+      when: build_dependencies_installed | failed
+      tags:
+        - build setup
+
+
+
