@@ -1,0 +1,61 @@
+---
+- name: Get package for Grafana
+  apt: 
+    deb: https://dl.grafana.com/oss/release/grafana_7.3.6_amd64.deb
+  register: pkg_grafana
+
+- name: Depackage Grafana
+  dpkg_selections:
+    name: grafana_7.3.6_amd64.deb
+    selection: install
+  when: pkg_grafana.changed
+
+- name: Install libfontconfig
+  apt:
+    name: libfontconfig1
+    state: latest
+    update_cache: yes
+
+- name: Install Grafana
+  apt:
+    name: grafana
+    state: latest
+    update_cache: yes
+
+- name: Start Grafana
+  service:
+    name: grafana_server
+    state: started
+
+- name: Install Prometheus
+  apt:
+    name: prometheus
+    state: latest
+    update_cache: yes
+
+- name: Start prometheus
+  apt:
+    name: prometheus
+    state: started
+
+- name: Add influxdata key
+  apt_key:
+    url: https://repos.influxdata.com/influxdb.key
+    state: present
+
+- name: Add influxdata repository
+  apt_repository: 
+    repo: 'deb https://repos.influxdata.com/ubuntu focal stable'
+    state: present
+
+- name: Install Telegraf
+  apt:
+    name: telegraf
+    state: latest
+    update_cache: yes
+
+- name: Start telegraf
+  service:
+    name: telegraf
+    state: started
+
