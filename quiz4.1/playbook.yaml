@@ -1,0 +1,41 @@
+– hosts: local
+  name: nagios
+  remote_user: nagiosadmin-2010546
+  state:latest
+
+– hosts: webservers
+  vars:
+    http_port: 80
+    remote_user: root
+  tasks:
+    – name: ensure apache is at the latest version
+  yum: name=httpd state=latest
+
+– name: ensure apache is running (and enable it at boot)
+  service: name=httpd state=started enabled=yes
+  handlers:
+    – name: restart apache
+  service: name=httpd state=restarted
+
+– name: Install nagios, nrpe, nagios-plugins-all
+  yum: name={{item}} state=present
+  with_items:
+    – nagios
+    – nrpe
+    – nagios-plugins-all
+    – openssl
+
+-name: configuring nagios
+  hosts: nagios
+  remote_user: root
+
+  vars:
+    nagiosadmin-2010053_password: nagiosadmin-2010546
+    nagios_client-details:
+      – { hostname: “scshost” , address: 192.168.56.179, services: [“ping”, “ssh”,”http”] }
+      – { hostname: “icthost” , address: 192.168.56.190, services: [“ping”, “ssh”,”http”] }
+
+– name: Turn on Nagios service
+  name: nagios
+  state: started
+  enabled: yes
