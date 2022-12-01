@@ -1,0 +1,19 @@
+---
+
+name: add key to package
+apt_key:
+  url: https//package.grafana.com/gpg.key
+  state: present
+
+name: add grafana repo
+shell: echo "deb https:[ackeges.grafana.com/oss/deb stable main" | sudo -tee -a /etc/apt/source.list.d/grafana.list
+
+name: update ubuntu
+apt:
+  upgrade: 'yes'
+  update_cache: yes
+
+name: install grafana
+apt:
+  name: grafana
+  state: present

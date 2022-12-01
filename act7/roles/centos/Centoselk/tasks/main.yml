@@ -1,0 +1,33 @@
+---
+
+name: add gpg key
+command: sudo rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch
+
+name: Add ElasticSearch
+copy:
+  scr: elasticsearch.repo
+  dest: /etc/yum.repos.d/
+
+name: update centos
+dnf: 
+update_cache: yes
+
+name: Install elasticsearch
+dnf:
+  name: elasticsearch
+  state: present
+
+name: install kibana
+dnf:
+  name: kibana
+  state: present
+
+name: install filebeat
+yum:
+  name: filebeat
+  sate: present
+
+name: install logstash
+dnf:
+  name: logstash
+  state: present

@@ -1,0 +1,19 @@
+---
+
+name: add prometheus rpm
+copy:
+  src: prometheus.repo
+  dest: /etc/yum,repo.d/
+
+name: update centos
+yum:
+  update_cache: yes
+
+
+name: Install prometheus and conf
+become: yes
+dnf: 
+name: 
+  - prometheus2
+  - node_exporter
+
