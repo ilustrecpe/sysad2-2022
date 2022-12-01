@@ -1,0 +1,26 @@
+---
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: get GPG key
+      ansible.builtin.command: curl -fsSL https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    
+    - name: dearmor key
+      ansible.builtin.command: sudo gpg --dearmor -o /usr/share/keyrings/elastic.gpg
+
+    - name: copy elastic
+      ansible.builtin.command: echo "deb [signed-by=/usr/share/keyrings/elastic.gpg] https://artifacts.elastic.co/packages/7.x/apt stable main"
+    
+    - name: add source to list
+      ansible.builtin.command: sudo tee -a /etc/apt/source.list.d/elastic-7.x.list
+
+    - name: Install stack
+      apt:
+        pkg:
+          - apt-transport-https
+          - elasticsearch
+          - kibana
+          - nginx
+          - logstash
+          - filebeat
