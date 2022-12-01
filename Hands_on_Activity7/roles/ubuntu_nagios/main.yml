@@ -1,0 +1,42 @@
+- name: add user nagios
+  user:
+    name: nagios
+    state: present
+    update_cache: yes
+
+- name: add group nagios
+  group:
+    name: nagcmd
+    state: present
+    update_cache: yes
+
+- name: download nagios
+  apt_key:
+    url: https://assests.nagios.com/download/nagioscore/realeases/nagios-4.4.5.tar.gz
+    state: present
+
+- name: install nagios
+  make:
+    target: install
+    chdir: /tmp/nagios-4.4.5
+
+- name: install init nagios
+  make:
+    target: init
+    chdir: /tmp/nagios-4.4.5
+
+- name: install nagios config
+  make:
+    target: config
+    chdir: /tmp/nagios-4.4.5
+
+- name: install nagios commandmode
+  make:
+    target: commandmode
+    chdir: /tmp/nagios-4.4.5
+
+- name: install web interface
+  make:
+    target: install-webconf
+    chdir: /tmp/nagios-4.4.5
+
