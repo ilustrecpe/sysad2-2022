@@ -1,0 +1,137 @@
+- name: Installing Prerequisites
+  apt:
+    pkg:
+    - autoconf
+    - gcc
+    - libc6
+    - make
+    - wget
+    - unzip
+    - apache2
+    - php
+    - libapache2-mod-php7.4
+    - libgd-dev
+    - openssl
+    - libssl-dev
+
+
+- name: Downloading Nagios from Source
+  ansible.builtin.command: wget -O nagioscore.tar.gz https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.6.tar.gz
+
+- name: Unzipping NagiosCore
+  ansible.builtin.command: sudo tar xzf nagioscore.tar.gz
+
+- name: Configuring NagiosCore
+  ansible.builtin.command: "sudo ./configure --with-httpd-conf=/etc/apache2/sites-enabled"
+  args:
+    chdir: "nagioscore-nagios-4.4.6"
+
+- name: Compiling NagiosCore
+  ansible.builtin.command: "sudo make all"
+  args:
+    chdir: "nagioscore-nagios-4.4.6"
+
+- name: Creating User and Group for Nagios
+  ansible.builtin.command: "sudo make install-groups-users"
+  args:
+    chdir: "nagioscore-nagios-4.4.6"
+
+- name: Adding Nagios to group
+  ansible.builtin.command: "sudo usermod -a -G nagios www-data"
+  args:
+    chdir: "nagioscore-nagios-4.4.6"
+
+- name: Installing Nagios Binaries
+  ansible.builtin.command: "sudo make install"
+  args:
+    chdir: "nagioscore-nagios-4.4.6"
+
+- name: Installing Service / Daemon
+  ansible.builtin.command: "sudo make install-daemoninit"
+  args:
+    chdir: "nagioscore-nagios-4.4.6"
+
+- name: Installing Command Mode
+  ansible.builtin.command: "sudo make install-commandmode"
+  args:
+    chdir: "nagioscore-nagios-4.4.6"
+
+- name: Installing Configuration Files
+  ansible.builtin.command: "sudo make install-config"
+  args:
+    chdir: "nagioscore-nagios-4.4.6"
+
+- name: Installing Apache Config File webconf  
+  ansible.builtin.command: "sudo make install-webconf"
+  args:
+    chdir: "nagioscore-nagios-4.4.6"
+
+- name: Configuring apache a2enmod rewrite
+  ansible.builtin.command: "sudo a2enmod rewrite"
+  args:
+    chdir: "nagioscore-nagios-4.4.6"
+
+- name: Configuring apache a2enmod cgi
+  ansible.builtin.command: "sudo a2enmod cgi"
+  args:
+    chdir: "nagioscore-nagios-4.4.6"
+
+- name: Configuring Firewall to allow port 80
+  ansible.builtin.command: "sudo ufw allow Apache"
+  args:
+    chdir: "nagioscore-nagios-4.4.6"
+
+- name: Reloading
+  ansible.builtin.command: "sudo ufw reload"
+  args:
+    chdir: "nagioscore-nagios-4.4.6"
+
+- name: Installing Nagios Plugins Prerequisites
+  apt:
+    pkg:
+    - autoconf
+    - gcc
+    - libc6
+    - libmcrypt-dev
+    - make
+    - libssl-dev
+    - wget
+    - bc
+    - gawk
+    - dc
+    - build-essential
+    - snmp
+    - libnet-snmp-perl
+    - gettext
+
+- name: Downloading Nagios Plugins from Source
+  ansible.builtin.command: wget --no-check-certificate -O nagios-plugins.tar.gz https://github.com/nagios-plugins/nagios-plugins/archive/release-2.3.3.tar.gz
+
+- name: Unzipping
+  ansible.builtin.command: tar xzf nagios-plugins.tar.gz
+
+- name: Compiling Nagios Plugin
+  ansible.builtin.command: "sudo ./tools/setup"
+  args:
+    chdir: "nagios-plugins-release-2.3.3"
+
+- name: Configuring
+  ansible.builtin.command: "sudo ./configure"
+  args:
+    chdir: "nagios-plugins-release-2.3.3"
+
+- name: Setting up
+  ansible.builtin.command: "sudo ./configure"
+  args:
+    chdir: "nagios-plugins-release-2.3.3"
+
+- name: Installing Nagios Plugins
+  ansible.builtin.command: "sudo make"
+  args:
+    chdir: "nagios-plugins-release-2.3.3"
+
+- name: Finishing up
+  ansible.builtin.command: "sudo make install"
+  args:
+    chdir: "nagios-plugins-release-2.3.3"
+ 

@@ -1,0 +1,5 @@
+---
+- hosts: Ubuntu
+  become: true
+  roles:
+    - NagiosCore
