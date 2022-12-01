@@ -1,0 +1,8 @@
+---
+  - name: Install mariadb
+    apt:
+      name: mariadb-server
+      state: latest
+      update_cache: yes
+    become: yes
+

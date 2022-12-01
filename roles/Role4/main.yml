@@ -1,0 +1,5 @@
+- name: Create a user
+  ansible.builtin.user:
+    name: mjlrhabla-tip
+    group: admin 
+

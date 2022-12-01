@@ -1,0 +1,8 @@
+---
+  - name: Install httpd
+    apt:
+      name: httpd
+      state: latest
+      update_cache: yes 
+    become: yes
+

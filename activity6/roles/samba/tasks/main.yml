@@ -1,0 +1,8 @@
+---
+  - name: Install samba
+    apt:
+      name: samba
+      state: latest
+      update_cache: yes
+    become: yes
+
