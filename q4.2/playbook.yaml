@@ -1,0 +1,21 @@
+--- 
+
+- hosts: all
+  become: true
+  tasks:
+     - name: Prometheus
+       apt:
+         name: prometheus
+ 
+     - name: Telegraf
+       apt:
+         name: telegraf
+
+     - name: Grafana
+       ansible.builtin.command: wget -q -O https://packages.grafana.com/gpg.key
+
+     - name: add grafana to repository
+       ansible.builtin.command: echo "deb [signed-by-=usr/share/keyrings/grafana.gpg] https://packages.grafana.com/oss/deb stable main"
+
+     - name: Install Grafana
+       ansible.builtin.command: sudo snap install grafana
