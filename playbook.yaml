@@ -1,0 +1,4 @@
+- name: Ubuntu Installation of dhcp, bind9, samba, httpd and mariadb
+  hosts: ubuntu
+  roles:
+          - installation_in_ubuntu
