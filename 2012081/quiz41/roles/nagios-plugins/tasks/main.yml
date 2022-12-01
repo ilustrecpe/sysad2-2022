@@ -1,0 +1,23 @@
+---
+- name: Download the source code for a release of Nagios_plugins and extract it
+  unarchive:
+    src: "{{ plugin_dwld_url }}"
+    dest: "/home/{{ vm_user }}"
+    copy: no
+  tags:
+    - dwld_nagios_plugin
+
+- name: Configure Nagios-plugins
+  command: ./configure --with-nagios-user={{ user }} --with-nagios-group{{ nagios_group }} --with-openssl
+  args:
+    chdir: "/home/{{ vm_user }}/nagios_plugins-{{ plugin_version }}"
+  tags:
+    - cfg_nagios_plugin
+
+- name: Complile Nagios_plugins
+  command: "{{ item }}"
+  args:
+    chdir: "/home/{{ vm_user }}/nagios-plugins-{{ plugin_version }}"
+  with_items:
+    -make
+    -make install
