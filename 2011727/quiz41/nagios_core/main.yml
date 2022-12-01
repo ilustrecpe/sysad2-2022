@@ -1,0 +1,47 @@
+- name: create nagios group
+  group:
+    name: nagios
+    state: present
+
+- name: create nagios group
+  group:
+    name: nagcmd
+    state: present
+
+- name: create nagios user
+  user:
+    name: nagios
+    shell: /bin/bash
+    comment: nagios user
+    group: nagios
+
+- name: add nagious user group for external command
+  user:
+    name: nagios
+    groups: nagcmd
+    append: yes
+
+- name: add www-data user group for external command
+  user:
+    name: www-data
+    groups: nagcmd
+    append: yes
+
+- name: creat download directory
+  file:
+    path: /downloads
+    state: directory
+    owner: nobody
+    group: nogroup
+
+- name: downlod nagios
+  get_url:
+    url: http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.4.5.tar.gz
+    dest: /downloads
+
+- name: download plugins
+  get_url:
+    url: https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
+    dest: /downloads
+
+
