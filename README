@@ -1,4 +1,4 @@
-![complete](https://user-images.githubusercontent.com/118404653/204993088-912318ed-1d89-42ee-8243-86395d272f61.PNG)
-![complete2](https://user-images.githubusercontent.com/118404653/204993097-20d18b18-91d9-4feb-a7ac-51b12388950a.PNG)
 
+![complete](https://user-images.githubusercontent.com/118404653/204993546-2c1cb88f-d968-4241-bdea-0afd7ced3f72.PNG)
+![complete2](https://user-images.githubusercontent.com/118404653/204993565-d602de2b-f2e8-4ced-ad3f-85821a6f030c.PNG)
 Directory Contains Inventory file that contains targetted host IP, ansible.cfg contains Inventory file location, Playbook.yaml calls the tasks inside the roles/NagiosCore/tasks/main.yml
