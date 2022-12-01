@@ -1,0 +1,31 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+    - name: Install Dependencies
+      apt:
+        pkg:
+          - openjdk-8-jdk
+          - nginx
+        
+
+    - name: Import PGP key
+      ansible.builtin.command: wget -qO - https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    
+    - name: Install apt-transport https
+      apt:
+        name: apt-transport-https
+        update_cache: yes
+
+    - name: Add Elastic Repository
+      ansible.builtin.command: echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/source.list.d/elastic-7.x.list
+
+    - name: Install ELK stack
+      apt:
+        pkg:
+          - elasticsearch
+          - kibana
+          - logstash
+          - filebeat
