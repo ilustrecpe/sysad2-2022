@@ -1,1 +1,44 @@
 
+**Prometheus**
+
+```
+---
+- hosts: localhost
+  roles:
+    - cloudalchemy.prometheus
+  vars:
+    prometheus_targets:
+     node:
+      - targets:
+        - localhost:9100
+        - demo.cloudalchemy.org:9100
+        labels:
+         env: demosite
+```
+
+**Grafana**
+
+```
+- name: Installing dependencies
+  apt:
+    pkg:
+      - apt-transport-https
+      - software-properties-common
+      - wget
+
+- name: Grafana KEY
+  ansible.builtin.apt_key:
+    url: https://apt.grafana.com/gpg.key
+    state: present
+
+- name: Adding to repo
+  ansible.builtin.apt_repository:
+    repo: deb https://apt.grafana.com stable main
+    state: present
+
+- name: Install Grafana
+  apt:
+    name: grafana
+    update_cache: yes
+
+```
