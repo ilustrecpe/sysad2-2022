@@ -3,7 +3,7 @@
 name: add prometheus rpm
 copy:
   src: prometheus.repo
-  dest: /etc/yum,repo.d/
+  dest: /etc/yum.repo.d/
 
 name: update centos
 yum:
