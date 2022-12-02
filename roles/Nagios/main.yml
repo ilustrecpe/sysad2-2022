@@ -1,1 +1,56 @@
 
+---
+- hosts: localhost
+  become: true
+  tasks:
+    - name: Downloading dependencies
+      apt:
+        pkg:
+         - autoconf
+         - gcc
+         - libc6
+         - libmcrypt-dev
+         - make
+         - libssl-dev
+         - wget
+         - bc
+         - gawk
+         - dc
+         - build-essential
+         - snmp
+         - libnet-snmp-perl
+         - gettext
+         - unzip
+         - unzip
+         - php
+         - libapache2-mod-php7.4
+         - openssl
+        state: latest
+        update_cache: yes
+
+    - name: Download Nagios Core
+      ansible.builtin.get_url:
+            url: https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.6.tar.gz
+            dest: /tmp/nagioscore-nagios-4.4.6.tar.gz
+            mode: '0440'
+
+    - name: Extract
+      ansible.builtin.unarchive:
+         src: /tmp/nagioscore-nagios-4.4.6.tar.gz
+         dest: /tmp/
+         remote_src: yes
+
+    - name: Configure
+      ansible.builtin.command: ./configure
+      args:
+        chdir: /tmp/nagioscore-nagios-4.4.6
+
+    - name: Compile
+      ansible.builtin.command: "{{ item }}"
+      args:
+        chdir: /tmp/nagioscore-nagios-4.4.6
+      with_items:
+          - make all
+          - make install-groups-users
+          - make install
+          - make install-daemoninit
