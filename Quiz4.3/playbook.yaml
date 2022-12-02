@@ -17,7 +17,7 @@
         repo: deb https://artifacts.elastic.co/packages/8.x/apt stable main
         state: present
 
-    - name: Refreshing repo list
+    - name: Installing Elastic stack
       apt:
         pkg: 
         - elasticsearch
