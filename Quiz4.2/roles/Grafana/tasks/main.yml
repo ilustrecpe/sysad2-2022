@@ -5,14 +5,17 @@
     - software-properties-common 
     - wget
 
-- name: getting key
-  ansible.builtin.command: wget -q -O /usr/share/keyrings/grafana.key https://apt.grafana.com/gpg.key
+- name: getting Grafana Key
+  ansible.builtin.apt_key:
+    url: https://apt.grafana.com/gpg.key
+    state: present
 
-- name: Adding to repository
-  ansible.builtin.command: echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list
+- name: Adding to Repository
+  ansible.builtin.apt_repository:
+    repo: deb https://apt.grafana.com stable main
+    state: present
 
-- name: Refreshing apt list
-  ansible.builtin.command: sudo apt-get update
-
-- name: Installing grafana
-  ansible.builtin.command: sudo snap install grafana
+- name: Installing Grafana
+  apt:
+    name: grafana
+    update_cache: yes
