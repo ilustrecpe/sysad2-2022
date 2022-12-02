@@ -1,2 +1,0 @@
-Install Elastic Stack 
-
