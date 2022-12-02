@@ -1,0 +1,94 @@
+---
+- name: Install pre-requisite
+  apt: 
+    name: 
+      - openjdk-11-jdk
+      -nginx
+    state: latest
+    update_cache: yes
+
+- name: Add Elastic repository
+  apt_key:
+    url: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+    state: present
+
+- name: Install APT repo
+  apt: 
+   name: apt-transport-https
+   state: present
+   update_cache: yes
+
+- name: Getting apt transport https
+  apt_repository:
+    repo: "deb https://artifacts.elastic.co/packages/7.x/apt stable main"
+    state: present
+
+- name: Install elasticsearch
+  apt: 
+    name: elasticsearch
+    state: present
+    update_cache: yes
+
+- name: Update the config file to allow authorization
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'network.host:'
+    line: 'network.host: localhost'
+
+- name: Update the port config file
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'http.port'
+    line: 'http.port: 9200'
+
+- name: Update elasticsearch.service
+  lineinfile:
+    destfile: /etc/systemd/elasticsearch.service
+    regexp: 'TimeoutStartSec='
+    line: 'TimeoutStartSec=900'
+
+- name: Start Elastic search
+  service:
+    name: elasticsearch
+    state: started
+
+- name: Install kibana
+  apt: 
+    name: kibana
+    state: present
+    update_cache: yes
+
+- name: Update the config file to allow authorization
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: 'server.host'
+    line: 'server.host: "localhost"'
+
+- name: Defining server port
+  lineinfile: 
+    path: /etc/kibana/kibana.yml
+    regexp: 'server.port'
+    line: 'server.port: 5601'
+
+- name: Update config file
+  lineinfile:
+    path: /etc/kibana/kibana.yml
+    regexp: 'elasticsearch.hosts:'
+    line: 'elasticsearch.hosts: ["https://localhost:9200"]'
+
+- name: Starting kibana
+  service: 
+    name: kibana
+    state: started
+
+- name: Install logstash
+  apt: 
+    name: logstash
+    state: latest
+    update_cache: yes
+
+- name: Start logstash
+  service:
+    name: logstash
+    state: started
+

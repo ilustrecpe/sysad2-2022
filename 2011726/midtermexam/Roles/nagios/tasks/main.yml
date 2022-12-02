@@ -1,0 +1,57 @@
+---
+- name: Install nagios core dependencies packages on ubuntu
+  apt: 
+    name: 
+       - build-essential
+       - apache2
+       - php
+       - openssl
+       - perl
+       - make
+       - php-gd
+       - libgd-dev
+       - libapache2-mod-php
+       - libperl-dev
+       - libssl-dev
+       - daemon
+       - wget
+       - apache2-utils
+       - unzip
+    state: latest
+    update_cache: yes
+
+- name: Add group nagcmd
+  group: 
+    name: nagcmd
+    state: present
+
+- name: Add user nagios
+  user: 
+    name: nagios
+    group: nagcmd
+
+- name: Download and extract nagios core
+  unarchive: 
+    src: https://assets.nagios.com/downloads/nagioscore/releases/nagios-4.4.5.tar.gz
+    dest: /tmp
+    copy: no
+
+- name: Configure nagios within ubuntu
+  command: ./configure --with-nagios-group=nagcmd --with-command-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled
+  args: 
+    chdir: /tmp/nagios-4.4.5
+
+- name: Add user account
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: "{{ user }}"
+    password: "{{ pass }}"
+
+- name: a2enmod cgi
+  command: a2enmod cgi
+
+- name: Restart apache2
+  service: 
+     name: apache2
+     state: restarted
+

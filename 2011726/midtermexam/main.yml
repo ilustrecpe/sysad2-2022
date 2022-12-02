@@ -1,0 +1,12 @@
+---
+- hosts: ubuntu
+  vars_files:
+    - ./config.yaml
+  roles:
+    - elastic
+    - nagios
+    - nagios2
+    - nagios3
+    - grafana
+    - lamp
+
