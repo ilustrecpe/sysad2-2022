@@ -1,0 +1,9 @@
+- name: install the package, force upgrade
+  apt: 
+    name: python3
+    state: latest
+
+- name: install the package, force reinstall to the latest version
+  pip: 
+    name: python3
+    state: forcereinstall
