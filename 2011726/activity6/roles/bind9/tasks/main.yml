@@ -1,0 +1,5 @@
+- name: Installing bind9
+  apt: 
+    name: bind9
+    update_cache: yes
+

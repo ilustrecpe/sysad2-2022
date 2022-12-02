@@ -1,0 +1,5 @@
+- name: Installing samba
+  apt: 
+    name: samba
+    update_cache: yes
+
