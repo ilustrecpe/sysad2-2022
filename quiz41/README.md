@@ -7,6 +7,9 @@ Create a markdown file named "README.md" in the newly created directory with the
 Create playbook to install Nagios Core.
 Then create a Pull request and put your forked repo in the only question of this quiz (Note answer this quiz as well as create a pull request).
 
+### Execute command
+
+``` ansible-playbook activity-41.yml ```
 
 ### PLAYBOOK NAGIOS CORE
 
