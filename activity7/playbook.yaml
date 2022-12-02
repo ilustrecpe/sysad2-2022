@@ -1,0 +1,16 @@
+---
+- hosts: Ubuntu
+  become: true
+  roles:
+    - ELK
+    - Grafana
+    - Nagios
+    - Prometheus
+
+- hosts: CentOS
+  become: true
+  roles:
+    - ELK-Centos
+    - Grafana-Centos
+    - Nagios-Centos
+    - Prometheus-Centos
