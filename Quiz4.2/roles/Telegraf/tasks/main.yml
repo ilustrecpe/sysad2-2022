@@ -1,0 +1,4 @@
+- name: Installing telegraf
+  ansible.builtin.apt:
+    name: telegraf
+    update_cache: yes
