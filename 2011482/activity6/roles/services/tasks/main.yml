@@ -1,4 +1,0 @@
-- name: Starting httpd
-  ansible.builtin.service:
-    name:
-
