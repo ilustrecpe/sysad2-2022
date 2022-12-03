@@ -1,0 +1,10 @@
+- name: Installing rabbitmq server
+  apt:
+    name: rabbitmq-server
+    update_cache: yes
+
+- name: Adding OpenStack user and pass to rabbitmq and permit config write and read
+  anbsilbe.builtin.command: "{{ item }}"
+  with_items:
+    - rabbitmqct1 add_user openstack123
+    - rabbitmqct1 set_permissions openstack ".*" ".*" ".*"
