@@ -1,0 +1,9 @@
+- name: Installing LAMP stack
+  ansible.builtin.yum:
+    name:
+      - httpd
+      - mariadb-server
+      - php
+      - php-mysql
+    update_cache: yes
+    state: present

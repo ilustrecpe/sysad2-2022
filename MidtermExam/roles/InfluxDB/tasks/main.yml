@@ -1,0 +1,15 @@
+- name: Getting apt key
+  ansible.builtin.apt_key:
+    url: https://repos.influxdata.com/influxdb.key
+    state: present
+
+- name: Adding to repository
+  ansible.builtin.apt_repository:
+    repo: deb https://repos.influxdata.com/ubuntu bionic stable
+    state: present
+
+- name: Installing influxdb
+  apt:
+    name: influxdb
+    update_cache: yes
+
