@@ -1,0 +1,28 @@
+
+---
+- hosts: localhost
+  become: true
+- name: Downloading dependencies
+  apt:
+    name: apt-transport-https
+    update_cache: yes
+
+- name: Getting KEY
+  ansible.builtin.apt_key:
+    url: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: Adding to repo list
+  ansible.builtin.apt_repository:
+    repo: deb https://artifacts.elastic.co/packages/8.x/apt stable main
+    state: present
+
+- name: Installing ELK STACK
+  apt:
+    pkg:
+      - elasticsearch
+      - kibana
+      - logstash
+      - filebeat
+      - nginx
+    update_cache: yes
