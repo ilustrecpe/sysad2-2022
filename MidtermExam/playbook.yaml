@@ -1,5 +1,5 @@
 ---
-- hosts: LAMPStackCentOS
+- hosts: CentOS
   become: true
   roles:
     - Grafana-Centos
@@ -8,7 +8,7 @@
     - LAMP
     - InfluxDB-Centos 
 
-- hosts: GrafanaStackUbuntu
+- hosts: Ubuntu
   become: true
   roles:
     - ELK
