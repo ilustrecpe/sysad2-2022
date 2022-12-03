@@ -1,5 +1,0 @@
-- name: vsftpd installation
-  apt:
-    - name: vsftpd
-      update_cache: yes
-
