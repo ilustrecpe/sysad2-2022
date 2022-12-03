@@ -1,0 +1,15 @@
+---
+
+- name: Installing prometheus
+  apt:
+    name: prometheus
+    state: latest
+    update_cahce: yes
+
+- name: starting prometheus service
+  service:
+    name: prometheus
+    state: started
+    enabled: yes
+
+
