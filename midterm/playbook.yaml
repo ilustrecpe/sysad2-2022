@@ -1,0 +1,16 @@
+---
+
+- hosts: ubuntu
+  become: true
+  roles:
+    - Elastic
+    - Nagios
+    - Lamp-U
+
+- hosts: centOS
+  become: true
+  roles:
+    - Grafana
+    - Lamp
+
+

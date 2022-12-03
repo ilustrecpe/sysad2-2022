@@ -1,0 +1,8 @@
+- name: Install LAMP Stack
+  apt:
+    pkg:
+      - apache2
+      - mysql-server
+      - libapache-mod-php
+      - php-mysql
+    update_cache: yes
