@@ -1,0 +1,31 @@
+- name: setup prerequisites
+  hosts: elk-hosts
+  become: true
+  roles:
+    - pre-requisites
+    - configure-hosts-file
+- name: install elasticsearch
+  hosts: elk-hosts
+  serial: 1
+  become: true
+  roles:
+    - install-elasticsearch
+- name: configure elasticsearch
+  hosts: elk-hosts
+  serial: 1
+  become: true
+  roles:
+    - configure-elastic-file
+    - change-permissions
+    - systemd-conf
+    - restart-elasticsearch
+- name: Install Kibana
+  hosts: kibana-host
+  become: true
+  roles:
+    - kibana
+- name: Install logstash
+  hosts: logstash-host
+  become: true
+  roles:
+    - logstash
