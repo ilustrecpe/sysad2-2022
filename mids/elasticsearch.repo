@@ -1,0 +1,9 @@
+[elastickstack]
+name= elastic repo for 7.x
+baseurl= https://artifacts.elastic.co/packages/7.x/yum
+gpgcheck=1
+
+gpgkey= https://artifacts.elastic.co/GPG-KEY-elasticsearch
+enable= 1
+autorefresh= 1
+type= rpm-md

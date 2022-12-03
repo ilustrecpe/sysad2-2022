@@ -3,16 +3,16 @@
 - hosts: centos
   become: true
   roles:
-    - ceelastic
-    - cgrafana
-    - clamp
+  # - celastic
+  # - cgrafana
+  # - clamp
 
 - hosts: ubuntu
   become: true
   roles:
-    - uelastic
-    - unagios
-    - unagios2
-    - unagios3
+    # - uelastic
+    # - unagios
+    # - unagios2
+    # - unagios3
     - ugrafana
-    - ulamp
+    # - ulamp

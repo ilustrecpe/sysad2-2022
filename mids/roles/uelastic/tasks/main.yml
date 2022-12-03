@@ -8,6 +8,19 @@
     state: latest
     update_cache: yes
 
+- name: add gpg key
+  apt_key:
+    url: "https://artifacts.elastic.co/GPG-KEY-elasticsearch"
+    state: present
+
+- name: adding source
+  shell: echo "deb https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /etc/apt/sources.list.d/elastic-7.c.list apt stable
+
+- name: update ubuntu
+  apt:
+    upgrade: 'yes'
+    update_cache: yes
+
 - name: Get elasticsearch repo
   apt_key:
     url: "https://packages.elastic.co/GPG-KEY-elasticsearch"

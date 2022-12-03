@@ -19,6 +19,11 @@
   rpm_key:
     key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
     state: present
+    
+- name: add elasticsearch
+  copy:
+    src: elasticsearch.repo
+    dest: /etc/yum.repos.d/
 
 - name: Install logstash repo
   yum_repository:
