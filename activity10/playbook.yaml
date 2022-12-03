@@ -1,0 +1,14 @@
+---
+- hosts: controller
+  become: true
+  roles:
+    - Configure
+    - Keystone
+    - Glance
+    - Nova
+
+- hosts: compute1
+  become: true
+  roles:
+    - Configure
+
