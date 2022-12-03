@@ -1,0 +1,7 @@
+- name: install packages in ubuntu
+  hosts: ubuntu
+  roles:
+    - elastic
+    - grafana
+    - nagios
+    - prometheus
