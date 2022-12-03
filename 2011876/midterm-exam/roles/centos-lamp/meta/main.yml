@@ -1,0 +1,12 @@
+galaxy_info:
+  author: name
+  description: role
+  company: company
+
+  license: license
+
+  min_ansible_versions: 2.9
+
+  galaxy_tags: []
+    
+dependencies: []

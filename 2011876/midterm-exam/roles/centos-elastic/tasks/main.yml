@@ -1,0 +1,86 @@
+--- 
+- name: install prerequisites of elastic search
+  yum:
+    name: java-11-openjdk-devel
+    state: present
+    update_cache: yes
+
+- name: install elasticsearch repo
+  yum_repository:
+    name: Elastic_7.x_repo
+    baseurl: https://artifacts.elastic.co/packages/7.x/yum
+    gpgcheck: yes
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    enabled: yes
+    description: Elastic 7.x repo
+
+- name: Add elasticsearch key
+  rpm_key:
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: elasticsearch port
+  lineinlinefile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'http.port:'
+    line: 'https.port: 9200'
+
+- name: Run elasticsearch
+  service:
+    name: elasticsearch
+    state: started
+
+- name: install logstash repo
+  yum_repository:
+    name: Elastic repository for 7.x packages
+    baseurl: https://artifacts.elastic.co/packages/7.x/yum
+    gpgcheck: yes
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    enabled: yes
+    description: elastic 7.x packages repo
+
+- name: install logstash
+  yum:
+    name: logstash
+    state: present
+    update_cache: yes
+
+- name: logstash host
+  lineinfile:
+    destfile: /etc/logstash/logstash.yml
+    regexp: 'http.host:'
+    line: 'http.host: 127.0.0.1'
+
+- name: install kibana repo
+  yum_repository:
+    name: Kibana 7.x packages
+    baseurl: https://artifacts.elastic.co/packages/7.x/yum
+    gpgcheck: yes
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    enabled: yes
+    description: Kibana-7.x
+
+- name: install kibana
+  yum:
+    name: kibana
+    state: present
+    update_cache: yes
+
+- name: kibana host
+  lineinfile:
+    destfile: /etc/kibana/kibana.yml
+    regexp: 'server.hosts:'
+    line: 'server.host: 0.0.0.0'
+
+- name: kibana port
+  lineinfile:
+    destfile: /etc/kibana/kibana.yml
+    regexp: 'server.port:'
+    line: 'server.port: 5601'
+
+- name: run kibana
+  service:
+    name: kibana
+    state: started
+
+-

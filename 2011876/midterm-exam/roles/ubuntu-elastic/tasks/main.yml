@@ -1,0 +1,73 @@
+---
+- name: install prerequisites of elasticsearch
+  apt:
+    name:
+      - openjdk-11-jdk
+      - ngix
+    state: latest
+    update_cache: yes
+
+- name: get elasticsearch repo
+  apt_key:
+    url: "https://packages.elastic.co/GPG-KEY-elasticsearch"
+    state: present
+
+- name: get apt-transport-https
+  apt:
+    name: apt-transport-https
+    state: present
+
+- name: install elastic packages
+  apt:
+    name: elasticsearch
+    state: present
+    update_cache: yes
+
+- name: elasticsearch port
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'http.port'
+    line: 'http.port: 9200'
+
+- name: discovery type
+  lininfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    line: 'discovery.type: single-node'
+
+- name: reload systemd config
+  sustemd: daemon_reload=yes
+
+- name: ensure elasticsearch running
+  systemd: state=started name=elasticsearch
+
+- name: install kibana
+  apt:
+    name: kibana
+    update_cache: yes
+
+- name: add kibana server
+  lineinfile:
+    destfile: /etc/kibana/kibana.yml
+    regexp: 'server.host:'
+    line: 'server.host: localhost'
+
+- name: kibana port
+  lininfile:
+    destfile: /etc/kibana/kibana.yml
+    regexp: 'server.port'
+    line: 'server.port: 5601'
+
+- name: run kibana
+  service:
+    name: kibana
+    state: started
+
+- name: install logstash
+  apt:
+    name: logstash
+    update_cache: yes
+
+- name: start logstash
+  services:
+    name: logstash
+    state: started

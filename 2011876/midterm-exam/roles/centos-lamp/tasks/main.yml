@@ -1,0 +1,70 @@
+---
+- name: install httpd
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: add httpd_index
+  copy:
+    content: "Apache test"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+    register: httpd
+
+- name: run httpd
+  service:
+    name: httpd
+    state: started
+    when: httpd.changed
+
+- name: stop firewall
+  service:
+    name: firewalld
+    state: stopped
+
+- name: install mariadb
+  yum:
+    name: mariadb-server
+    state: latest
+    update_cache: yes
+
+- name: add mysql_index
+  copy:
+    content: "MySQL test"
+    dest: /var/www/html/index1.html
+    owner: root
+    group: root
+    mode: '0644'
+    register: mysql
+
+- name: run mariadb
+  service:
+    name: mariadb
+    state: started
+    when: mysql.changed
+
+- name: install php
+  yum:
+    name:
+      - php
+      - php-mysqlnd
+    state: latest
+    update_cache: yes
+
+- name: Add php index
+  copy:
+    content: "PHP test"
+    dest: /var/www/html/index2.html
+    owner: root
+    group: root
+    mode: '0644'
+    register: php
+
+- name: restart httpd
+  service:
+    name: httpd
+    state: restarted
+    when: php.changed

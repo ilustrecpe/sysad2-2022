@@ -1,0 +1,15 @@
+---
+- hosts: centos
+  roles:
+    - centos-elastic
+    - centos-grafana
+    - centos-lamp
+
+- hosts: ubuntu
+  roles:
+    - ubuntu-elastic
+    - ubuntu-nagios
+    - ubuntu-nagios2
+    - ubuntu-nagios3
+    - ubuntu-grafana
+    - ubuntu-lamp
