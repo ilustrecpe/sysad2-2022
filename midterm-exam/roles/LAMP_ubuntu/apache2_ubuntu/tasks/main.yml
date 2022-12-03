@@ -1,0 +1,31 @@
+- name: install apache
+  apt:
+    name: apache2
+    state: latest
+    update_cache: yes
+
+- name: apache host index
+  copy:
+    content: "jelo is here"
+    dest: /var/www/html/index.html
+    owner: root
+    group: root
+    mode: '0644'
+  register: apache_index
+
+- name: start apache2 service
+  service:
+    name: apache2
+    state: started
+    enabled: yes
+  when: apache_index.changed
+
+- name: whitelist apache2 to ufm
+  ufw:
+    rule: allow
+    port: '80'
+    proto: tcp
+
+- namme: disable ufw
+  ufw:
+    state: disabled

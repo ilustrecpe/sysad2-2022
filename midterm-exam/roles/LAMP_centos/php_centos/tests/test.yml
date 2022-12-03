@@ -1,0 +1,4 @@
+- hosts: centos
+  remote_user: root
+  roles:
+    - roles/php_centos
