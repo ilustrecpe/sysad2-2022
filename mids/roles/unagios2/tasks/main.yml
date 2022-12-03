@@ -49,8 +49,8 @@
 - name: Add user account
   htpasswd:
      path: /usr/local/nagios/etc/htpasswd.users
-     name: "{{user}}"
-     password: "{{pass}}"
+     name: "{{judd}}"
+     password: "{{123}}"
 
 - name: a2enmod cgi
   command: a2enmod cgi
