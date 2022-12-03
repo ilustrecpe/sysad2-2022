@@ -1,0 +1,19 @@
+---
+- hosts: CentOS
+  become: true
+  roles:
+    - Grafana-Centos
+    - Prometheus-Centos
+    - ELK-Centos
+    - LAMP
+    - InfluxDB-Centos 
+
+- hosts: Ubuntu
+  become: true
+  roles:
+    - ELK
+    - Lamp-Ubuntu
+    - Grafana
+    - Prometheus
+    - InfluxDB
+    - Nagios
