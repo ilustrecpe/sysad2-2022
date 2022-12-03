@@ -1,0 +1,9 @@
+---
+- name: Configure elasticsearch.yml File
+  copy:
+    src: '{{item.src}}'
+    dest: /etc/elasticsearch/elasticsearch.yml
+    owner: root
+    group: elasticsearch
+  with_items:                                                                                                                                                 
+    - { src: 'root/sysad2-2022/midterm-exam/roles-4.1/conf/file.yml'}
