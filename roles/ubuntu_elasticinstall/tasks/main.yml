@@ -1,0 +1,86 @@
+---
+# tasks file for roles/ubuntu_elasticinstall
+name: Installation of prerequisite app for elastic stack
+  apt:
+    name:
+      - openjdk-11-jdk
+      - nginx
+    state: latest
+    update_cache: yes
+
+name: Intsalling apt repo
+  apt:
+    name: apt-transport-https
+    state: present
+
+name: Installing ElasticSearch repo
+apt_repository:
+   filename: elastic-7.x
+   repo: deb https://artifacts.elastic.co/package/7.x/apt stable main
+   state: present
+
+name: Add ElasticSearch apt key
+apt_key:
+   url: "https://package.elastic.co/GPG-KEY-elasticsearch"
+   state: present
+
+name: Installing ElasticSearch
+apt:
+  name: elasticsearch
+  update_cache: yes
+
+name: Updating config file
+lineinfile:
+  destfile: /etc/elasticsearch/elasticsearch.yml
+  regexp: 'network.host'
+  line: 'network.host: localhost'
+
+name: Updating port in config
+lineinfile:
+  destfile: /etc/elasticsearch/elasticsearch.yml
+  regexp: 'http,port:'
+  line: 'http,port: 9200'
+
+name: Install Kibana
+apt:
+  name: kibana
+  update_cache: yes
+
+name: Update config file to allow access
+lineinfile:
+  destfile: /etc/kibana/kibana.yml
+  regexp: 'server.host:'
+  line: 'server.host: localhost'
+
+name: Define server port
+lineinfile:
+  destfile: /etc/kibana/kibana.yml
+  regexp: 'server.hosts:'
+  line: 'server.hosts: localhost'
+
+name: Define server port
+lineinfile:
+  destfile: /etc/kibana/kibana.yml
+  regexp: 'server.port'
+  line: 'server.port: 5601'
+
+name: Define ElasticSearch url
+lineinfile:
+  destfile: /etc/kibana/kibana.yml
+  regxp: 'elasticsearch.url'
+  line: 'elasticsearch.url: "https://localhost:9200"'
+
+name: Install Filebeat
+apt:
+  name: filebeat
+  update_cache: yes
+
+name: Install Logstash
+apt:
+  name: logstash
+  update_cache: yes
+
+name: Service Logstash
+service:
+  name: logstash
+  state: started

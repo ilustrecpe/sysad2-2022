@@ -1,0 +1,7 @@
+- name: Installing ELK, Nagios, Grafana and Prometheus for Ubuntu
+  hosts: ubuntu
+  roles:
+    - ubuntu-MonitorInstall/elk
+    - ubuntu-MonitorInstall/nagios
+    - ubuntu-MonitorInstall/grafana
+    - ubuntu-MonitorInstall/prometheus
