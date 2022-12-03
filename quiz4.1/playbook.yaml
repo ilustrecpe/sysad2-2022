@@ -2,7 +2,7 @@
 
 – hosts: local
   name: nagios
-  remote_user: nagiosadmin-2010546
+  remote_user: nagiosadmin-2010803
   state:latest
 
 – hosts: webservers
