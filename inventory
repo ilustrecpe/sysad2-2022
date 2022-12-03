@@ -1,0 +1,13 @@
+[Ubuntu]
+192.168.1.7
+
+[Ubuntu:vars]
+ansible_ssh_user=luyun-tip
+ansible_ssh_pass=ubuntu1234
+
+[CentOS]
+192.168.1.5
+
+[CentOS:vars]
+ansible_ssh_user=luyun-tip
+ansible_ssh_pass=centos1234
