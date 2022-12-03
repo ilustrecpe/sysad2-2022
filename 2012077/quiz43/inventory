@@ -1,0 +1,7 @@
+[Ubuntu]
+192.168.1.4
+
+[Ubuntu:vars]
+ansible_ssh_user=ubuntu-2012077
+ansible_ssh_pass=123
+

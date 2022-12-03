@@ -1,0 +1,19 @@
+---
+- hosts: Ubuntu
+  become: true
+  tasks: 
+   - name: Retrieving GPG key
+     ansible.builtin.command: curl -fsSL https://artifacts.elastic.co/GPG-KEY-elastic | sudo gpg --dearmor -o /usr/share/keyrings/elastic.gpg
+
+   - name: Copy elastic
+     ansible.builtin.command: echo "deb [signed-by=/usr/share/keyrings/elastic.gpg] https://artifacts.elastic.co/packages/7.x/apt stable main" | sudo tee -a /root/etc/sources.list.d/elastic-7.x.list
+
+   - name: Installing Elastic Stack
+     apt:
+       pkg:
+         - apt-transport-https
+         - elasticsearch
+         - kibana
+         - nginx
+         - logstash
+         - filebeat
