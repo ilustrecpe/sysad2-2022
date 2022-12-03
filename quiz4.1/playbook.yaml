@@ -32,7 +32,7 @@
   remote_user: root
 
   vars:
-    nagiosadmin-2010053_password: nagiosadmin-2010546
+    nagiosadmin-2010053_password: nagiosadmin-2010803
     nagios_client-details:
       – { hostname: “scshost” , address: 192.168.56.179, services: [“ping”, “ssh”,”http”] }
       – { hostname: “icthost” , address: 192.168.56.190, services: [“ping”, “ssh”,”http”] }
