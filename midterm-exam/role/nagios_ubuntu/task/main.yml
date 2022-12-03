@@ -1,0 +1,59 @@
+- name: download and extract nagios core
+  unarchive:
+    src: https://assest.nagios.com/download/nagioscore/releases/nagios-4.4.5.tar.gz
+    deset: /tmp
+    copy: no
+
+- name: Configure nagios within ubuntu
+  command: ./configure --with-nagios-group=nagcmd --with-command-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled
+  arges:
+    chdir: /tmp/nagios-4.4.5
+
+- name: compile nagios make clean
+  make:
+    chdir: /tmp/nagios-4.4.5
+    target: clean
+
+- name: compile nagios make all
+  make:
+    target: all
+    chdir: /tml/nagios-4.4.5
+
+- name: compile nagios make install
+  make:
+    target: install
+    chdir: /tmp/nagios-4.4.5
+
+- name: compile nagios make install-init
+  make:
+    target: install-init
+    chdir: /tmp/nagios-4.4.5
+
+- name: compile nagios make install config
+  make:
+    target: install-config
+    chdir: /tmp/nagios-4.4.5
+
+- name: compile nagios make install-commandmode
+  make:
+    target: install-commandmode
+    chdir: /tmp/nagios-4.4.5
+
+- name: fire up the web interface installer
+  make:
+    target: install-commandmode
+    chdir: /tmp/nagios-4.4.5
+
+- name: add user account
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: "{{ username }} "
+    password: " {{ password }} "
+
+- name: a2enmod cgi
+  command: a2enmod cgi
+
+- name: restart apache2
+  service:
+    name: apache2
+    state: restarted
