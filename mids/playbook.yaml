@@ -1,0 +1,18 @@
+---
+
+- hosts: centos
+  become: true
+  roles:
+  # - celastic
+  # - cgrafana
+  # - clamp
+
+- hosts: ubuntu
+  become: true
+  roles:
+    # - uelastic
+    # - unagios
+    # - unagios2
+    # - unagios3
+    - ugrafana
+    # - ulamp
