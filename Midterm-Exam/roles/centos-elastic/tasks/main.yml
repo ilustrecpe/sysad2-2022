@@ -32,7 +32,9 @@
 - name: Install logstash repo 
   yum_repository:
     name: Elastic repository for 7.x packages
-    baseurl: https://artifacts.elastic.co/GPG-key-elasticsearch
+    baseurl: https://artifacts.elastic.co/packages/7.x/yum
+    gpgcheck: yes
+    gpgkey: https://artifacts.elastic.com/GPG-KEY-elasticsearch
     enabled: yes 
     description: Elastic 7.x packages repo 
 
@@ -56,7 +58,7 @@
 - name: Install kibana repo 
   yum_repo:
     name: Kibana 7.x packages
-    baseurl: https://artifacts.elastic.co/GPG-key-elasticsearch
+    baseurl: https://artifacts.elastic.co/packages/7.x/yum
     enable: yes
     description: Kibana-7.x
 
