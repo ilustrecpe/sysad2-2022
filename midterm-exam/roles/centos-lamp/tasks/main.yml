@@ -1,0 +1,22 @@
+---
+# tasks file for roles/centos-lamp
+- name: Install httpd
+  yum:
+    name: httpd
+    state: latest
+    update_cache: yes
+
+- name: Install mariadb
+  yum:
+    name: mariadb-server
+    state: latest
+    update_cache: yes
+
+- name: Install php
+  yum:
+    name: 
+      - php
+      - php-mysqlnd
+    state: latest
+    update_cache: yes
+

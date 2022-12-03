@@ -1,0 +1,19 @@
+---
+
+- hosts: centos
+  become: true
+  roles:
+
+    # centos-elastic
+    #- centos-grafana
+  #- centos-lamp
+
+- hosts: ubuntu
+  become: true
+  roles:
+    #- ubuntu-elastic
+    #- ubuntu-nagios
+    #- ubuntu-nagios2
+    #- ubuntu-nagios3
+    - ubuntu-grafana
+    - ubuntu-lamp
