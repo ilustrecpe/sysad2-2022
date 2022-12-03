@@ -1,0 +1,43 @@
+- name: Add grafana repo
+  copy:
+    src: grafana.repo
+    dest: /etc/yum.repos.d/
+
+- name: install grafana
+  yum: 
+  name: grafana
+  state: latest
+  update_cache: yes
+
+- name: Run grafana
+  service:
+    name: grafana-server
+    state: started
+
+- name: Add prometheus repo
+  copy:
+    src: prometheus repo
+    dest: /etc/yum.repos.d
+
+- name: install prometheus
+    yum:
+      name: prometheus2
+      state: latest
+      update_cache: yes
+
+- name: Run prometheus
+  service:
+    name: prometheus
+    state:
+    
+- name: Add influxdb
+  yum:
+    name: influxdb
+    state: latest
+    update_cache: yes
+
+- name: Run influxdb
+  service:
+    name: influxdb
+    state: started
+
