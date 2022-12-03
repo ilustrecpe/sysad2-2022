@@ -1,0 +1,55 @@
+---
+- hosts: "{{ target_host }}"
+  tasks: 
+  - name: get rid of old installation dir
+    file:
+      path: /tmp/nrpe*
+      state: absent
+    become: true
+  - name: get rid of semi-created installation dir
+    file:
+      path: /tmp/nrpe-npre-4.0.2
+      state: absent
+    become: true
+  - name: get rid of old installation archive
+    file:
+      path: /tmp/nrpe.tar.gz
+      state: absent
+    become: true
+  - name: refresh apt
+    apt: 
+      name: '*'
+      update_cache: yes
+    become: true 
+  - name: install nrpe reqs
+    apt:
+      name: 
+        - autoconf
+        - gcc
+        - libc6
+        - libmcrypt-dev
+        - make
+        - wget
+        - libssl-dev
+        - openssl 
+      state: latest
+      force: true
+      update_cache: true
+    become: true
+  - name: download and uncompress
+    shell: cd /tmp;rm nrp*.tar.gz;wget -O nrpe.tar.gz --no-check-certificate https://github.com/NagiosEnterprises/nrpe/archive/nrpe-4.0.2.tar.gz;tar -zxf nrpe.tar.gz;mv nrpe-nrpe-4.0.2 nrpe
+    become: true
+  - name: configure and make check_nrpe plugin then move it to plugins dir
+    command: chdir=/tmp/nrpe {{ item }} 
+    with_items:
+      - ./configure --enable-command-args --with-ssl=/usr/bin/openssl --with-ssl-lib=/usr/lib/x86_64-linux-gnu
+      - make check_nrpe
+      - make install-plugin
+    become: true
+  - name: add services definition
+    command: "{{ item }}"
+    with_items:
+      - sh -c "echo >> /etc/services"
+      - sh -c "sudo echo '# Nagios services' >> /etc/services"
+      - sh -c "sudo echo 'nrpe    5666/tcp' >> /etc/services"
+    become: true
