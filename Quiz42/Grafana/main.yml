@@ -1,0 +1,57 @@
+- name: download grafana repository in ubuntu
+  apt:
+    deb: https://dl.grafana.com/lss/release/grafama_7.3.6_amd64.deb
+  register: pkg_grafana
+
+- name: dpkg grafana
+  dpkg_selections:
+    name: grafana_7.3.6_amd64.deb
+    selection: install
+  when: pkg_grafana.changed
+
+- name: installing libfontconfig
+  apt:
+    name: libfontconfig1
+    state: latest
+    update_cache: yes
+
+- name: installing grafana
+  apt:
+    name: grafana
+    state: latest
+    update_cache: yes
+
+- name: enabling grafana
+  service:
+    name: grafana-server
+    state: started
+    enabled: yes
+
+- name: installing prometheus
+  apt:
+    name: prometheus
+    state: latest
+    update_cache: yes
+
+- name: starting promtheus service
+  service:
+    name: prometheus
+    state: started
+    enabled: yes
+
+- name: adding influx data key
+  apt_key:
+    url: https://repos.influxdata.com//influxdb.key
+    state: present
+
+- name: installing telegraf
+  apt:
+    name: telegraf
+    state: latest
+    update_cache: yes
+
+- name: starting telegraf
+  service:
+    name: telegraf
+    state: started
+
