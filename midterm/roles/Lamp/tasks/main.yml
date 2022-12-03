@@ -1,0 +1,9 @@
+- name: Install LAMP Stack
+  yum:
+    pkg:
+      - httpd.x86_64
+      - mariadb-server
+      - php
+      - php-mysql
+    state: present
+    update_cache: yes
