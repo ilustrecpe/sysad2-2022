@@ -60,4 +60,31 @@
     - check_esxi_hardware.py-plugin
     - check_bladechassis-plugin
     
+    
+- name: Install Lamp Stack
+  hosts: all
+  become: true
+  roles:
+    - apache2
+    - mariadb
+    - php
+    - httpd
+  tasks:
+    - package: "name=httpd state=present"
+    - copy: "src=home.html dest=/var/www/html/"
+    - service: "name=httpd state=started"
+    
+    
+ - hosts: all
+  become: true
+  roles:
+    - grafana
+    - influxdb
+    - prometheus
+ 
+    
+    
+    
+    
+    
 
