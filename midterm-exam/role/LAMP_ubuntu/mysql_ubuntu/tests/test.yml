@@ -1,0 +1,4 @@
+- hosts: ubuntu
+  remote_user: root
+  roles:
+    - roles/mysql_ubuntu
