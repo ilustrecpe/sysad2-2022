@@ -29,3 +29,35 @@
   become: true
   roles:
     - logstash
+    
+    
+    
+- name: Install Nagios-Core
+  hosts: nagios-core-host
+  become: true
+  roles:
+    - nagios-core
+
+- name: Install Nagios-Utilities
+  hosts: nagios-utilities-host
+  become: true
+  roles:
+    - nagios-utilities
+    
+- name: Install Nagios-Plugins
+  hosts: nagios-utilities-host
+  become: true
+  roles:
+    - nagios-utilities
+    
+- name: configure Nagios-Utilities
+  hosts: nagios-host
+  serial: 1
+  become: true
+  roles:
+    - check_nrpe-plugin
+    - check_ipmi-plugin
+    - check_esxi_hardware.py-plugin
+    - check_bladechassis-plugin
+    
+
