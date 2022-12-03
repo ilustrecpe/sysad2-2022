@@ -1,7 +1,7 @@
 [Ubuntu]
 192.168.1.5
 
-[Centos]
+[CentOS]
 192.168.1.6
 
 [Ubuntu:vars]
