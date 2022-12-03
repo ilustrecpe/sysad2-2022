@@ -1,0 +1,23 @@
+---
+language: python
+python: "2.7"
+
+sudo: false
+
+addones:
+  apt: 
+  packages:
+    - python-pip
+
+    - pip install ansible
+
+    - printf '[defaults]\nroles_path../' >ansible.cfg
+
+
+script: 
+  -ansible-playbook tests/test.yml -i tests/inventory --syntax-check
+
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications
+
+

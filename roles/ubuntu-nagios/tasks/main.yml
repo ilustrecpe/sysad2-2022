@@ -1,0 +1,29 @@
+---
+- name: Install nagios core requisites
+  apt:
+    name:
+      - build-essential
+      - apache2 
+      - php
+      - openssl
+      - pers
+      - make
+      - php-gd
+      - libgd-dev
+      - libapache2-mod-php
+      - libperl-dev
+      - lbssl-dev
+      - wget
+      - apache2-utils
+      - unzip
+
+- name: add group nagcmd
+  group:
+    name: nagcmd
+    state: present
+
+- name: add user nagios
+  user:
+    name: nagios
+    group: nagcmd
+
