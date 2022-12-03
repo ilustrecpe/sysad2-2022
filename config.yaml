@@ -1,0 +1,73 @@
+---
+
+# elk_setup
+- hosts: Ubuntu
+  connection: local
+  remote_user: root
+  become: true
+  roles:
+    - role: java8
+    - role: elastic_stack
+    - role: logstash
+    - role: elasticsearch
+    - role: kibana
+
+# filebeat
+
+- hosts: Ubuntu
+  connection: local
+  remote_user: root
+  become: true
+  roles:
+    - role: elastic_stack
+    - roles: filebeat
+
+# nagios
+- hosts: Ubuntu
+  connection: local
+  remote_user: root
+  become: true
+  roles:
+    - nagioscore
+
+# grafana
+- hosts: Ubuntu
+  connection: local
+  remote_user: root
+  become: true
+  roles:
+    - grafana
+
+# prometheus
+- hosts: Ubuntu
+  connection: local
+  remote_user: root
+  become: true
+  roles:
+    - prometheus
+
+# influxdb
+- hosts: Ubuntu
+  connection: local
+  remote_user: root
+  become: true
+  roles:
+    - influxdb
+    - telegraf
+
+# Httpd
+- hosts: Ubuntu
+  connection: local
+  remote_user: root
+  become: true
+  roles:
+    - httpd+php
+
+# Mariadb
+- hosts: Ubuntu
+  connection: local
+  remote_user: root
+  become: true
+  roles:
+    - mariadb
+
