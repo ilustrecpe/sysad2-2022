@@ -1,0 +1,14 @@
+- name: Downloading Prometheus Tar
+  ansible.builtin.get_url:
+    url: https://github.com/prometheus/prometheus/releases/download/0.16.0/prometheus-0.16.0.linux-amd64.tar.gz
+    dest: /home/centos-2010053/prometheus-0.16.0.linux-amd64.tar.gz
+    mode: '0440'
+
+- name: Creating Directory for Prometheus
+  ansible.builtin.command: mkdir /home/centos-2010004/Prometheus
+
+- name: Unarchiving Prometheus
+  ansible.builtin.unarchive:
+    src: /tmp/prometheus-0.16.0.linux-amd64.tar.gz
+    dest: /home/centos-2010053/Prometheus
+    remote_src: yes
