@@ -1,0 +1,7 @@
+- name: Configure output source
+  template:
+    src=output.conf.j2
+    dest=/etc/logstash/conf.d/output.conf
+    owner=root
+    group=root
+    mode=0644
