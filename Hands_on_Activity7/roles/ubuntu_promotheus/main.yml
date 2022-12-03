@@ -1,7 +1,0 @@
-- name: install promotheus ubuntu
-  apt:
-    name:
-      - promotheus
-      - promotheus-node-exporter
-    state: present
-    update_cache: yes

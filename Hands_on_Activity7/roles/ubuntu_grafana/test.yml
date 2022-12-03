@@ -1,5 +1,0 @@
-- hosts: ubuntu
-  remote_user: root
-  roles:
-    - roles/ubuntu_grafana
-
