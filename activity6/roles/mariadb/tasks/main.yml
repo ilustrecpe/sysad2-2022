@@ -1,0 +1,6 @@
+- name: Installing mariaDB
+  apt:
+    name: mariadb-server
+    update_cache: yes 
+
+
