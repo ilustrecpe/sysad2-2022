@@ -1,0 +1,61 @@
+---
+- hosts: "{{ target_host }}"
+  tasks: 
+  - name: get rid of old installation dir
+    file:
+      path: /tmp/check_ipmi_sensor
+      state: absent
+    become: true
+  - name: get rid of semi-created installation dir
+    file:
+      path: /tmp/check_ipmi_sensor_v3-3.13
+      state: absent
+    become: true
+  - name: get rid of old installation archive
+    file:
+      path: /tmp/check_ipmi_sensor.tar.gz
+      state: absent
+    become: true
+  - name: refresh apt
+    apt: 
+      name: '*'
+      update_cache: yes
+    become: true 
+  - name: install check_ipmi_sensor reqs
+    apt:
+      name: 
+        - libipc-run-perl
+        - freeipmi
+      state: latest
+      force: true
+      update_cache: true
+    become: true
+  - name: download and uncompress
+    shell: cd /tmp;rm check_ipmi_sensor*.tar.gz;wget -O check_ipmi_sensor.tar.gz https://github.com/thomas-krenn/check_ipmi_sensor_v3/archive/v3.13.tar.gz;tar -zxf check_ipmi_sensor.tar.gz;mv check_ipmi_sensor_v3-3.13 check_ipmi_sensor
+    become: true
+  - name: copy exec
+    copy:
+      src: /tmp/check_ipmi_sensor/check_ipmi_sensor
+      dest: /usr/local/nagios/libexec/check_ipmi_sensor
+      remote_src: true
+      owner: nagios
+      group: nagios
+      mode: u=rwx,g=rx,o=rx
+    become: true
+  - name: copy conf
+    copy:
+      src: /etc/freeipmi/freeipmi.conf
+      dest: /etc/freeipmi/dnsipmi.conf
+      remote_src: true
+      owner: nagios
+      group: nagios
+      mode: u=rwx,g=rx,o=rx
+    become: true
+  - name: add credentials to conf
+    blockinfile:
+      path: /etc/freeipmi/dnsipmi.conf
+      insertafter: EOF
+      block: |
+        username adeignacio-tip
+        password 2010053
+        privilege-level user
