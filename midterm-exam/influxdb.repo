@@ -1,0 +1,7 @@
+[influxdb]
+name = InfluxDB Repository = RHEL
+baseuri = https://repos.influxdb.com/rhel/7/x86_64/stable/
+enabled = 1
+gpgchecl = 1
+gpg = https:repos.influxdata.com/influxdb.key
+
