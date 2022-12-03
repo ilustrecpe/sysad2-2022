@@ -1,0 +1,45 @@
+- name: install elastic stack on ubuntu
+  hosts: ubuntu
+  roles:
+    - ubuntu_elastic
+
+- name: install elastic stack on centos
+  hosts: centos
+  roles:
+    - centos_elastic
+
+- name: install nagios on ubuntu
+  hosts: ubuntu
+  var_files:
+    - ./config.yaml
+  roles:
+    - configure_ubuntu
+    - nagiosmain_ubuntu
+    - nagios_plugins
+
+- name: install grafana, promotheus and influxdb on ubuntu
+  hosts: ubuntu
+  roles:
+    - grafana_ubuntu
+
+- name: install grafana, promotheus and influixdb on centos
+  hosts: centos
+  roles:
+    - grafana_centos
+
+- name: install LAMP stack on ubuntu
+  hosts: ubuntu
+  roles: 
+    - apache2_ubuntu
+    - mysql_ubuntu
+    - php_ubuntu
+    - web_service1
+
+- name: install LAMP stack on centos
+  hosts: centos
+  roles:
+    - apache2_centos
+    - mysql_centos
+    - php_centos
+    - web_service1
+

@@ -1,0 +1,5 @@
+- hosts: centos
+  remote_user: root
+  roles:
+    - roles/apache2_centos
+
