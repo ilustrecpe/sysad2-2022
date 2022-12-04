@@ -1,0 +1,7 @@
+---
+- host: ubuntu 
+  remote_user: root 
+  roles:
+    - roles/ubuntu/elastic
+
+
