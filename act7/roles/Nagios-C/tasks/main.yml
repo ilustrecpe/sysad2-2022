@@ -1,0 +1,89 @@
+- name: install prerequisites
+  ansible.builtin.dnf:
+    name:
+      - gcc
+      - glibc-common
+      - make
+      - gettext
+      - automake
+      - autoconf
+      - wget
+      - net-snmp
+      - net-snmp-utils
+      - epel-release
+      - perl-Net-SNMP
+      - unzip
+      - httpd
+      - php
+      - gd
+      - gd-devel
+      - perl
+      - postfix
+      - openssl-devel
+
+- name: retrieving tar file from repository
+  ansible.builtin.get_url:
+    url: https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.6.tar.gz
+    dest: /tmp/nagioscore-nagios-4.4.6.tar.gz
+    mode: '0440'
+
+- name: unarchiving
+  ansible.builtin.unarchive:
+    src: /tmp/nagioscore-nagios-4.4.6.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: configuring nagios
+  ansible.builtin.command: ./configure
+  args:
+    chdir: /tmp/nagioscore-nagios-4.4.6
+
+- name: compiling nagios
+  ansible.builtin.command: "{{ item }}"
+  args:
+    chdir: /tmp/nagioscore-nagios-4.4.6
+  with_items:
+    - make clean
+    - make all
+    - make install-groups-users
+    - make install
+    - make install-daemoninit
+    - make install-commandmode
+    - make install-config
+    - make install-webconf
+
+- name: adding apache user to nagios
+  ansible.builtin.user:
+    name: apache
+    group: nagios
+
+- name: configuring apache httpd
+  ansible.builtin.command: systemctl enable httpd.service
+
+- name: configuring firewall
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - firewall-cmd --zone=public --add-port=80/tcp
+    - firewall-cmd --zone=public --add-port=80/tcp --permanent
+
+- name: downloading nagios plugins
+  ansible.builtin.get_url:
+    url: https://github.com/nagios-plugins/nagios-plugins/archive/release-2.3.3.tar.gz
+    dest: /tmp/nagios-plugins-release-2.3.3.tar.gz
+    mode: '0440'
+
+- name: unarchiving plugins
+  ansible.builtin.unarchive:
+    src: /tmp/nagios-plugins-release-2.3.3.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: install nagios
+  ansible.builtin.command: "{{ item }}"
+  args:
+    chdir: /tmp/nagios-plugins-release-2.3.3
+  with_items:
+    - ./tools/setup
+    - ./configure
+    - make
+    - make install
