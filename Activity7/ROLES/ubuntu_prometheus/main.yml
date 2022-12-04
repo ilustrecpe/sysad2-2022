@@ -1,0 +1,10 @@
+---
+- name: install prometheus ubuntu 
+  apt:
+    name:
+      - prometheus
+      - prometheus-node-exporter 
+
+    state:  present
+    role:
+      - roles/ubuntu_prometheus 

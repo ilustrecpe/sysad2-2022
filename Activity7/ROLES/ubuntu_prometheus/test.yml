@@ -1,0 +1,8 @@
+--- 
+- hosts: ubuntu
+  remote_user: root
+  role:
+    - roles/ubuntu_prometheus
+
+
+
