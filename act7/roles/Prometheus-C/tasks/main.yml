@@ -1,0 +1,14 @@
+- name: install prometheus
+  ansible.builtin.get_url:
+    url: https://github.com/prometheus/prometheus/releases/download/0.16.0/prometheus-0.16.0.linux-amd64.tar.gz
+    dest: /home/gio/prometheus-0.16.0.linux-amd64.tar.gz
+    mode: '0440'
+
+- name: create directory
+  ansible.builtin.command: mkdir /home/gio/Prometheus
+
+- name: unarchiving
+  ansible.builtin.unarchive:
+    src: /home/gio/prometheus-0.16.0.linux-amd64.tar.gz
+    dest: /home/gio/Prometheus
+    remote_src: yes
