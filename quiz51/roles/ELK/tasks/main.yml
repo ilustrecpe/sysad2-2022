@@ -1,0 +1,6 @@
+- name: Creating ELK container
+  docker_container:
+    name: ELK
+    image: sebp/elk
+    state: started
+    
