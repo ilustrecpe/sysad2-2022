@@ -1,0 +1,49 @@
+---
+- hosts: "{{ target_host }}"
+  tasks: 
+  - name: get rid of old installation dir
+    file:
+      path: /tmp/check_hp_bladechassi*
+      state: absent
+    become: true
+  - name: get rid of semi-created installation dir
+    file:
+      path: /tmp/check_hp_bladechassis-1.0.1
+      state: absent
+    become: true
+  - name: get rid of old installation archive
+    file:
+      path: /tmp/check_hp_bladechassis.tar.gz
+      state: absent
+    become: true
+  - name: refresh apt
+    apt: 
+      name: '*'
+      update_cache: yes
+    become: true 
+  - name: install check_hp_bladechassis reqs
+    apt:
+      name: 
+        - libnet-snmp-perl
+      state: latest
+      force: true
+      update_cache: true
+    become: true
+  - name: download and uncompress
+    shell: cd /tmp;rm check_hp_bladechassis*.tar.gz;wget -O check_hp_bladechassis.tar.gz http://folk.uio.no/trondham/software/files/check_hp_bladechassis-1.0.1.tar.gz;tar -zxf check_hp_bladechassis.tar.gz;mv /tmp/check_hp_bladechassis-1.0.1/ /tmp/check_hp_bladechassis/
+    become: true
+  - name: copy exec
+    copy:
+      src: /tmp/check_hp_bladechassis/check_hp_bladechassis
+      dest: /usr/local/nagios/libexec/check_hp_bladechassis
+      remote_src: true
+      owner: nagios
+      group: nagios
+      mode: u=rwx,g=rx,o=rx
+    become: true
+  - name: copy man
+    copy:
+      src: /tmp/check_hp_bladechassis/check_hp_bladechassis.8
+      dest: /usr/share/man/man8
+      remote_src: true
+    become: true

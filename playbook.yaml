@@ -1,0 +1,90 @@
+- name: setup prerequisites
+  hosts: elk-hosts
+  become: true
+  roles:
+    - pre-requisites
+    - configure-hosts-file
+- name: install elasticsearch
+  hosts: elk-hosts
+  serial: 1
+  become: true
+  roles:
+    - install-elasticsearch
+- name: configure elasticsearch
+  hosts: elk-hosts
+  serial: 1
+  become: true
+  roles:
+    - configure-elastic-file
+    - change-permissions
+    - systemd-conf
+    - restart-elasticsearch
+- name: Install Kibana
+  hosts: kibana-host
+  become: true
+  roles:
+    - kibana
+- name: Install logstash
+  hosts: logstash-host
+  become: true
+  roles:
+    - logstash
+    
+    
+    
+- name: Install Nagios-Core
+  hosts: nagios-core-host
+  become: true
+  roles:
+    - nagios-core
+
+- name: Install Nagios-Utilities
+  hosts: nagios-utilities-host
+  become: true
+  roles:
+    - nagios-utilities
+    
+- name: Install Nagios-Plugins
+  hosts: nagios-utilities-host
+  become: true
+  roles:
+    - nagios-utilities
+    
+- name: configure Nagios-Utilities
+  hosts: nagios-host
+  serial: 1
+  become: true
+  roles:
+    - check_nrpe-plugin
+    - check_ipmi-plugin
+    - check_esxi_hardware.py-plugin
+    - check_bladechassis-plugin
+    
+    
+- name: Install Lamp Stack
+  hosts: all
+  become: true
+  roles:
+    - apache2
+    - mariadb
+    - php
+    - httpd
+  tasks:
+    - package: "name=httpd state=present"
+    - copy: "src=home.html dest=/var/www/html/"
+    - service: "name=httpd state=started"
+    
+    
+ - hosts: all
+  become: true
+  roles:
+    - grafana
+    - influxdb
+    - prometheus
+ 
+    
+    
+    
+    
+    
+

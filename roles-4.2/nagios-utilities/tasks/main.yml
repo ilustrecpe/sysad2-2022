@@ -1,0 +1,59 @@
+---
+- hosts: "{{ target_host }}"
+  tasks: 
+  - name: get rid of old installation dir
+    file:
+      path: /tmp/nagios-plugins
+      state: absent
+    become: true
+  - name: get rid of semi-created installation dir
+    file:
+      path: /tmp/nagios-plugins-release-2.3.3
+      state: absent
+    become: true
+  - name: get rid of old installation archive
+    file:
+      path: /tmp/nagios-plugins.tar.gz
+      state: absent
+    become: true
+  - name: refresh apt
+    apt: 
+      name: '*'
+      update_cache: yes
+    become: true 
+  - name: install nagios plugins reqs
+    apt:
+      name: 
+        - autoconf
+        - gcc
+        - libc6
+        - libmcrypt-dev
+        - make
+        - wget
+        - bc
+        - gawk
+        - dc
+        - snmp
+        - libssl-dev
+        - libnet-snmp-perl
+        - gettext
+        - libldap2-dev
+        - dnsutils
+        - build-essential
+        - smbclient
+        - fping
+      state: latest
+      force: true
+      update_cache: true
+    become: true
+  - name: download and uncompress
+    shell: cd /tmp;rm nagios-plugin*.tar.gz;wget -O nagios-plugins.tar.gz --no-check-certificate https://github.com/nagios-plugins/nagios-plugins/archive/release-2.3.3.tar.gz;tar -zxf nagios-plugins.tar.gz;mv nagios-plugins-release-2.3.3 nagios-plugins
+    become: true
+  - name: configure and make all
+    command: chdir=/tmp/nagios-plugins {{ item }} 
+    with_items:
+      - ./tools/setup
+      - ./configure
+      - make
+      - make install
+    become: true

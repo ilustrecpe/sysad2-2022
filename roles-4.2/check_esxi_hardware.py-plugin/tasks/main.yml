@@ -1,0 +1,35 @@
+---
+- hosts: "{{ target_host }}"
+  tasks: 
+  - name: refresh apt
+    apt: 
+      name: '*'
+      update_cache: yes
+    become: true 
+  - name: install pywbem reqs
+    apt:
+      name: 
+        - python3-pip
+      state: latest
+      force: true
+      update_cache: true
+    become: true
+  - name: install pywbem
+    command: /usr/bin/pip3 install pywbem
+    become: true
+  - name: download and copy
+    shell: cd /usr/local/nagios/libexec;rm check_esxi_hardware.py;wget --no-check-certificate https://www.claudiokuenzler.com/monitoring-plugins/check_esxi_hardware.py
+    become: true
+  - name: replace python interpreter
+    lineinfile:
+      path: /usr/local/nagios/libexec/check_esxi_hardware.py
+      regexp: '^#!/usr/bin/python'
+      line: '#!/usr/bin/python3'
+  - name: ensure persmissions and ownership
+    file:
+      path: /usr/local/nagios/libexec/check_esxi_hardware.py
+      state: file
+      owner: nagios
+      group: nagios
+      mode: u=rwx,g=rx,o=rx
+    become: true
