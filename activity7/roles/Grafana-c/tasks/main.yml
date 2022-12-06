@@ -1,0 +1,17 @@
+- name: Installing dependencies
+  dnf:
+    pkg:
+      - initscripts
+      - urw-fonts
+      - wget
+
+- name: Download Grafana RPM
+  ansible.builtin.get_url:
+    url: https://dl.grafana.com/enterprise/release/grafana-enterprise-9.3.1-1.x86_64.rpm
+    dest: /tmp/grafana-enterprise-9.3.1-1.x86_64.rpm
+    mode: '0440'
+
+      #- name: Installing Grafana
+      # ansible.builtin.command: sudo rpm -Uvh grafana-enterprise-9.3.1-1.x86_64.rpm
+      # args:
+      # chdir: /tmp/

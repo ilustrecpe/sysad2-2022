@@ -1,0 +1,69 @@
+- name: Install LAMP
+  yum:
+    pkg:
+      - httpd
+      - mariadb-server
+      - php
+      - php-mysql
+      - gcc
+      - glibc
+      - glibc-common
+      - wget
+      - gd
+      - gd-devel
+      - perl
+      - postfix
+      - unzip
+
+- name: Download Nagios Core
+  ansible.builtin.get_url:
+    url: https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.6.tar.gz
+    dest: /tmp/nagioscore-nagios-4.4.6.tar.gz
+    mode: '0440'
+
+- name: Extract
+  ansible.builtin.unarchive:
+    src: /tmp/nagioscore-nagios-4.4.6.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Configure 
+  ansible.builtin.command: ./configure 
+  args:
+    chdir: /tmp/nagioscore-nagios-4.4.6
+
+- name: Compile
+  ansible.builtin.command: "{{ item }}"
+  args:
+    chdir: /tmp/nagioscore-nagios-4.4.6
+  with_items:
+    - make all
+    - make install-groups-users
+    - make install
+    - make install-daemoninit
+    - make install-config
+    - make install-commandmode
+    - make install-webconf
+
+- name: Download plugins
+  ansible.builtin.get_url:
+    url: https://github.com/nagios-plugins/nagios-plugins/archive/release-2.3.3.tar.gz
+    dest: /tmp/nagios-plugins-release-2.3.3.tar.gz
+    mode: '0440'
+
+- name: Extract plugins
+  ansible.builtin.unarchive:
+    src: /tmp/nagios-plugins-release-2.3.3.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Compiling
+  ansible.builtin.command: "{{ item }}"
+  args:
+    chdir: /tmp/nagios-plugins-release-2.3.3
+  with_items:
+    - ./tools/setup
+    - ./configure
+    - make
+    - make install
+

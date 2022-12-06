@@ -1,0 +1,5 @@
+- name: install prometheus
+  apt:
+    name:
+      - prometheus
+      - prometheus-node-exporter
