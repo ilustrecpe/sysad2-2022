@@ -1,0 +1,61 @@
+---
+
+- name: Installing Dependencies
+  apt:
+    name:
+      - python3
+      - python3-pip
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: present
+    update_cache: yes
+
+- name: Get gpg key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Setting up repo
+  ansible.builtin.apt_repository:
+    repo: deb https://download.docker.com/linux/ubuntu focal stable
+
+- name: Install docker 
+  apt:
+    name: docker-ce
+    state: latest
+    update_cache: yes
+
+- name: Docker.py
+  pip:
+    name: docker.py
+  when: docker.changed
+
+- name: Run Docker Service
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: Initialize Docker to install Web Server
+  docker_image:
+    name: newdeveloper/apache-php
+    state: present
+    source: pull
+
+- name: Utilizing Docker to Install db server
+  docker_image:
+    name: mysql/mysql-server:latest
+    state: present
+    source: pull
+
+- name: Create Docker Group
+  group:
+    name: docker
+    state: present
+
+- name: Add Docker Group to User
+  user:
+    name: apayor
+    group: docker
