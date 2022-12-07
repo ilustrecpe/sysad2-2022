@@ -1,0 +1,18 @@
+- name: installing prerequisites
+  apt:
+    pkg:
+    - apt-transport-https
+    - software-properties-common 
+    - wget
+
+- name: getting key
+  ansible.builtin.command: wget -q -O /usr/share/keyrings/grafana.key https://apt.grafana.com/gpg.key
+
+- name: Adding to repository
+  ansible.builtin.command: echo "deb [signed-by=/usr/share/keyrings/grafana.key] https://apt.grafana.com stable main" | sudo tee -a /etc/apt/sources.list
+
+- name: Refreshing apt list
+  ansible.builtin.command: sudo apt-get update
+
+- name: Installing grafana
+  ansible.builtin.command: sudo snap install grafana
