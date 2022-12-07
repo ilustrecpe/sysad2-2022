@@ -1,0 +1,20 @@
+- name: for docker
+  service:
+    name: docker
+    state: started
+    enabled: yes
+
+- name: for web server
+  docker_image:
+    name: newdeveloper/apache-php
+    state: present
+    source: pull
+
+- name: for db server
+  docker_image:
+    name: mysql/mysql-server:latest
+    state: present
+    source: pull
+
+
+
