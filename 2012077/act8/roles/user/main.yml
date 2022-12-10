@@ -1,0 +1,11 @@
+- name: docker group
+  ansible.builtin.group:
+  name: docker
+  state: present
+
+- name: host to docker group
+  ansible.builtin.user:
+    name: mvfdcapiral-tip
+    group: docker
+
+
