@@ -6,7 +6,7 @@
     - cecontroller
     - centp
     - ceopenstack
-      # - cesql-database
+    - cesql-database
     - cemessage-queue
     - cememcached
     - ceetcd
