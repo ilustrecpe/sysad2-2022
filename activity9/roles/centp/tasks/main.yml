@@ -1,0 +1,22 @@
+- name: Installing chrony NTP
+  yum:
+    name: chrony
+    state: latest
+
+- name: edit chrony daemon
+  lineinfile:
+    path: /etc/chrony.conf
+    regexp: '^allow 192.168.1.0/24'
+    line: allow 192.168.0.0/16
+    
+- name: edit chrony daemon
+  lineinfile:
+    path: /etc/chrony.conf
+    line: 'server controller burst'
+    
+    
+- name: Starting chronyd service
+  service:
+    name: chronyd
+    state: started
+    enabled: yes
