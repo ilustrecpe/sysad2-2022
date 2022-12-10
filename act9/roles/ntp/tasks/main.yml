@@ -1,0 +1,4 @@
+- name: install chrony
+  apt:
+    name: chrony
+    update_cache: yes
