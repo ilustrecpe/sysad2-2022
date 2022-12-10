@@ -1,0 +1,9 @@
+- name: Creating docker group
+  ansible.builtin.group:
+    name: docker
+    state: present
+
+- name: Adding host to docker group
+  ansible.builtin.user:
+    name: luyun-tip
+    group: docker
