@@ -1,0 +1,16 @@
+- name: Installing memcached
+  apt:
+    pkg:
+    - memcached
+    - python3-memcache
+
+- name: Editing memcachedconf file
+  ansible.builtin.lineinfile:
+    path: /etc/memcached.conf
+    regexp: '-l 127.0.0.1'
+    line: '-l 192.168.56.1'
+
+- name: Restarting memcached
+  ansible.builtin.service:
+    name: memcached
+    state: restarted

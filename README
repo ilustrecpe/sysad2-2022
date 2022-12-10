@@ -1,1 +1,15 @@
+##  Create a playbook that converts the steps in the following items in https://docs.openstack.org/install-guide/
 
+#### 5.1 NTP
+
+#### 5.2 OpenStack packages
+
+#### 5.3 SQL Database
+
+#### 5.4 Message Queue
+
+#### 5.5 Memcached
+
+#### 5.6 Etcd
+-------------------------
+## Create different plays in installing per server type (controller,compute etc.) and identify it as a group in Inventory file.
