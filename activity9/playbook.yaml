@@ -14,4 +14,4 @@
 - hosts: ubuntu
   become: true
   roles:
-    - compute
+    - ucompute
