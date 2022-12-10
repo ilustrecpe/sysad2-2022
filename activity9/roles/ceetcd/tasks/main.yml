@@ -1,0 +1,10 @@
+- name: Install etcd
+  yum:
+    name: etcd
+    state: latest
+    
+- name: start etcd
+  service:
+    name: etcd
+    state: started
+    enabled: yes
