@@ -10,18 +10,6 @@
     path: /etc/my.cnf.d/openstack.cnf
     state: touch
     
-- name: insert bind address
-  blockinfile:
-    path: /etc/my.cnf.d/openstack.cnf
-    block: | 
-      [mysqld]
-      bind-address = 192.168.1.0
-      default-storage-engine = innodb
-      innodb_file_per_table= calls on
-      max_connections = 4096
-      collation-server = utf8_general_ci
-      character-set-server = utf8
-    
 - name: enable mariadb
   service:
     name: mariadb
