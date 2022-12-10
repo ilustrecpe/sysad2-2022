@@ -1,0 +1,35 @@
+---
+  - name: Install Packages for Ubuntu
+    hosts: ubuntu
+    
+    tasks:
+    - name: Install Java via installpackages-ubuntu role
+      include_role:
+        name: installpackages-ubuntu
+      vars:
+        package: "default-jre"
+  
+
+  - name: Install Packages for Centos
+    hosts: centos
+
+    tasks:
+    - name: Install Java via installpackages-centos role
+      include_role:
+        name: installpackages-centos
+      vars:
+        package: "java-1.8.0-openjdk"
+       
+
+  - name: Pip Install for All
+    hosts: all
+
+    tasks:
+    - name: Install ansible, boto, and openstack via pipinstall role
+      include_role:
+        name: pipinstall
+      vars:
+        pippackages:
+          - ansible
+          - boto
+          - python-openstackclient
