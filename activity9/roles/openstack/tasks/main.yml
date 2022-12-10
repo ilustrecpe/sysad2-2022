@@ -1,0 +1,14 @@
+- name: install openstack newton or queens
+  yum:
+    name: centos-release-openstack-queens.noarch
+    state: present
+  
+- name: openstack client
+  yum:
+    name: python-openstackclient
+    state: latest
+  
+- name: openstack selinux
+  yum:
+    name: openstack-selinux
+    state: latest

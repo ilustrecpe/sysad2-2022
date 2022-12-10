@@ -1,0 +1,17 @@
+---
+
+- hosts: centos
+  become: True
+  roles:
+    # - controller
+    # - ntp
+    # - openstack
+    # - sql-database
+    # - message-queue
+    # - memcached
+    #- etcd
+    
+- hosts: ubuntu
+  become: true
+  roles:
+    - compute
