@@ -1,0 +1,16 @@
+---
+- hosts: 1
+  become: true
+  roles:
+    - Configure
+    - NTP
+    - OpenStackPackages
+    - SQLDB
+    - MessageQueue
+    - Memcached
+    - ETCD
+
+- hosts: 2
+  become: true
+  roles:
+    - Configure
