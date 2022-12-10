@@ -1,0 +1,19 @@
+---
+- hosts: ubuntu
+  name: Installing docker
+  become: true
+  roles:
+    - docker
+
+
+- hosts: ubuntu
+  name: Pulling Web server and DB server
+  become: true
+  roles:
+    - webserver
+
+- hosts: ubuntu
+  name: creating docker group
+  become: true
+  roles:
+    - UserCreate
