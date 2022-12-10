@@ -1,0 +1,64 @@
+- name: install etcd
+  apt:
+    name: etcd
+    update_cache: yes
+
+    #- name: edit etcd_name
+    # ansible.builtin.lineinfile:
+    # path: /etc/default/etcd
+    # regexp: # ETCD_NAME="default"
+    # line: ETCD_NAME="controller"
+
+    #- name: edit etcd_data_dir
+    # ansible.builtin.lineinfile:
+    # path: /etc/default/etcd
+    # regexp: # ETCD_DATA_DIR="/var/lib/etcd/default"
+    #line: ETCD_DATA_DIR="/var/lib/etcd"
+
+    #- name: edit etcd_initial_cluster_state
+    # ansible.builtin.lineinfile:
+    # path: /etc/default/etcd
+    # regexp: # ETCD_INITIAL_CLUSTER_STATE="new"
+    # line: ETCD_INITIAL_CLUSTER_STATE="new"
+
+    #- name: edit etcd_initial_cluster_token
+    # ansible.builtin.lineinfile:
+    # path: /etc/default/etcd
+    # regexp: # ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
+    # line: ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-01"
+
+    #- name: edit etcd_initial_cluster
+    # ansible.builtin.lineinfile:
+    # path: /etc/default/etcd
+    # regexp: # ETCD_INITIAL_CLUSTER="default=http://localhost:2380"
+    # line: ETCD_INITIAL_CLUSTER="controller=http://10.0.0.11:2380"
+
+    #- name: edit etcd_initial_advertise_peer_urls
+    # ansible.builtin.lineinfile:
+    # path: /etc/default/etcd
+    # regexp: # ETCD_INITIAL_ADVERTISE_PEER_URLS="http://localhost:2380"
+    # line: ETCD_INITIAL_ADVERTISE_PEER_URLS="http://10.0.0.11:2380"
+
+    #- name: edit etcd_advertise_client_urls
+    # ansible.builtin.lineinfile:
+    # path: /etc/default/etcd
+    # regexp: # ETCD_ADVERTISE_CLIENT_URLS="http:localhost:2379"
+    # line: ETCD_ADVERTISE_CLIENT_URLS="http://10.0.0.11:2379"
+
+    #- name: edit etcd_listen_peer_urls
+    # ansible.builtin.lineinfile:
+    # path: /etc/default/etcd
+    # regexp: # ETCD_LISTEN_PEER_URLS="http://localhost:2380"
+    # line: ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380"
+
+    #- name: edit etcd_listen_client_urls
+    # ansible.builtin.lineinfile:
+    # path: /etc/default/etcd
+    # regexp: # ETCD_LISTEN_CLIENT_URLS="http://localhost:2379"
+    # line: ETCD_LISTEN_CLIENT_URLS="http://10.0.0.11:2379"
+
+- name: restart etcd
+  ansible.builtin.service:
+    name: etcd
+    state: restarted
+

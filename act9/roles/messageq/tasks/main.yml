@@ -1,0 +1,10 @@
+- name: install rabbitmq-server
+  apt:
+    name: rabbitmq-server
+    update_cache: yes
+
+- name: add openstack user
+  ansible.builtin.command: rabbitmqctl add_user openstack RABBIT_PASS
+
+- name: permit configuration
+  ansible.builtin.command: rabbitmqctl set_permissions openstack ". *" ". *" ". *"
