@@ -1,0 +1,9 @@
+[ubuntu]
+192.168.56.1
+ansible_ssh_user=ubuntu-2010053
+ansible_ssh_pass=ubuntu-2010053
+
+[centos]
+192.168.56.1
+ansible_ssh_user=centos-2010053
+ansible_ssh_pass=centos-2010053
