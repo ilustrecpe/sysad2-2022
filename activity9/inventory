@@ -2,14 +2,14 @@
 10.0.2.7
 
 [ubuntu:vars]
-ansible_ssh_user=apayor
-ansible_ssh_pass=Rocket34125
-ansible_sudo_pass=Rocket34125
+ansible_ssh_user=judd
+ansible_ssh_pass=123
+ansible_sudo_pass=123
 
 [centos]
 10.0.2.6
 
 [centos:vars]
-ansible_ssh_user=apayor
+ansible_ssh_user=root
 ansible_ssh_pass=Rocket34125
 ansible_sudo_pass=Rocket34125
