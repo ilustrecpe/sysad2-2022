@@ -1,0 +1,21 @@
+- name: Installing ETCD
+  apt:
+    name: etcd
+    update_cache: yes
+
+- name: Editing ETCD config file
+  ansible.builtin.lineinfile:
+    path: /etc/default/etcd
+    regexp: #ETCD_NAME=default
+    line: ETCD_NAME=controller
+
+- name: Editing ETCD config file 2
+  ansible.builtin.lineinfile:
+    path: /etc/default/etcd
+    regexp: #ETCD_DATA_DIR=/var/lib/etcd/default
+    line: ETCD_DATA_DIR=/var/lib/etcd
+
+- name: Editing ETCD config file 3
+  ansible.builtin.lineinfile:
+    path: /etc/default/etcd
+    regexp
