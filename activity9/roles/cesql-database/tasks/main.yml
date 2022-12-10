@@ -1,4 +1,4 @@
-- name:
+- name: Installing pre-req
   yum:
     pkg:
       - mariadb

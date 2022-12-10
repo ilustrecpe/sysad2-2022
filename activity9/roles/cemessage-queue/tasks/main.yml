@@ -10,9 +10,9 @@
     enabled: yes
   
 - name: Add user and set permissions
-  community.rabbitmq.rabbitmq_user:
+  rabbitmq_user:
     user: apayor
-    password: 123
+    password: '123'
     vhost: /
     configure_priv: .*
     read_priv: .*
