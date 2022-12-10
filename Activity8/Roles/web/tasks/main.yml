@@ -1,0 +1,9 @@
+- name: Pulling Apache-PHP
+  community.docker.docker_image:
+    name: newdeveloper/apache-php
+    source: pull
+    
+- name: Pulling webserver
+  community.docker.docker_image:
+    name: mysql
+    source: pull
