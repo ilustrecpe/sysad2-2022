@@ -4,10 +4,10 @@
 [2]
 192.168.1.6
 
-[controller:vars]
-ansible_ssh_user= ubuntu-2010004
-ansible_ssh_pass= 123
+[1:vars]
+ansible_ssh_user= luyun-tip
+ansible_ssh_pass= ubuntu1234
 
-[compute1:vars]
-ansible_ssh_user=ubuntu2-2010004
-ansible_ssh_pass=123
+[2:vars]
+ansible_ssh_user=luy-tip
+ansible_ssh_pass=ubuntu12345
