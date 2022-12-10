@@ -1,6 +1,17 @@
 ---
 
-- hosts: all
+- hosts: centos
+  become: True
+  roles:
+    - cecontroller
+    - centp
+    - ceopenstack
+    - cesql-database
+    - cemessage-queue
+    - cememcached
+    - ceetcd
+    
+- hosts: ubuntu
   become: true
   roles:
-    - uopen
+    - compute
