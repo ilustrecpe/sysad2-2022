@@ -1,5 +1,16 @@
 ---
-- hosts: ubuntu
+- hosts: controller
   become: true
   roles:
+    - Configure
+    - NTP
+    - OpenStackPackages
+    - SQLDB
+    - MessageQueue
     - Memcached
+    - ETCD
+
+- hosts: compute1
+  become: true
+  roles:
+    - Configure
