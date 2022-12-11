@@ -1,0 +1,8 @@
+[ubuntu]
+192.168.1.4
+
+[ubuntu.vars]
+ansible_ssh_user = mvfdcapiral-tip
+ansible_ssh_pass = capiral12341234
+ansible_sudo_pass = capiral12341234
+

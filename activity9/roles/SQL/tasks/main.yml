@@ -1,0 +1,23 @@
+- name: SQLB Installation
+  apt:
+    pkg:
+      - mariadb-server
+      - python3-pymysql
+
+- name: Create OpenStackcnf file
+  file: 
+    path: /etc/mysql/mariandb.conf.d/99-openstack.cnf
+    block: |
+      [mysql]
+      bind-address = 192.168.1.4
+
+      default-storage-engine = innodb
+      innodb_file_per_table = on
+      max_connections = 4096
+      collation-server = utf8_general_ci
+      character-set-server = utf8
+
+- name: Restaring mysql
+  ansible.builtin.service:
+    name: mysql
+    state: restarted
