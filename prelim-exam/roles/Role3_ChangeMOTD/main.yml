@@ -1,8 +1,0 @@
-- name: MOTD
-
-  vars:
-    declared_variable: "Ansible Managed node by apangilinan-tip"
-
-  ansible.builtin.debug:
-    msg: "Message of the day"
-
