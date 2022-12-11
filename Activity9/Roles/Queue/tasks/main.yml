@@ -1,0 +1,20 @@
+- name: components installation 
+  yum:
+    name: rabbitmq-server
+    state: latest
+
+- name: start rabbitmq server
+  service:
+    name: rabbitmq-server
+    state: started
+    enabled: yes 
+
+- name: add user and set permissions
+  community.rabbitmq.rabbitmq_user:
+    user: johnwesleycal-tip
+    password: cal12345
+    vhost: /
+    configure_private: .*
+    read_private: .*
+    write_private: .*
+    state: present 
