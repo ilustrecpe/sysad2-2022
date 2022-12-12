@@ -1,0 +1,44 @@
+- name: create db keystone
+  community.mysql.mysql_db:
+    name: keystone
+    state: present
+
+- name: install o-keystone
+  apt:
+    name: httpd
+    state: latest
+
+- name: install mog_wsgi
+  apt:
+    name: mod_wsgi
+
+- name: connection to database
+  blockinfile:
+    path: /etc/keystone/keystone.conf
+    insertafter: "[database]"
+    block: |
+      # ...
+      connection = mysql+pymssql://keystone:jelo@controller/keystone
+
+- name: connection to token
+  blockinfile:
+    path: /etc/keystone/keystone.conf
+    insertafter: "[token]"
+    block: |
+      # ...
+      provider = fernet
+
+- name: populate identity service
+  command: su -s /bin/sh/ -c "keystone-manage db_sync" keystone
+
+- name: initialize fernet key repo
+  command: keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+
+- name: fernet two
+  command: keystone-manage credential setup -- keystone-user keystone --keystone-group keystone
+
+- name: start httpd service
+  service:
+    name: httpd
+    state: started
+    enabled: yes
