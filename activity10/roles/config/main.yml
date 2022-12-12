@@ -1,0 +1,12 @@
+- name: additing network
+  file:
+    path: /etc/network/interfaces
+    state: touch
+
+- name: adding details to file
+  ansible.builtin.blockfile:
+    path: /etc/network/interfaces
+
+- name: adding host to host file
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
