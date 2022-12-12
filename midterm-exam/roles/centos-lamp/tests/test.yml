@@ -1,7 +1,0 @@
---- 
-- hosts: locahost
-  remote_user: root 
-  roles: 
-    - roles/centos- lamp
-
-
