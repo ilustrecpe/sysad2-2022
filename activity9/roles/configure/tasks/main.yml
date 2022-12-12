@@ -1,0 +1,21 @@
+- name: Network Interface
+  file:
+    path: /etc/network/interface
+    state: touch
+
+- name: adding details
+  ansible.builtin.blockinfile:
+    path: /etc/network/interface
+    block: |
+      auto eth0
+      iface eth0 inet manual
+      up ip link set dev $IFACE down
+
+- name: adding hosts
+  ansible.builtin.blockinfile:
+    path: /etc/hosts
+    block: |
+      # controller
+       192.168.1.4 controller
+      # compute1
+       192.168.1.8 compute1
