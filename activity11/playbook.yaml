@@ -1,0 +1,9 @@
+---
+
+- hosts: centos
+  become: True
+  roles:
+    - neutron
+    - horizon
+    - cinder
+
