@@ -1,0 +1,33 @@
+- name: Installing pre-requisite
+  apt:
+    name: vsfttpd
+    update_cache: yes
+
+- name: Creating backup config file of vsfttpd
+  ansible.builtin.command: sudo cp /etc/vsftpd.conf /root/vsftpd.conf
+
+- name: allowing port 20 through firewall
+  ansible.builtin.firewalld:
+    port: 20/tcp
+    permanent: yes
+    state: enabled
+
+- name: allowing port 21 through firewall
+  ansible.builtin.firewalld:
+    port: 21/tcp
+    permanent: yes
+    state: enabled
+
+- name: allowing port 990/tcp through firewall
+  ansible.builtin.firewalld:
+    port: 990/tcp
+    permanent: yes
+    state: enabled
+
+- name: allowing ports 40000 to 50000 through firewall
+  ansible.builtin.firewalld:
+    port: 40000-50000/tcp
+    permanent: yes
+    state: enabled
+
+- name: creating dedicated FTP user
