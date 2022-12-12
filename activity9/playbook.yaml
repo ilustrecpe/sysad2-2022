@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - configure
+    - ntp
+    - openstack
+    - sqp
+    - messageq
+    - memcached
+    - etcd
