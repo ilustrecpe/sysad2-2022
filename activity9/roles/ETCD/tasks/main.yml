@@ -1,0 +1,9 @@
+- name: Install etcd
+  yum:
+    name: etcd
+    version: latest
+
+- name:
+  service:
+    name: started
+    enabled: yes

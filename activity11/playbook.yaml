@@ -1,0 +1,11 @@
+---
+
+- hosts: all
+  become: true
+  roles:
+    - keystone
+    - glance
+    - nova
+    - neutrong
+    - horizon
+    - cinder
