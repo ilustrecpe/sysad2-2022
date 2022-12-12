@@ -1,0 +1,7 @@
+[ubuntu]
+192.168.1.5
+
+[ubuntu.vars]
+ansible_ssh_user = apangilinan-tip
+ansible_ssh_password = pangilinan123
+
