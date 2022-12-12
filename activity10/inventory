@@ -1,0 +1,15 @@
+[centos]
+192.168.1.10
+
+[ubuntu]
+192.168.1.9
+
+[ubuntu:vars]
+ansible_ssh_user=mtcdmariano-tip
+ansible_ssh_pass=mariano30
+ansible_sudo_pass=mariano30
+
+[centos:vars]
+ansible_ssh_user=mtcdmariano-tip
+ansible_ssh_pass=mariano30
+ansible_sudo_pass=mariano30
