@@ -1,0 +1,102 @@
+- name: mariadb client
+  command: mysql -u root -p
+
+- name: create database in client
+  command: CREATE DATABASE keystone;
+
+- name: grant access
+  command:
+    argv:
+      - GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'localhost' IDENTIFIED BY 'mvfdcapiral-tip';
+      - GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY 'mvfdcapiral-tip';
+
+- name: create db keystone
+  community.mysql.mysql_db:
+    name: keystone
+    state: present
+    login_unix_socket: /var/lib/mysql/mysql.sock
+
+      #- name: give proper access or grant
+      # mysql_user:
+      #name: root
+      #password: ''
+      #priv:
+      #'keystone.*': 'ALL,GRANT'
+
+- name: exit client
+  command: exit
+
+- name: install pre requisites
+- name: install o-keystone
+  yum:
+    name: openstack-keystone
+    state: latest
+
+- name: install httpd
+  yum:
+    pkg:
+      - openstack-keystone
+      - httpd
+      - mod_wsgi
+    name: httpd
+    state: latest
+
+- name: install mod_wsgi
+  yum:
+    name: mod_wsgi
+
+- name: Insert connection to database
+   blockinfile:
+  blockinfile:
+    path: /etc/keystone/keystone.conf
+    insertafter: "[database]"
+    block: |
+@@ -41,10 +47,10 @@
+  command:  su -s /bin/sh -c "keystone-manage db_sync" keystone
+
+- name: Initialize Fernet key repositories
+  command:
+    argv:
+      - keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+      - keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+  command: keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+
+- name: fernet two
+  command: keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+
+- name: bootstrap identity service
+  command: keystone-manage bootstrap --bootstrap-password ADMIN_PASS --bootstrap-admin-url http://controller:5000/v3/ --bootstrap-internal-url http://controller:5000/v3/ --bootstrap-public-url http://controller:5000/v3/ --bootstrap-region-id RegionOne
+@@ -61,16 +67,26 @@
+    state: started
+    enabled: yes
+
+- name: configure admin account
+  command:
+    argv:
+      - export OS_USERNAME=mvfdcapiral-tip
+      - export OS_PASSWORD=capiral12341234
+      - export OS_PROJECT_NAME=mvfdcapiral-tip
+      - export OS_USER_DOMAIN_NAME=Default
+      - export OS_PROJECT_DOMAIN_NAME=Default
+      - export OS_AUTH_URL=http://controller:5000/v3
+      - export OS_IDENTITY_API_VERSION=3
+      #- name: configure admin account
+      #command: export OS_USERNAME=mvfdcapiral-tip
+
+- name: conf2
+  command: export OS_PASSWORD=capiral12341234
+
+- name: conf3
+  command: export OS_PROJECT_NAME=mvfdcapiral-tip
+
+- name: conf4
+  command: export OS_USER_DOMAIN_NAME=Default
+
+- name: conf5
+  command: export OS_PROJECT_DOMAIN_NAME=Default
+
+- name: conf6
+  command: export OS_AUTH_URL=http://controller:5000/v3
+
+- name: conf last
+  command: export OS_IDENTITY_API_VERSION=3
