@@ -1,0 +1,28 @@
+- name: install sqlb
+  apt:
+    pkg:
+      - mariadb-server
+      - python3-pymysql
+
+- name: create openstackcnf file
+  file:
+    path: /etc/myqsl/mariadb.conf.d/99-openstack.cnf
+    state: touch
+
+- name: add details to openstack file
+  ansible.builtin.blockinfile:
+    path: /etc/myqsl/mariadb.conf.d/99-openstack.cnf
+    block: |
+      [mysqld]
+      bind-address = 192.168.1.4
+
+      default-storage-engine = innodb
+      innodb_file_per_table = on
+      max_connections = 4096
+      collation-server = utf8_general_ci
+      character-set-server = utf8
+
+- name: restarting mysql
+  ansible.builtin.sevice:
+    name: mysql
+    state: restarted
