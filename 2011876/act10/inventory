@@ -1,0 +1,15 @@
+[ubuntu]
+192.168.1.4
+
+[centos]
+192.168.1.8
+
+[ubuntu:vars]
+ansible_ssh_user=jmsoliva-tip
+ansible_ssh_pass=root
+ansible_sudo_pass=root
+
+[centos:vars]
+ansible_ssh_user=jmsoliva-tip
+ansible_ssh_pass=root
+ansible_sudo_pass=root
