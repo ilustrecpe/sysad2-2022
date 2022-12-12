@@ -1,0 +1,9 @@
+---
+
+- hosts: centos
+  become: true
+  roles:
+    - keystone
+    - glance
+    - nova
+
