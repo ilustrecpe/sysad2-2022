@@ -1,0 +1,10 @@
+- name: install memcached
+  apt:
+    name: 
+      - memcached
+      - python3-memcache
+
+- name: restart memcached
+  ansible.builtin.service:
+    name: memcached
+    state: restarted

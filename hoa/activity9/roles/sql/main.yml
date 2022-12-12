@@ -1,0 +1,10 @@
+- name: install SQL database
+  apt:
+    name:
+      - mariadb-server
+      - python3-pymysql
+
+- name: restart mysql
+  ansible.builtin.service:
+    name: mysql
+    state: restarted
