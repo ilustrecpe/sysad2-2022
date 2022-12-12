@@ -1,0 +1,12 @@
+---
+- hosts: controller
+  become: true
+  roles:
+    - configure
+    - Keystone
+
+- hosts: compute1
+  become: true
+  roles:
+    - configure
+

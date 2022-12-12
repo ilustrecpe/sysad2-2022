@@ -1,0 +1,68 @@
+- name: Installing pre-requisite
+  apt:
+    pkg: 
+    - mariadb-server
+    - python3-pymysql
+    - apache2
+    update_cache: yes
+
+- name: Starting mysql service
+  ansible.builtin.service:
+    name: mysql-server
+    state: started
+
+- name: Creating keystone database
+  community.mysql.mysql_db:
+    name: Keystone
+    state: present
+
+- name: Granting proper access to keystone database
+  community.mysql.mysql_query:
+    login_db: Keystone
+    query: GRANT ALL PREVILEGES ON keystone.* TO 'root'@'localhost' IDENTIFIED BY '123';
+
+- name: Granting proper access to keystone database 2
+  community.mysql.mysql_query:
+    login_db: Keystone
+    query: GRANT ALL PRIVILEGES ON keystone.* TO 'root'@'%' IDENTIFIED BY '123';
+
+- name: Installing keystone
+  apt:
+    name: keystone
+    update_cache: yes
+
+- name: editing keystoneconf file
+  ansible.builtin.lineinfile:
+    path: /etc/keystone/keystone.conf
+    regexp: connection = sqlite:////var/lib/keystone/keystone.db
+    line: connection = mysql+pymysql://keystone:KEYSTONE_123@controller/keystone
+
+- name: Configuring provider
+  ansible.builtin.lineinfile:
+    path: /etc/keystone/keystone.conf
+    regexp: #provider = fernet
+    line: provider = fernet
+
+- name: populating identity service database
+  ansible.builtin.command: su -s /bin/sh -c "keystone-manage db_sync" keystone
+
+- name: Initializing fernet key repositories
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+    - keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+
+- name: Bootstrapping identity service
+  ansible.builtin.command: keystone-manage bootstrap --botstrap-password 123 --bootstrap-admin-url http://controller:5000/v3/ --bootstrap-internal-url http://controller:5000/v3/ --bootstrap-public-url http://controller:5000/v3/ --bootstrap-region-id RegionOne
+
+- name: Configuring apache HTTP server
+  ansible.builtin.lineinfile:
+    path: /etc/apache2/apache2.conf
+    line: ServerName controller
+    state: present
+
+- name: restarting apache service
+  ansible.builtin.service:
+    name: apache2
+    state: restarted
+
