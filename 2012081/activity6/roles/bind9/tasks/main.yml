@@ -1,5 +1,0 @@
-- name: Installing bin9
-  apt:
-    name: bind9
-    update_cache: yes
-  

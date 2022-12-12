@@ -1,4 +1,0 @@
-- name: Installing dhcpd
-  apt:
-    name: isc-dhcp-server
-    update_cahe: yes
