@@ -1,4 +1,0 @@
-- name: installing client
-  apt:
-    name: python3-openstackclient
-    update_cache: yes
