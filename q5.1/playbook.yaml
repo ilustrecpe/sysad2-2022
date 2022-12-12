@@ -1,0 +1,53 @@
+---
+
+- hosts: all
+  become: true
+  tasks:
+
+    - name: install docker
+      apt:
+        name: docker.io
+        state: latest
+        update_cache: yes
+        register: docker
+
+    - name: install docker.py
+      pip:
+        name: docker.py
+        state: latest
+
+    - name: create docker network
+      docker_network:
+        name: elk_stack
+
+    - name: create container for elasticsearch
+      docker_container:
+        name: elasticsearch
+        image: docker.elastic.co/elasticsearch/elasticsearch:7.10.1
+        state: present
+        ports:
+          - "9200:9200"
+          - "9300:9300"
+        networks:
+          - name: elk_stack
+
+
+    - name: create container for kibana
+      docker_container:
+        name: kibana
+        image: docker.elastic.co/kibana/kibana:7.10.1
+        state: present
+        ports:
+          - "5601:5601"
+        networks:
+          - name: elk_stack
+
+    - name: create container for logstash
+      docker_container:
+        name: logstash
+        image: docker.elastic.co/logstash/logstash:7.10.1
+        state: present
+        ports:
+          - "5604:5604"
+        networks:
+          - name: elk_stack
