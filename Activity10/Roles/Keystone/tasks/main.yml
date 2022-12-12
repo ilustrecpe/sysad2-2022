@@ -1,0 +1,75 @@
+- name: Install pre-requisite
+  apt:
+    pkg:
+      - python3-pymysql
+      - apache2
+    update_cache: yes
+
+- name: mysql service
+  ansible.builtin.service:
+    name: mysqld
+    state: started
+
+- name: creating keystone database
+  community.mysql.mysql_db:
+    name: keystone
+    state: present
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: granting proper access to keystone database
+  community.mysql.mysql_query:
+    login_db: keystone
+    query: GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@localhost IDENTIFIEDBY '123'
+    login_unix_socet: /run/mysqld/mysqld.sock
+
+- name: Granting keystone access to keystone database
+  community.mysql.mysql_query:
+    login_db: keystone
+    query: GRANT ALL PRIVILEGES ON keystone.* TO 'keystone'@'%' IDENTIFIED BY '123'
+    login_unix_socket: /run/mysql/mysqld.sock
+
+- name: Installing keystone
+  apt: 
+  name: keystone
+  update_cache: yes
+
+- name: editing keystoneconf file
+  ansible.builtin.blockinfile:
+    path: /etc/keystone/keystone.conf
+    insertafter: "[database]"
+    block: |
+      #...
+      connection = mysql+pymysql://keystone:'123'@controller/keystone
+- name: configuring provider
+  ansible.builtin.blocinfile:
+    path: /etc/keystone/keystone.conf
+    insertafter: "[token]"
+    block: |
+      #...
+      provider = fernet
+- name: populating identify service database
+  ansible.builtin.command: su -s /bin/sh -c "keystone-manage db_sync" keystone
+
+- name: Initializing fernet key repo
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone
+    - keystone-manage credential_setup --keystone-user keystone --keystone-group keystone
+
+- name: Bootstrapping identity service
+  ansible.builtin.command: keystone-manage bootstrap --bootstrap-password \
+  --bootstrap-admin-url http://controller:5000/v3/ \
+  --bootstrap-admin-url http://controller:5000/v3/ \
+  --bootstrap-public-url http://controller:5000/v3/ \
+  --bootstrap-region-id RegionOne
+
+- name: configure apache HTTP server
+  ansible.builtin.lineinfile:
+    path: /etc/apache2/apache2.conf
+    line: ServerName controller
+    state: present
+
+- name: restarting apache service
+  ansible.builtin.service:
+    name: apache2
+    state: restarted
