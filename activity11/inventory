@@ -4,13 +4,13 @@
 [ubuntu]
 192.168.56.1
 
-[ubuntu:vars]
-ansible_ssh_user=jgmedel-tip
-ansible_ssh_pass=root12345
-ansible_sudo_pass=root12345
-
 [centos:vars]
 ansible_ssh_user=jgmedel
 ansible_ssh_pass=root123
 ansible_sudo_pass=root123
+
+[ubuntu:vars]
+ansible_ssh_user=jgmedel-tip
+ansible_ssh_pass=root12345
+ansible_sudo_pass=root12345
 
