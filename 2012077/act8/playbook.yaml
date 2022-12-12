@@ -1,0 +1,8 @@
+---
+- host: all
+  become: true
+  roles:
+    - docker
+    - docker_file
+    - docker_user
+

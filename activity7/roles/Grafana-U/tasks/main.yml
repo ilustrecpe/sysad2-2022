@@ -1,0 +1,21 @@
+- name: Install prerequisites
+  apt:
+    pkg:
+      - apt.trasnport-https
+      - software-properties-common
+      - wget
+
+- name: Getting Grafana key
+  ansible.builtin.apt_key:
+    url: https://apt.grafana.com/gpg.key
+    state: present
+
+- name: Adding to repository
+  ansible.builtin.apt_repository:
+    repo: deb https://apt.grafana.com stable main
+    state: present
+
+- name: Install Grafana
+  apt:
+    name: Grafana
+    update_cache: yes
