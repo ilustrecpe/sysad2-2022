@@ -1,0 +1,15 @@
+[centos]
+192.168.1.10
+
+[ubuntu]
+192.168.1.9
+
+[ubuntu:vars]
+ansible_ssh_user=kcsia-tip
+ansible-ssh_pass=kcsia-tip123
+ansible_sudo_pass=kcsia-tip123
+
+[centos:vars]
+ansible_ssh_user=kcsia-tip
+ansible_ssh_pass=kcsia-tip321
+ansible_sudo_pass=kcsia-tip321
