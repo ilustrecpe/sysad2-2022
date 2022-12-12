@@ -1,0 +1,21 @@
+- name: for installing memcached
+  yum:
+    name: memcached
+    state: latest
+
+- name: Install python-memcached
+  yum: 
+    name: python-memcached
+    state: latest
+
+- name: edit memcached
+  lineinfile:
+    path: /etc/sysconfig/memcached
+    regexp: 'OPTIONS='
+    line: OPTIONS="-1 192.168.1.0,::1,controller"
+
+- name: start memcached
+  service:
+    name: memcached
+    state: started
+    enabled: yes

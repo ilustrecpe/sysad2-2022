@@ -1,0 +1,21 @@
+- name: installing components
+  yum: 
+    name: rabbitmq-server
+    state: latest
+
+- name: start rabbitmq server
+  service: 
+    name: rabbitmq-server
+    state: started
+    enabled: yes
+
+- name: Add user and set permissions
+  community.rabbitmq.rabbitmq_user:
+    user: kcsia-tip
+    password: kcsia-tip123
+    vhost: /
+    configure_priv: .*
+    read_priv: .*
+    write_priv: .*
+    state: present
+

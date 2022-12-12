@@ -1,0 +1,8 @@
+[ubuntu]
+192.168.1.4
+
+[ubuntu:vars]
+ansible_ssh_user=kcsia-tip
+asnible_ssh_pass=kcsia-tip123
+ansible_sudo_pass=kcsia-tip123
+
