@@ -1,0 +1,86 @@
+- name: Install prerequisites
+  ansinle.builtin.dnf:
+    name:
+      - gcc
+      - glibc-common
+      - make
+      - gettext
+      - automake
+      - autoconf
+      - wget
+      - net-snmp
+      - net-snmp-utils
+      - epel-release
+      - perl-Net-SNMP
+      - unzip
+      - httpd
+      - php
+      - gd
+      - gd-devel
+      - perl
+      - postfix
+      - openssl-devel
+
+- name: Retrieving tar file from repository
+  ansible.builtin.get_url:
+    url: https://github.com/NagiosEnterprise/nagioscore/archive/nagios-4.4.6.tar.gz
+    dest: /tmp/nagioscore-nagios-4.4.6.tar.gz
+    model '0440'
+
+- name: unarchiving
+  ansible.builtin.unarchive:
+    src: /tmp/nagioscore-nagios-4.4.6.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Configuring nagios
+  ansible.builtin.command: ./configure
+  args:
+    chdir: /tmp/nagioscore-nagios-4.4.6
+    
+- name: Compiling nagios
+  ansible.builtin.command: "{{ item }}"
+  args:
+    chdir: /tmp/nagioscore-nagios-4.4.6
+    with_items:
+      - make clean
+      - make all
+      - make install-group-users
+      - make install
+      - make install-daemoninit
+      - make install-commandmode
+      - make install-config
+      - make install-webconf
+
+- name: Adding apache user to nagios
+  ansible.builtin.user:
+    name: apache
+    group: nagios
+
+- name: configuring firewall
+  ansible.builtin.comamnd: "{{ item }}"
+  with_items:
+    - firewall-cmd --zone=public --add-port=80/tcp
+    - firewall-cmd --zone=public --add-port=80/tcp --permanent
+
+- name: Downloading nagios plugins
+  ansible.builtin.get_url:
+    url: https://github.com/nagios-plugins/nagios-plugins/archive/release-2.3.3.tar.gz
+    dest: /tmp/nagios-plugins-release-2.3.3.tar.gz
+    mode: '0440'
+
+- name: Unarchiving plugins
+  ansible.builtin.unarchive:
+    src: /tmp/nagios-plugins-release-2.3.3.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Install nagios
+  ansible.builtin.command: "{{ item }}"
+  args:
+    chdir: /tmp/nagios-plugins-release-2.3.3
+    with-items:
+      - ./tools/setup
+      - ./configure
+      - make
+      - make install

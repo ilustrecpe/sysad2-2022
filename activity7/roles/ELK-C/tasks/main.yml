@@ -1,0 +1,44 @@
+- name: Installing
+  yum:
+    name: java-1.8.0-openjdk
+
+- name: Installing elastic stack key
+  ansible.builtin.rpm_key:
+    state: present
+    key: https://artifacts.elastic/co/GPG-KEY-elasticsearch
+
+- name: Create file repo
+  file:
+    path: /etc/yum.repos.d/elasticsearch.repo
+    state: touch
+
+- name: Insert repo info
+  ansible.builtin.blockinfile:
+    path: /etc/yum.repos.d/elasticsearch.repo
+    state: touch
+
+- name: Insert repo info
+  ansible.builtin.blockinfile:
+    path: /etc/yum.repos.d/elasticsearch.repo
+    block:
+      [elasticsearch-6.x]
+      name=Elasticsearch repository for 6.x packages
+    baseurl=https://artifacts.elastic.co/packages/6.x/yum
+    gpgcheck=1
+    gpgkey=https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    enabled=1
+    autofresh=1
+    type=rpm-md
+
+- name: Installing elastic stack
+  yum:
+    pgk:
+      - elasticsearch
+      - kibana
+      - logstash
+      - filebeat
+      - nginx
+    state: present
+    update_cache: yes
+
+

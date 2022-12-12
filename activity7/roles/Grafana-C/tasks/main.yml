@@ -1,0 +1,27 @@
+- name: Creating file 
+  file:
+    path: /etc/yum.repos.d/grafana.repo
+    state: touch
+
+- name: Adding details
+  ansible.builtin.blockinfile:
+    path: /etc/yum.repos.d/grafana.repo
+    block: |
+      [grafana]
+      name=grafana
+    baseurl=https://rpm.grafana.com
+    repo_gpgcheck=1
+    enabled=1
+    gpgcheck=1
+    gpg=https://rpm.grafana.com/gpg.key
+    sslverify=1
+    sslcacert=/etc/pki/tls/certs/ca-bundle.crt
+    exclude=*beta*
+
+- name: enabling repo
+  ansible.builtin.command: sumo yum-config-manager --enabled grafana.repo
+
+- name: Installing grafana
+  ansible.builtin.yum:
+    name: grafana-enterprise
+    state: present
