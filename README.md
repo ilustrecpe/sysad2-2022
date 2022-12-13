@@ -1,0 +1,13 @@
+- Create a new branch called "activity3" and checkout in that branch.
+- Create a directory with your username as its name and go inside of it, and create a directory called "activity3" and go inside it.
+- Install Ansible via apk in your Alpine VM.
+- To check if you installed Ansible correctly check the python version it in Ansible version command would reflect python 3.
+- First, create a configuration file named "ansible.cfg", Ansible checks per-directory thus you can have multiple configurations in a system depending on your configuration file in the current directory.
+- Next, populate the ansible.cfg file with basic information such as inventory, host verification, and your default remote user.
+- Next, create your first inventory file with Ubuntu IP on it.
+- Then try to connect using "ping" module via adhoc command
+- Now use "shell" module to check the user via bash commands. (check for the user, hostname, and id)
+- And we can use the "copy" module to create a file with a certain file with the content or copy from your local VM to your remote VM.
+- For more modules, you can check this link Links to an external site.of the module index.
+- You can also check the description of the module using ansible-doc 
+- Also, you can group your inventory via the grouping feature of Ansible.
