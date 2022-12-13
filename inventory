@@ -1,5 +1,5 @@
 [ubuntu]
-192.168.122.8
+192.168.122.11
 
 [ubuntu:vars]
 ansible_ssh_user=gio

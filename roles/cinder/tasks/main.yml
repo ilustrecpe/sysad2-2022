@@ -1,0 +1,57 @@
+- name: install packages
+  apt:
+    pkg:
+      - cinder-api
+      - cinder-scheduler
+
+- name: edit cinder.conf database
+  ansible.builtin.blockinfile:
+    path: /etc/cinder/cinder.conf
+    block: |
+      [database]
+      # ...
+      connection = mysql+pymysql://cinder:awtsgege3@controller/cinder
+
+- name: edit cinder.conf default
+  ansible.builtin.blockinfile:
+    path: /etc/cinder/cinder.conf
+    block: |
+      [DEFAULT]
+      # ...
+      transport_url = rabbit://openstack:awtsgege@controller
+      auth_strategy = keystone
+
+- name: edit cinder.conf keystone_authtoken
+  ansible.builtin.blockinfile:
+    path: /etc/cinder/cinder.conf
+    block: |
+      [keystone_authtoken]
+      # ...
+      www_authenticate_uri = http://controller:5000
+      auth_url = http://controller:5000
+      memcached_servers = controller:11211
+      auth_type = password
+      project_domain_name = default
+      user_domain_name = default
+      project_name = service
+      username = cinder
+      password = CINDER_PASS
+
+- name: edit cinder.conf default
+  ansible.builtin.blockinfile:
+    path: /etc/cinder/cinder.conf
+    block: |
+      [DEFAULT]
+      # ...
+      my_ip = 192.168.122.11
+
+- name: edit cinder.conf oslo concurrency
+  ansible.builtin.blockinfile:
+    path: /etc/cinder/cinder.conf
+    block: |
+      [oslo_concurrency]
+      # ...
+      lock_path = /var/lib/cinder/tmp
+
+- name: populate block storage db
+  ansible.builtin.command: su -s /bin/sh -c "cinder-manage db synb" cinder
