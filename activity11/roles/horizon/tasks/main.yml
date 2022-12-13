@@ -1,1 +1,5 @@
----
+- name: install horizon
+  yum:
+    name: openstack-horizon
+    state: latest
+    update_Cache: yes
