@@ -1,0 +1,77 @@
+- name: Installing openstack dashboard
+  apt:
+    name: openstack-dashboard
+    update_cache: yes
+
+
+- name: Configuring local settings
+  ansible.builtin.lineinfile:
+    path: /etc/openstack-dashboard/local_settings.py
+    line: OPENSTACK_HOST = "controller"
+
+- name: Configurng memcached session storage service
+  ansible.builtin.blockinfile:
+    path: /etc/openstack-dashboard/local_settings.py
+    block: |
+      SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
+      CACHES = {
+        ' default': {
+          'BACKEND':
+            'django.core.cache.backends.memcached.MemcachedCache',
+          'LOCATION': 'controller:11211',
+          }
+        }
+
+- name: Enabling the identity api
+  ansible.builtin.lineinfile:
+    path: /etc/openstack-dashboard/local_settings.py
+    line: OPENSTACK_KEYSTONE_URL = "http://%s/identity/v3" % 5000
+
+
+- name: Enabling support for domains
+  ansible.builtin.lineinfile:
+    path: /etc/openstack-dashboard/local_settings.py
+    line: OPENSTACK_KEYSTONE_MULTIDOMAIN_SUPPORT = True
+
+- name: Configuring api versions
+  ansible.builtin.blockinfile:
+    path: /etc/openstack-dashboard/local_settings.py
+    block: |
+      OPENSTACK_API_VERSIONS = {
+        "identity": 3,
+        "image": 2,
+        "volume": 3,
+        }
+
+- name: Configuring default as the default domain
+  ansible.builtin.lineinfile:
+    path: /etc/openstack-dashboard/local_settings.py
+    line: OPENSTACK_KEYSTONE_DEFAULT_DOMAIN = "Default"
+
+- name: Configuring user as the default role
+  ansible.builtin.lineinfile:
+    path: /etc/openstack-dashboard/local_settings.py
+    line: OPENSTACK_KEYSTONE_DEFAULT_ROLE = "user"
+
+- name: Configuring Neutron network
+  ansuble.builtin.blockinfile:
+    path: /etc/openstack-dashboard/local_settings.py
+    block: |
+      OPENSTACK_NEUTRON_NETWORK = {
+        'enable_router': False,
+        'enable_quotas': False,
+        'enable_ipv6': False,
+        'enable_distributed_router': False,
+        'enable_ha_router': False,
+        'enable_fib_topology_chech': False,
+        }
+
+- name: Finalizing config editing
+  ansible.builtin.lineinfile:
+    path: /etc/openstack-dashboard/local_settings.py
+    line: WSGIApplicationGroup %{GLOBAL}
+
+- name: Restarting webserver
+  ansible.builtin.service:
+    name: apache2
+    state: restarted

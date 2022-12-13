@@ -1,0 +1,86 @@
+- name: Creating neutron database
+  community.mysql.mysql_db:
+    name: neutron
+    state: present
+
+
+- name: Granting localhost access to neutron database
+  community.mysql.mysql_query:
+    login_db: neutron
+    query: GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'localhost' IDENTIFIED BY '123'
+
+
+- name: Granting neutron access to neutron database
+  community.mysql.mysql_query:
+    login_db: neutron
+    query: GRANT ALL PRIVILEGES ON neutron.* TO 'neutron'@'%' IDENTIFIED BY '123'
+
+- name: Creating neutron user and adding admin role
+  ansible.builtin.command: "{{ item }}"
+  with_ items:
+    - openstack user create --domain default --password-prompt neutron
+    - openstack role add --project service --user neutron admin
+
+- name: Creating neutron service entity
+  ansible.builtin.command: openstack service create --name neutron --description "OpenStack Networking" network
+
+- name: CReating the network service API endpoints
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - openstack endpoint create --region RegionOne network public http://controller:9696
+    - openstack endpoint create --region RegionOne network internal http://controller:9696
+    - openstack endpoint create --region RegionOne network admin http://controller:9696
+
+- name: Configuring metadata agent
+  ansible.builtin.blockinfile:
+    path: /etc/neutron/metadata_agent.ini
+    insertafter: "[DEFAULT]"
+    block: |
+      # ...
+      nova_metadata_host = controller
+      metadata_proxy_shared_secret = 123secret
+
+- name: Configuring the compute service
+  ansible.builtin.blockinfile:
+    path: /etc/neutron/metada_agent.ini
+    insertafter: "[neutron]"
+    block: |
+      # ...
+      auth_url = http://controller:5000
+      auth_type = password
+      project_domain_name = default
+      user_domain_name = default
+      region_name = RegionOne
+      project_name = service
+      username = neutron
+      password = 123
+      service_metadata_proxy = true
+      metadata_proxy_shared_secret = 123secret
+
+- name: Populating database
+  ansible.builtin.command: su -s /bin/sh -c "neutron-db-manage --config-file /etc/neutron/neutron.conf --config-file /etc/neutron/plugins/m12/m12_conf.ini upgrade head" neutron
+
+- name: Restarting nova compute api
+  ansible.builtin.service:
+    name: nova-api
+    state: restarted
+
+- name: Restarting neutron network service
+  ansible.builtin.service:
+    name: neutron-server
+    state: restarted
+
+- name: Restarting neutron linuxbridge agent
+  ansible.builtin.service:
+    name: neutron-linux-bridge-agent
+    state: restarted
+
+- name: Restarting neutron dhcp agent
+  ansible.builtin.service:
+    name: neutron-dhcp-agent
+    state: restarted
+
+- name: Restarting neutron metadata agent
+  ansible.builtin.service:
+    name: neutron-metadata-agent
+    state: restarted
