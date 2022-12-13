@@ -1,1 +1,9 @@
----
+- name: installing cinder
+  yum:
+    name: openstack-cinder
+    state: latest
+    update_Cache: yes
+    
+- name: verify install
+  service:
+    name: openstack-cinder
