@@ -1,0 +1,17 @@
+# docker repo for centos
+docker_repo: docker-ce.repo
+
+
+# IMAGES
+elasticsearch_image: "docker.elastic.co/elasticsearch/elasticsearch:7.10.1"
+logstash_image: "docker.elastic.co/logstash/logstash:7.10.1"
+kibana_image: "docker.elastic.co/kibana/kibana:7.10.1"
+
+
+# HOSTNAMES
+elasticsearch_hostname: elasticsearch
+logstash_hostname: logstash
+kibana_hostname: kibana
+
+# Logstash configuration file
+logstash_conf: "logstash.conf2"

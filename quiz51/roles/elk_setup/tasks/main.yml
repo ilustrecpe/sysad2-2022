@@ -1,0 +1,39 @@
+---
+# tasks file for roles/elk_setup
+- name: Start Elasticsearch container
+  docker_container:
+    name: "{{ elasticsearch_hostname }}"
+    image: "{{ elasticsearch_image }}"
+    env:
+      discovery.type: "single-node"
+    published_ports:
+      - 9200:9200
+      - 9300:9300
+
+- name: Start Kibana container and link it to Elasticsearch container
+  docker_container:
+    name: "{{ kibana_hostname }}"
+    image: "{{ kibana_image }}"
+    links: "{{ elasticsearch_hostname }}:{{ elasticsearch_hostname }}"
+    published_ports:
+      - 5601:5601
+
+- name: Create pipeline directory for Logstash
+  file:
+    path: /usr/share/logstash_pipeline
+    state: directory
+
+- name: Copy Logstash configuration file
+  copy:
+    src: "{{ logstash_conf }}"
+    dest: /usr/share/logstash_pipeline/logstash.conf
+
+- name: Start Logstash container with configuration and link it to Elastic container
+  docker_container:
+    name: "{{ logstash_hostname }}"
+    image: "{{ logstash_image }}"
+    links: "{{ elasticsearch_hostname }}:{{ elasticsearch_hostname }}"
+    volumes:
+      - /usr/share/logstash_pipeline:/usr/share/logstash/pipeline
+    published_ports:
+      - 5044:5044

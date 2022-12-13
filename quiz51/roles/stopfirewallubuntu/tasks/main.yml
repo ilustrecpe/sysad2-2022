@@ -1,0 +1,7 @@
+---
+# tasks file for roles/stopfirewallubuntu
+- name: Stop Firewall
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
