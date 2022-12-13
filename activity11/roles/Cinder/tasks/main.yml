@@ -1,0 +1,103 @@
+- name: Creating cinder database
+  community.mysql.mysql_db:
+    name: cinder
+    state: present
+
+- name: Granting localhost access to cinder database
+  community.mysql.mysql_query:
+    login_db: cinder
+    query: GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'localhost' IDENTIFIED BY '123'
+
+- name: Granting cinder access to cinder database
+  community.mysql.mysql_query:
+    login_db: cinder
+    query: GRANT ALL PRIVILEGES ON cinder.* TO 'cinder'@'%' IDENTIFIED BY '123'
+
+- name: creating cinder user and adding admin role
+  ansible.builtin.command: "{{ item }}" 
+  with_items:
+    - openstack user create --domain default --password-prompt cinder
+    - openstack role add --project service --user cinder admin
+
+- name: creating cinderv3 service entity
+  ansible.buitlin.command: openstack service create --name cinderv3 --description "OpenStack Block Storage" volumev3
+
+- name: Creating Block Storage service api endpoints
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - openstack endpoint create --region RegionOne volumev3 public http://controller:8776/v3/%\(project_id\)s
+    - openstack endpoint create --region RegionOne volumev3 internal http://controller:8776/v3/%\(project_id\)s
+    - openstack endpoint create --region RegionOne volumev3 admin http://controller:8776/v3/%\(project_id\)s
+
+- name: Installing cinder pre-requisites
+  apt:
+    pkg: 
+    - cinder-api
+    - cinder-scheduler
+
+- name: Editing database connection
+  ansible.builtin.blockinfile:
+    path: /etc/cinder/cinder.conf
+    insertafter: "[database]"
+    block: |
+      # ...
+      connection = mysql+pymysql://cinder:123@controller/cinder
+
+- name: Editing default transport url
+  ansible.builtin.blockinfile:
+    path: /etc/cinder/cinder.conf
+    insertafter: "[DEFAULT]"
+    block: |
+    # ...
+    transport_url = rabbit://openstack:123@controller
+    auth_strategy = keystone
+    my_ip = 10.0.0.11
+
+- name: Editing keystone auth token
+  ansible.builtin.blockinfile:
+     path: /etc/cinder/cinder.conf
+     insertafter: "[keystone_authtoken]"
+     block: |
+     # ...
+     www_authenticate_uri = http://controller:5000
+     auth_url = http://controller:5000
+     memcached_servers = controller:11211
+     auth_type = password
+     project_domain_name = default
+     user_domain_name = default
+     project_name = service
+     username = cinder
+     password = 123
+
+- name: Editing oslo concurrency
+  ansible.builtin.blockinfile:
+    path: /etc/cinder/cinder.conf
+    insertafter: "[oslo_concurrency]"
+    block: |
+    # ...
+    lock_path = /var/lib/cinder/tmp
+
+- name: Populating Block Storage db
+  ansible.builtin.command: su -s /bin/sh -c "cinder-manage db sync" cinder
+
+- name: Editing nova to use cinder
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf:
+    insertafter: "[cinder]"
+    block: |
+    os_region_Name = RegionOne
+
+- name: Restarting nova api
+  ansible.builtin.service:
+    name: nova-api
+    state: restarted
+
+- name: Restarting nova scheduler
+  ansible.builtin.service:
+    name: cinder-scheduler
+    state: restarted
+
+- name: Restarting apache
+  ansible.builtin.service:
+    name: apache2
+    state: restarted
