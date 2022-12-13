@@ -1,0 +1,9 @@
+prelim_exam:
+username: apayor-tip
+writable_chroot: allow_writeable_chroot=YES
+ftp_config:
+ftp:debian: 
+ftp_user:
+ftp_pass:
+naguser_pass:
+nagadmin_pass: 

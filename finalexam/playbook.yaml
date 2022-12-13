@@ -1,0 +1,34 @@
+--- 
+
+- name: centos
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+    - cpremlims
+    - cftp
+    - cmotd
+    - cnagios
+
+#- name: ubuntu
+# hosts:
+   # - ubuntu
+   # vars_files:
+   # - config.yaml
+   #  roles:
+   # - uprelim
+   # - uftp
+   # - umotd
+   # - unagios
+
+      #- name: debian
+      #  hosts:
+   # - debian
+   #  vars_files:
+   # - config.yaml
+   #  roles:
+   # - dprelim
+   # - dftp
+   # - motd
+   # - dnagios
