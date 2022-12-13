@@ -1,6 +1,14 @@
 [ubuntu]
-192.168.1.9
+192.168.1.5
+
+[centos]
+192.168.1.6
+
+[centos:vars]
+ansible_ssh_user=centos-2010004
+ansible_ssh_pass=123
+
 
 [ubuntu:vars]
-ansible_ssh_user=ubuntu-20100004
+ansible_ssh_user=ubuntu-2010004
 ansible_ssh_pass=123

@@ -1,0 +1,7 @@
+- name: Cloning prelimexam
+  ansible.builtin.git:
+    repo: https://github.com/vaacabang/sysad2-2022.git
+    dest: /root/sysad2-2022/final-exam
+    version: prelim-exam
+
+

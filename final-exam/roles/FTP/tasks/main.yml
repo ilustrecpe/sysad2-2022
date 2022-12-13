@@ -31,3 +31,6 @@
     state: enabled
 
 - name: creating dedicated FTP user
+  ansible.builtin.user:
+    name: FTPuser
+    
