@@ -1,0 +1,7 @@
+---
+# tasks file for roles/stopfirewallcentos
+- name: Stop FirewallD
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
