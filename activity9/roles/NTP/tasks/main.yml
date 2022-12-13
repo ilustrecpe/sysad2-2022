@@ -1,0 +1,42 @@
+- name: Installing chrony
+  apt:
+    pkg:
+      - chrony
+    update_cache: yes
+
+- name: Editing chrony file server key
+  ansible.builtin.lineinfile: 
+  path: /etc/chrony/chrony.conf
+  regexp: 'pool ntp.ubuntu.com    iburst maxsources 4'
+  line: '#pool ntp.ubuntu.com     iburst maxsources 4'
+
+- name: Editing chrony file server key 2
+  ansible.builtin.lineinfile:
+    path: /etc/chrony/chrony.conf
+    regexp: 'pool 0.ubuntu.pool.ntp.org iburst maxsources 1'
+    line: '#pool 0.ubuntu.pool.ntp.org iburst maxsources 1'
+
+- name: Editing chrony file server key 3
+  ansible.builtin.lineinfile:
+    path: /etc/chrony/chrony.conf
+    regexp: 'pool 1.ubuntu.pool.ntp.org iburst maxsources 1'
+    line: '#pool 1.ubuntu.pool.ntp.org iburst maxsources 1'
+
+- name: Editing chrony file server key 4
+  ansible.builtin.lineinfile:
+    path: /etc/chrony/chrony.conf
+    regexp: 'pool 2.ubuntu.pool.ntp.org iburst maxsources 2'
+    line: '#pool 2.ubuntu.pool.ntp.org iburst maxsources 2'
+
+- name: Editing chrony file server key 5
+  ansible.builtin.lineinfile:
+    path: /etc/chrony/chrony.conf
+    line: server 10.0.2.15 iburst
+    state: present
+
+- name: Restarting chrony in target host
+  ansible.builtin.service:
+    name: chrony
+    state: restarted
+
+

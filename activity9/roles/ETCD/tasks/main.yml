@@ -1,0 +1,65 @@
+- name: Installing ETCD
+  apt:
+    name: etcd
+    update_cache: yes
+
+- name: Editing ETCD config file
+  ansible.builtin.lineinfile:
+    path: /etc/default/etcd
+    regexp: #ETCD_NAME=default
+    line: ETCD_NAME=controller
+
+- name: Editing ETCD config file 2
+  ansible.builtin.lineinfile:
+    path: /etc/default/etcd
+    regexp: #ETCD_DATA_DIR=/var/lib/etcd/default
+    line: ETCD_DATA_DIR=/var/lib/etcd
+
+- name: Editing ETCD config file 3
+  ansible.builtin.lineinfile:
+    path: /etc/default/etcd
+    regexp: #ETCD_INITIAL_CLUSTER_STATE="new"
+    line: ETCD_INITIAL_CLUSTER_STATE="new"
+
+- name: Editing ETCD config file 4
+  ansible.builtin.lineinfile:
+    path: /etc/default/etcd
+    regexp: #ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-01"
+    line: ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-01"
+
+- name: Editing ETCD config file 5
+  ansible.builtin.lineinfile:
+    path: /etc/default/etcd
+    regexp: #ETCD_INITIAL_CLUSTER="new"
+    line: ETCD_INITIAL_CLUSTER=controller="http://10.0.2.15:2340"
+
+- name: Editing ETCD config file 6
+  ansible.builtin.lineinfile:
+    path: /etc/default/etcd
+    regexp: #ETCD_INITIAL_ADVERTISE_PEER_URLS=http://localhost:2340
+    line: ETCD_INITIAL_ADVERTISE_PEER_URLS="http://10.0.2.15:2340"
+
+- name: Editing ETCD config file 7
+  ansible.builtin.lineinfile:
+    path: /etc/default/etcd
+    regexp: #ETCD_ADVERTISE_CLIENT_URLS="http:localhost:2340"
+    line: ETCD_ADVERTISE_CLIENT_URLS="http://10.0.2.15:2340"
+
+- name: Editing ETCD config file 8
+  ansible.builtin.lineinfile:
+    path: /etc/default/etcd
+    regexp: #ETCD_LISTEN_PEER_URLS="http:localhost:2340"
+    line: ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2340"
+
+- name: Editing ETCD config file 9
+  ansible.builtin.lineinfile:
+    path: /etc/default/etcd
+    regexp: #ETCD_LISTEN_CLIENT_URLS="http://localhost:2340"
+    line: ETCD_LISTEN_CLIENT_URLS="http://10.0.2.15:2340"
+
+- name: Restarting etcd service
+  ansible.builtin.service:
+    name: etcd
+    state: restarted
+
+
