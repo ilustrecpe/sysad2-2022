@@ -1,0 +1,11 @@
+Static hostname: mmlrmercado
+       Icon name: computer-vm
+         Chassis: vm
+      Machine ID: 883038c1feb2483a813476b491eda2e4
+         Boot ID: 068041297b2345cb91459aeb61312166
+  Virtualization: oracle
+Operating System: Ubuntu 22.04.1 LTS
+          Kernel: Linux 5.15.0-53-generic
+    Architecture: x86-64
+ Hardware Vendor: innotek GmbH
+  Hardware Model: VirtualBox
