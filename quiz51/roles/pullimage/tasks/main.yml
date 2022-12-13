@@ -1,0 +1,18 @@
+---
+# tasks file for roles/pullimage
+- name: Pull a docker image
+  docker_image:
+    name: "{{ image }}"
+    source: pull
+  register: img
+
+- name: Clear IP Tables
+  shell: "iptables -F; iptables -X"
+  register: iptables
+  when: img.changed
+
+- name: Restart Docker
+  service:
+    name: docker
+    state: restarted
+  when: iptables.changed
