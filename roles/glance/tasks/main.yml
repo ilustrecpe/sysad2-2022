@@ -1,0 +1,69 @@
+- name: install packages
+  apt:
+    name: glance
+    update_cache: yes
+
+- name: edit glance-api.conf
+  ansible.builtin.blockinfile:
+    path: /etc/glance/glance-api.conf
+    block: |
+      [database]
+      # ...
+      connection = mysql+pymysql://glance:awtsgege@controller/glance
+
+- name: edit glance-api.conf keystone_authtoken
+  ansible.builtin.blockinfile:
+    path: /etc/glance/glance-api.conf
+    block: |
+      [keystone_authtoken]
+      # ...
+      www_authenticate_uri = http://controller:5000
+      auth_url = http://controller:5000
+      memcached_servers = controller:11211
+      auth_type = password
+      project_domain_name = Default
+      user_domain_name = service
+      username = glance
+      password = awtsgege1
+
+- name: edit glance-api.conf paste_deploy
+  ansible.builtin.blockinfile:
+    path: /etc/glance/glance-api.conf
+    block: |
+      [paste_deploy]
+      # ...
+      flavor = keystone
+
+- name: edit glance-api.conf glance_store
+  ansible.builtin.blockinfile:
+    path: /etc/glance/glance-api.conf
+    block: |
+      [glance_store]
+      # ...
+      stores = file,http
+      default_store = file
+      filesystem_store_datadir = /var/lib/glance/images/
+
+- name: edit glance-api.conf oslo_limit
+  ansible.builtin.blockinfile:
+    path: /etc/glance/glance-api.conf
+    block: |
+      [oslo_limit]
+      auto_url = http://controller:5000
+      auth_type = password
+      user_domain_id = default
+      username = MY_SERVICE
+      system_scope = all
+      password = MY_PASSWORD
+      endpoint_id = ENDPOINT_ID
+      region_name = RegionOne
+
+- name: edit glance-api.conf default
+  ansible.builtin.blockinfile:
+    path: /etc/glance/glance-api.conf
+    block: |
+      [DEFAULT]
+      use_keystone_quotas = True
+
+- name: populate image server db
+  ansible.builtin.command: su -s /bin/sh -c "glance-manage db_sync" glance

@@ -1,0 +1,107 @@
+- name: install packages
+  apt:
+    pkg:
+      - nova-api
+      - nova-conductor
+      - nova-novncprox
+      - nova-scheduler
+
+- name: edit nova.conf api_database
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    block: |
+      [apt_database]
+      # ...
+      connection = mysql+pymysql://nova:awtsgege2@controller/nova_api
+
+- name: edit nova.conf database
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    block: |
+      [database]
+      # ...
+      connection = mysql+pymysql://nova:awtsgege2@controller/nova
+
+- name: edit nova.conf default
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    block: |
+      [DEFAULT]
+      # ...
+      transport_url = rabbit://openstack:awtsgege@controller:5672/
+
+- name: edit nova.conf api
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    block: |
+      [api]
+      # ...
+      auth_strategy = keystone
+
+- name: edit nova.conf keystone_authtoken
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    block: |
+      [keystone_authtoken]
+      # ...
+      www_authenticate_uri = http://controller:5000/
+      auth_url = http://controller:5000/
+      memcached_servers = controller:11211
+      auth_type = password
+      project_domain_name = Default
+      user_domain_name = Default
+      project_name = service
+      username = nova
+      password = NOVA_PASS
+
+- name: edit nova.conf default
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    block: |
+      [DEFAULT]
+      # ...
+      my_ip = 192.168.122.11
+
+- name: edit nova.conf vnc
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    block: |
+      [vnc]
+      enabled = true
+      # ...
+      server_listen = $my_ip
+      server_proximityclient_address = $my_ip
+
+- name: edit nova.conf glance
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    block: |
+      [glance]
+      # ...
+      apt_servers = http://controller:9292
+
+- name: edit nova.conf oslo_concurrency
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    block: |
+      [oslo_concurrency]
+      # ...
+      lock_path = /var/lib/nova/tmp
+
+- name: edit nova.conf placement
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    block: |
+      [placement]
+      # ...
+      region_name = RegionOne
+      project_domain_name = Default
+      project_name = service
+      auth_type = password
+      user_domain_name = Default
+      auth_url = http://controller:5000/v3
+      username = placement
+      password = awtsgege3
+
+- name: populate nova-api db
+  ansible.builtin.command: su -s /bin/sh -c "nova-manage api_db sync" nova
