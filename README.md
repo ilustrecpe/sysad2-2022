@@ -1,4 +1,10 @@
-Name: Mercado, Marvine Lester R.
-Year & Course: 3rd yr CpE
-Interests: Music and Videogames
-Email: mmlrmercado@tip.edu.ph
+## Personal Information
+
+- Name: Mercado, Marvine Lester R.
+
+- Course: Systems administration
+
+## Contact Information
+
+- email: mercadomarvine@gmail.com
+- contact no.: 09567868303 (Globe)
