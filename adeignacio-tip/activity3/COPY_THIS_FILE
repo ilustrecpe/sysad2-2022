@@ -1,0 +1,33 @@
+This file is copied from adeignacio-tip's Alphine VM using ansible via adhoc command using the "copy" module.
+
+--Below are the responses from executing the adhoc commands--
+192.168.56.1 | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+192.168.56.1 | CHANGED | rc=0 >>
+adeignacio-tip
+192.168.56.1 | CHANGED | rc=0 >>
+ubuntu-2010053
+192.168.56.1 | CHANGED | rc=0 >>
+uid=1000(adeignacio-tip) gid=1000(adeignacio-tip) groups=1000(adeignacio-tip),4(adm),24(cdrom),27(sudo),30(dip),46(plugdev),116(lxd)
+192.168.56.1 | CHANGED => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python3"
+    },
+    "changed": true,
+    "checksum": "f9abe53aa4580bef300f9a06fc0570721c96b4cf",
+    "dest": "/home/adeignacio-tip/COPY_THIS_FILE",
+    "gid": 1000,
+    "group": "adeignacio-tip",
+    "md5sum": "ed479ef0ed69c7aa35f4919434d001ef",
+    "mode": "0664",
+    "owner": "adeignacio-tip",
+    "size": 598,
+    "src": "/home/adeignacio-tip/.ansible/tmp/ansible-tmp-1607405195.6496644-3497-26228768185583/source",
+    "state": "file",
+    "uid": 1000
+}
