@@ -1,0 +1,8 @@
+---
+- name: copy file from remote user ubuntu
+  hosts: all
+  tasks:
+   - name: fetch ubuntu id
+     ansible.builtin.fetch:
+       src:  specs.txt
+       dest: /root/sysad2-2022
