@@ -1,0 +1,4 @@
+- name: installl horizon dashboard
+  yum:
+    name: openstack-horizon
+    state: latest

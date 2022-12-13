@@ -1,0 +1,4 @@
+- name: install networking image neutron
+  yum:
+    name: openstack-neutron
+    state: latest

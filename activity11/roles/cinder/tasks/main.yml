@@ -1,0 +1,7 @@
+- name: install cinder
+  yum:
+    name: openstack-cinder
+    
+- name: verify install
+  service:
+    name: openstack-cinder
