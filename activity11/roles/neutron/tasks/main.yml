@@ -1,1 +1,5 @@
----
+- name: install image neutron
+  yum:
+    name: openstack-neutron
+    state: latest
+    update_Cache: yes
