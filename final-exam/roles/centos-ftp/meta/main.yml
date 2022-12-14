@@ -1,0 +1,12 @@
+galaxy_info:
+  author: your name
+  description: your role description
+  company: your company (optional)
+
+  license: licesne (GPL-2.0-or-later, MIT, etc)
+
+  min_ansible_versioon: 2.9
+
+  galaxy_tags: []
+
+  dependencies: []
