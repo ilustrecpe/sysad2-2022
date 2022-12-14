@@ -1,0 +1,7 @@
+[ubuntu]
+192.168.1.9
+
+[ubuntu:vars]
+ansible_ssh_user= ubuntu-2012920
+ansible_ssh_pass= 167
+become-password= 167
