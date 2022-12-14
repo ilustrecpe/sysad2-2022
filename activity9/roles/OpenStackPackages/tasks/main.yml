@@ -1,0 +1,9 @@
+- name: Enabling archives
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - add-apt-repository cloud-archive:zed
+
+- name: Installing client
+  apt:
+    name: python3-openstackclient
+    update_cache: yes
