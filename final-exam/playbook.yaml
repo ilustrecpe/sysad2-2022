@@ -1,0 +1,23 @@
+---
+- name: Working config for centos
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles: 
+    - centos-clone
+    - centos-ftp
+    - centos-motd
+    - centos-nagios
+
+- name: Working config for Debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - debian-clone
+    - debian-ftp
+    - debian-motd
+    - debian-nagios
+
