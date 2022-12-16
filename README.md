@@ -1,1 +1,6 @@
-# CPE 307 - CPE31S1A Managing Enterprise Servers
+# Hands-on Activity 9: OpenStack Pre-requisites installation
+
+
+### Objectives
+
+Create a workflow to install OpenStack using Ansible as your Infrastructure as Code (IaC).
