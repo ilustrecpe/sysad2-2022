@@ -1,0 +1,57 @@
+- name: clone prelim-exam repo
+  tasks:
+    - name: include variables from config.yaml
+      include_vars:
+        file: config.yaml
+
+- name: install git and clone repository on debian
+  hosts: debian
+  include_role:
+    name: git_debian
+
+- name: install git and clone repository on centos
+  hosts: centos
+  include_role:
+    name: git_centos
+
+- name: install git and clone repository on mageia
+  hosts: mageia
+  include_role:
+    name: git_mageia
+
+- name: install VSFTPD as enterprise
+  tasks:
+    - name: include variables from config.yaml
+      include_vars:
+        file: config.yaml
+
+- name: install VSFTPD on debian
+  hosts: debian
+  include_role:
+    name: debian_vsftpd
+
+- name: install VSFTPD on centos
+  hosts: centos
+  include_role:
+    name: centos_vsftpd
+
+- name: install VSFTPD on mageia
+  hosts: mageia
+  include_role:
+    name: mageia_vsftpd
+
+- name: Setup and configure elastic stack
+  include_role:
+    - elastic_devian
+    - elastic_centos
+    - elastic_mageia
+
+- name: change MOTD
+  tasks:
+    - name: include variables from config.yaml
+      include_vars:
+        file: config.yaml
+
+    - name: change message
+      include_role:
+        name: changeMOTD

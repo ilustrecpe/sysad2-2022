@@ -1,0 +1,11 @@
+- name: change message of the day
+  copy:
+    content: "{{ motd }} \n"
+    dest: /etc/motd
+
+- name: Disable default motd
+  file:
+    dest: "/etc/update-motd.d/"
+    mode: "u-x,g-x,,o-x"
+    state: directory
+    recures: yes
