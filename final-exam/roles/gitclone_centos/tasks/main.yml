@@ -1,0 +1,21 @@
+---
+# tasks file for gitclone_centos
+- name: CREATE DIRECTORY
+  file:
+    path: /home/PipoyTheBest7/repo
+    state: directory
+    mode: '777'
+
+- name: INSTALL GIT
+  yum:
+    name: git
+    state: latest
+    update_cache: yes
+
+- name: CLONE PRELIM EXAM
+  git:
+    repo: 'https://github.com/PipoyTheBest7?tab=repositories'
+    dest: /home/PipoyTheBest7/repo
+    version: prelim-exam
+    clone: yes
+    update: yes
