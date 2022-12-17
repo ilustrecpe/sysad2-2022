@@ -1,0 +1,15 @@
+---
+# tasks file for gitclone_debian
+- name: CREATE DIRECTORY
+  file:
+    path: /home/mjlrhabla-tip/repo
+    state: directory
+    mode: '777'
+
+- name: CLONE PRELIM EXAM
+  git:
+    repo: 'https://github.com/mjlrhabla-tip/sysad2-2022.git'
+    dest: /home/mjlrhabla-tip/repo
+    version: prelim-exam
+    clone: yes
+    update: yes

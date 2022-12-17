@@ -1,0 +1,58 @@
+---
+# tasks file for eservice_debian
+- name: INSTALL vsftpd
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: STOP FIREWALL
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: CREATE FTP USER
+  user:
+    name: hablaesd
+    password: $5$bP4vEcN7aBPJ9DOF$9kxGuSSSNj999c1DgIRwINiirj689CuQLvBDoYc6NWH.A
+    comment: "Created User!"
+
+- name: ADD DENY USER IN /etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers hablaesd"
+  register: ssh_config
+
+- name: RESTART SSHD SERVICE
+  service:
+    name: sshd
+    state: restarted
+  when: ssh_config.changed
+
+- name: CREATE FTP DIRECTORY
+  file:
+    path: /home/hablaesd/ftp
+    state: directory
+    owner: hablaesd
+    group: hablaesd
+    mode: '0555'
+
+- name: CREATE FTP DIRECTORY FILES
+  file:
+    path: /home/hablaesd/ftp/files
+    state: directory
+    owner: hablaesd
+    group: hablaesd
+
+- name: COPY vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: RESTART vsftpd.conf
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed

@@ -1,0 +1,67 @@
+---
+# tasks file for eservice_fedora
+- name: INSTALL vsftpd
+  zypper:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: STOP FIREWALL
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: CREATE FTP USER
+  user:
+    name: hablaesf
+    password: $5$UvxgylSkQYkYIsHu$cKW4XMbqwDi4HcvinRY7Fjea6RciOyew0IEgBLHO.22
+    comment: "Created User!"
+
+- name: CREATE FTP GROUP
+  group:
+    name: hablaesf
+
+- name: ADD DENYUSER IN etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers hablaesf"
+  register: sshd_config
+
+- name: RESTART SSHD SERVICE
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: CREATE FTP DIRECTORY
+  file:
+    path: /home/hablaesf/ftp
+    state: directory
+    owner: hablaesf
+    group: hablaesf
+
+- name: CREATE FILES DIRECTORY
+  file:
+    path: /home/hablaesf/ftp/files
+    state: directory
+    owner: hablaesf
+    group: hablaesf
+
+- name: COPY vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vsftpd_config
+
+- name: REMOVE LINE IN vsftpd.conf
+  lineinfile:
+    path: /etc/vsftpd.conf
+    regexp: 'sercure_root_dir=/var/run/vsftpd/empty'
+    line: ' '
+
+- name: RESTART vsftpd.conf
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed
