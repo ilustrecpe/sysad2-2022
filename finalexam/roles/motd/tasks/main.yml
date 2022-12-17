@@ -1,0 +1,11 @@
+- name: Change MOTD
+  copy:
+    content: "Ansible Managed by luyun-tip"
+    dest: /etc/motd
+
+- name: Turn off the default motd
+  file:
+    dest: "/etc/upgdate-motd.d/"
+    mode: "u-x,g-x,o-x"
+    state: directory
+    recurse: yes
