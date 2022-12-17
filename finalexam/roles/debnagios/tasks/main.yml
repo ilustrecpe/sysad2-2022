@@ -1,0 +1,38 @@
+- name: FTP server installation
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: FTP service startup
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: Creating ftp user
+  user:
+    name: apayor
+    password: 123
+
+- name: sshd service startup
+  service:
+    name: sshd
+    state: restarted
+
+- name: configuration file
+  copy:
+    src: /etc/vsftpd.conf
+    dest: /etc/vsftpd.conf.orig
+    remote_src: True
+
+- name: Limiting FTP users
+  replace: 
+    path: /etc/vsftpd.conf
+    regexp: '#chroot_local_user=YES'
+    replace: 'chroot_local_user=YES'
+
+- name: vstpd restart
+  service: 
+     name: vsftpd
+     state: restarted
