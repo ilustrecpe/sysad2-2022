@@ -1,0 +1,13 @@
+- name: create directory
+  file:
+    path: /home/gio/repo
+    state: directory
+    mode: '777'
+
+- name: cloning prelim repo
+  git:
+    repo: 'https://github.com/giomanalili/sysad2-2022.git'
+    dest: /home/gio/repo
+    version: prelim
+    clone: yes
+    update: yes

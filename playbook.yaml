@@ -1,0 +1,23 @@
+- hosts: centos
+  become: true
+  roles:
+    - c-clone
+    - c-nagios
+    - c-ftp
+    - motd
+
+- hosts: debian
+  become: true
+  roles:
+    - d-clone
+    - d-nagios
+    - d-ftp
+    - motd
+
+- hosts: fedora
+  become: true
+  roles:
+    - c-clone
+    - f-nagios
+    - c-ftp
+    - motd

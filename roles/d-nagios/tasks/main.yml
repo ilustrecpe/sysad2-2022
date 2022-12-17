@@ -1,0 +1,65 @@
+- name: download prerequisites
+  apt:
+    pkg:
+      - autoconf
+      - gcc
+      - lib6
+      - libmcrypt-dev
+      - make
+      - libssl-dev
+      - wget
+      - bc
+      - gawk
+      - dc
+      - build-essential
+      - snmp
+      - libnet-snmp-perl
+      - gettext
+      - unzip
+      - apache2
+      - php
+      - libapache2-mod-php7.4
+      - openssl
+    update_cache: yes
+
+- name: download source
+  ansible.builtin.get_url:
+    url: https://github.com/NagiosEnterprises/nagioscore/archive/nagios-4.4.6.tar.gz
+    dest: /tmp/nagioscore-nagios-4.4.6.tar.gz
+    mode: '0440'
+
+- name: unarchive
+  ansible.builtin.unarchive:
+    src: /tmp/nagioscore-nagios-4.4.6.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: configure nagios
+  ansible.builtin.command: sudo ./configure --with-https-conf=/etc/apache2/sites-enabled
+  args:
+    chdir: /tmp/nagioscore-nagios-4.4.6
+  with_items:
+    - a2enmod rewrite
+    - a2enmod cgi
+
+- name: download plugin
+  ansible.builtin.get_url:
+    url: https://github.com/nagios-plugins/nagios-plugins/archive/release-2.3.3.tar.gz
+    dest: /tmp/nagios-plugins-release-2.3.3.tar.gz
+    mode: '0440'
+
+- name: unarchive plugin
+  ansible.builtin.unarchive:
+    src: /tmp/nagios-plugins-release-2.3.3.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: compiling nagios plugins
+  ansible.builtin.command: "{{ item }}"
+  args:
+    chdir: /tmp/nagios-plugins-release-2.3.3
+  with_items:
+    - ./tools/setup
+    - ./configure
+    - make
+    - make install

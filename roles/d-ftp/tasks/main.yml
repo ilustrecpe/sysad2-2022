@@ -1,0 +1,50 @@
+- name: install ftp server
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: ftp start
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: ftp user
+  user:
+    name: giomanalili
+    password: awtsgege
+
+- name: ssh deny user
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers giomanalili"
+  register: successfully_denied
+
+- name: sshd service restart
+  service:
+    name: sshd
+    state: restarted
+  when: successfully_denied.changed
+
+- name: default config file
+  copy:
+    src: /etc/vsftpd.conf
+    dest: /etc/vsftpd.conf.orig
+    remote_src: True
+
+- name: limit ftp user directory
+  replace:
+    path: /etc/vstfpd.conf
+    regexp: '#chroot_local_user=YES'
+    replace: 'chroot_local_user=YES'
+
+- name: ftp file config
+  lineinfile:
+    path: /etc/vsftpd.conf
+    line: pasv_enable=YES\npasv_min_port=10000\npasv_max_port=10100\nallow_writeable-chroot=YES\nssl_tlsv1=YES\nssl_sslv2=NO\nsslv3=NO
+
+- name: vsftpd restart
+  service:
+    name: vsftpd
+    state: restarted
