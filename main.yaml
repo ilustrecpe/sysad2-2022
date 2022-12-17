@@ -1,0 +1,27 @@
+---
+- hosts: debian
+  vars_files:
+    - ./config.yaml
+  roles:
+    - gitclone_debian
+    - eservice_debian
+    - mtool_debian
+    - changemotd_debian
+
+- hosts: centos
+  vars_files:
+    - ./config.yaml
+  roles:
+    - gitclone_centos
+    - eservice_centos
+    - mtool_centos
+    - changemotd_centos
+
+- hosts: fedora
+  vars_files:
+    - ./config.yaml
+  roles:
+    - gitclone_fedora
+    - eservice_fedora
+    - mtool_fedora
+    - changemotd_fedora
