@@ -1,0 +1,8 @@
+---
+# tasks file for roles/debian-motd
+- name: creating motd for debian
+  lineinfile: 
+  path: /etc/motd
+  line: "Ansible managed by {{ user }}"
+  create: yes
+
