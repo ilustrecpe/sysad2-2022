@@ -1,0 +1,52 @@
+---
+# tasks file for roles/debian-ftp
+- name: FTP server installation
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: FTP service startup
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: Creating ftp user
+  user:
+    name: '{{ ftp_user}}'
+    password: '{{ ft[_pass }}'
+
+- name: Denying user to access ssh
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers '{{ ftp_user }}'"
+  register: successfully_denied
+
+- name: sshd service startup
+  service:
+    name: sshd
+    state: restarted
+  when: successfully_denied.changed
+
+- name: configuration file
+  copy:
+    src: /etc/vsftpd.conf
+    dest: /etc/vsftpd.conf.orig
+    remote_src: True
+
+- name: Limiting FTP users
+  replace: 
+    path: /etc/vsftpd.conf
+    regexp: '#chroot_local_user=YES'
+    replace: 'chroot_local_user=YES'
+
+- name: Configuring ftp file
+  lineinfile:
+    path: /etc/vsftpd.conf
+    line: '{{ ftp_debian }}'
+
+- name: vstpd restart
+  service: 
+     name: vsftpd
+     state: restarted

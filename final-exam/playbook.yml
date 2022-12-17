@@ -1,0 +1,33 @@
+---
+- name: Working configuration for centos
+  hosts:
+    - centos
+  vars_files:
+    - config.yaml
+  roles:
+    - centos-clone
+    - centos-ftp
+    - centos-motd
+    - centos-nagios
+
+- name: Working configuration for OpenSuse
+  hosts:
+    - suse
+  vars_files:
+    - config.yaml
+  roles:
+    - suse-clone
+    - suse-ftp
+    - suse-motd
+    - suse-nagios
+
+- name: Working configuration for Debian
+  hosts:
+    - debian
+  vars_files:
+    - config.yaml
+  roles:
+    - debian-clone
+    - debian-ftp
+    - debian-motd
+    - debian-nagios
