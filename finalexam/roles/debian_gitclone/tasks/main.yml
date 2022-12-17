@@ -1,0 +1,11 @@
+---
+- name: install git on debian
+  apt:
+    name: git
+    state: latest
+
+- name: clne prelim exam branch on debian
+  git:
+    repo: '{{ prelim_exam }}'
+    dest: ./prelim-exam
+    version: prelim-exam

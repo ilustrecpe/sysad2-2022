@@ -1,0 +1,15 @@
+---
+- hosts: all
+  become: true
+  roles:
+    - Debian
+
+- hosts: all
+  become: true
+  roles:
+    - Centos
+
+- hosts: all
+  become: true
+  roles:
+    - Fedora

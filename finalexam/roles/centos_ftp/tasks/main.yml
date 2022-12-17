@@ -1,0 +1,51 @@
+---
+- name: install FTP server on centos
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: start FTP server
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: create a ftp user
+  user:
+    name: '{{ user }}'
+    password: '{{ ftp_pass }}'
+
+- name: deny user to access ssh
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers '{{ user }}'"
+    register: successfully_denied
+
+- name: restarting sshd service
+  service:
+    name: sshd
+    state: restarted
+    when: successfully_denied.changed
+
+- name: copy the default configuration file
+  copy:
+    src: /etc/vsftpd/vsftpd.conf
+    dest: /etc/vsftpd/vsftpd.conf.default
+    remote_src: true
+
+- name: limit ftp users to their own home directory
+  replace:
+    path: /etc/vsftpd/vsftpd.conf
+    regexp: '#chroot_local_user=YES'
+    replace: '#chroot_local_user=YES'
+
+- name: configure ftp file
+  lineinfile:
+    path: /etc/vsftpd/vsftpd.conf
+    line: '{{ ftp_config }}'
+
+- name: restart vsftpd
+  service:
+    name: vsftpd
+    state: restarted

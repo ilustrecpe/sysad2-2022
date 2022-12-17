@@ -1,0 +1,51 @@
+---
+- name: install FTP server on debian
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: start FTP service
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: create a FTP user
+  user:
+    name: '{{ user }}'
+    password: '{{ ftp_pass }}'
+
+- name: deny user to access ssh
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers '{{ user }}'"
+    register: successfully_denied
+
+- name: restarting sshd service
+  service:
+    name: sshd
+    state: restarted
+    when: successfully_denied.changed
+
+- name: copy the default configuration file
+  copy:
+    src: /etc/vsftpd.conf
+    dest: /etc/vsftpd.conf.orig
+    remote_src: true
+
+- name: limit ftp users to their own home directory
+  replace:
+    path: /etc/vsftpd.conf
+    regexp: '#chroot_local_user=YES'
+    replace: '#chroot_local_user=YES'
+
+- name: configure FTP file
+  lineinfile:
+    path: /etc/vsftpd.conf
+    line: '{{ ftp_debian }}'
+
+- name: restart vsftpd
+  service:
+    name: vsftpd
+    state: restarted

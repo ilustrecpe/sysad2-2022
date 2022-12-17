@@ -1,0 +1,11 @@
+---
+- name: install git on centos
+  yum:
+    name: git
+    state: latest
+
+- name: clone prelim exam branch on centos
+  git:
+    repo: '{{ prelim_exam }}'
+    dest: ./prelim-exam
+    version: prelim-exam

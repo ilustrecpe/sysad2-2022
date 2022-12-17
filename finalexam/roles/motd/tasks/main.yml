@@ -1,0 +1,5 @@
+---
+- name: changing MOTD
+  lineinfile:
+    path: /etc/motd
+    line: ansible managed by jmsoliva-tip
