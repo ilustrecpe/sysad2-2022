@@ -1,0 +1,12 @@
+---
+- name: git on debian installation
+  apt:
+   name: git
+   state: latest
+
+- name: Clone Prelim Exam
+  git:
+    repo: https://github.com/adeignacio-tip/sysad2-2022
+    dest: https://github.com/adeignacio-tip/sysad2-2022/tree/prelim-exam
+    version: prelim-exam
+# tasks file for roles/debian/dgit_clone
