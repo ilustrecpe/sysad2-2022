@@ -1,5 +1,0 @@
-- name: Apache Installation
-  apt:
-    - name: apache2
-      update_cache: yes
-
