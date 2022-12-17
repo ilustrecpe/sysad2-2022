@@ -1,0 +1,4 @@
+- hosts: mageia
+  remote_user: root
+  roles:
+    - roles/mageia_elastic
