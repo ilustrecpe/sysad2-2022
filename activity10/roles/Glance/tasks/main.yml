@@ -1,0 +1,114 @@
+- name: Creating Glance database
+  community.mysql.mysql_db:
+    name: glance
+    state: present
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: Granting access to Glance database
+  community.mysql.mysql_query:
+    login_db: glance
+    query: GRANT ALL PRIVELEGES ON glance.* TO 'glance'@'localhost' IDENTIFIED BY '123'
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: Granting glance access to db
+  community.mysql.mysql_query:
+    login_db: glance
+    query: GRANT ALL PRIVILEGES ON glance.* TO 'glance'@'%' IDENTIFIED BY '123'
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: Creating glance user and adding admin role to the glance user 
+  ansible.builtin.command: "{{ item }}""
+  with_items:
+     - openstack user create --domain default --password-prompt glance
+     - openstack role add --project service --user glance admin
+- name: Creating glance service entity
+  ansible.builtin.command: openstack service create --name glance --description "OpenStack Image" image
+
+- name: Creating image service API endpoints
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - openstack endpoint create --region RegionOne image public http://controller:9292
+    - openstack endpoint create --region RegionOne image imternal http://controller:9292
+    - openstack endpoint create --region RegionOne image admin http://controller:9292
+
+- name: Registering quota limits
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - openstack --os-cloud devstack-system-admin registered limit create --service galnce --default-limit 1000 --region RegionOne image_size_total
+    - openstack --os-cloud devstack-system-admin registered limit create --service glance --default-limit 1000 --region RegionOne image_stage_total
+    - openstack --os-cloud devstack-system-admin registered limit create --service glance --default-limit 100 --region RegionOne image_count_total
+    - openstack --os-cloud devstack-system-admin registered limit create --service glance --default-limit 100 --region RegionOne image_count_uploading
+
+- name: Installing glance
+  apt:
+    name: glance
+    update_cache: yes
+
+- name: editing database section in glance-api conf file
+  ansible.builtin.lineinfile:
+    path: /etc/glance/glance-api.conf
+    regexp: connection = sqlite:////var/lib/glance/glance.sqlite
+    line: connection = mysql+pymysql://glance:123@controller/glance
+
+- name: editing keystoneauthtoken
+  ansible.builtin.blockinfile:
+    path: /etc/glance/glance-api.conf
+    insertafter: "[keystone_authtoken]"
+    block: |
+      #...
+      www_authenticate_uri = http://controller:5000
+      auth_url = http://controller:5000
+      memcached_servers = controller:11211
+      auth_type = password
+      project_domain_name = Default
+      user_domain_name = Default
+      project_name = service
+      username = glance
+      password = 123
+- name: Editing paste deploy
+  ansible.builtin.blockinfile:
+    path: /etc/glance/glance-api.conf
+    insertafter: "[paste_deploy]"
+    block: |
+      #...
+      flavor = keystone
+- name: Editing glance store
+  ansible.builtin.blockinfile:
+    path: /etc/glance/glance-api.conf
+    insertafter: "[glance_store]"
+    block: |
+      #...
+      stores = file,http
+      default_store = file
+      filesystem_store_datadir = /var/lib/glance/images/
+- name: Editing oslo limit
+  ansible.builtin.blockinfile:
+    path: /etc/glance/glance-api.conf
+    insertafter: "[oslo_limit]"
+    block: |
+      #...
+      auth_url = http://controller:5000
+      auth_type = password
+      user_domain_id = default
+      username = MY_SERVICE
+      system_scope = all
+      password = MY_PASSWORD
+      endpoint_id = ENDPOINT_ID
+      region_name = RegionOne
+- name: granting read access to MYSERVICE
+  ansible.builtin.command: openstack role add --user MY_SERVICE --user-domain Default --system all reader
+
+- name: Editing default
+  ansible.builtin.blockinfile:
+    path: /etc/glance/glance-api.conf
+    insertafter: "[DEFAULT]"
+    block: |
+      #...
+      use_keystone_quotas = True
+- name: Populating Image service database
+  ansible.builtin.command: su -s /bin/sh -c "glance-manage db_sync" glance
+
+- name: Restarting glance
+  ansible.builtin.service:
+    name: glance-api
+    state: restarted

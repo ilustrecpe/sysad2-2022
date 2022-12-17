@@ -1,0 +1,179 @@
+- name: creating Nova api database
+  community.mysql.mysql_db:
+    name: nova_api
+    state: present
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: creating Nova database
+  community.mysql.mysql_db:
+    name: nova
+    state: present
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: creating novacell database
+  community.mysql.mysqld_db:
+    name: nova_cell0
+    state: present
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: Granting localhost access to nova api
+  community.mysql.mysql_query:
+    login_db: nova_api
+    query: GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'localhost' IDENTIFIED BY '123'
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: Granting nova access to nova api
+  community.mysql.mysql_query:
+    login_db: nova_api
+    query: GRANT ALL PRIVILEGES ON nova_api.* TO 'nova'@'%' IDENTIFIED BY '123
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: Granting localhost access to nova database
+  community.mysql.mysql_query:
+    login_db: nova
+    query: GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'localhost' IDENTIFIED BY '123'
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: Granting nova access to nova database
+  community.mysql.mysql_query:
+    login_db: nova
+    query: GRANT ALL PRIVILEGES ON nova.* TO 'nova'@'%' IDENTIFIED BY '123'
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: granting localhost access to nova cell
+  community.mysql.mysql_query:
+    login_db: nova_cell0
+    query: GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'localhost' IDENTIFIED BY '123'
+    login_unix_socket: /run/mysqld/mysqld.sock
+
+- name: granting nova access to nova cell
+  community.mysql.mysql_query:
+    login_db: nova_cell0
+    query: GRANT ALL PRIVILEGES ON nova_cell0.* TO 'nova'@'%' IDENTIFIED BY '123'
+
+- name: Creating nova user
+  ansible.builtin.command: openstack user createt --domain default --password-prompt nova
+
+- name: Adding admin role to nova
+  ansible.builtin.command: openstack role add --project service --user nova admin
+
+- name: Creating nova service entity
+  ansible.builtin.command: opensttack service create --name nova --description "OpenStack Compute" compute
+
+- name: Creating the computet api
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - openstack endpoint create --region RegionOne compute public http://controller:8774/v2.1
+    - openstack endpoint create --region RegionOne compute internal http://controller:8774/v2.1
+    - openstack endpoint create --region RegionOne compute admin http://controller:8774/v2.1
+
+
+- name: Installing nova packages
+  apt:
+    pkg:
+    - nova-api
+    - nova-conductor
+    - nova-novncproxy
+    - nova-scheduler
+    update_cache: yes
+
+- name: Editing conf file connection api database
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    insertafter: "[api_database]"
+    block: |
+      # ...
+      connection = mysql+pymysql://nova:123@controller/nova_api
+- name: Editing conf file connection nova database
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    insertafter: "[database]"
+    block: |
+      # ...
+      connection = mysql+pymysql://nova:123@controller/nova
+- name: Editing conf file RabbitMQ message
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    insertafter: "[DEFAULT]"
+    block: |
+      # ...
+      transport_rl = rabbit://openstack:123@controller:5672/
+- name: Editing conf file api
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    insertafter: "[api]"
+    block: |
+      # ...
+      auth_strategy = keystone
+- name: Editing keystone auth token
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    insertafter: "[keystone_authtoken]"
+    block: |
+      # ...
+      www_authenticate_uri = http://controller:5000/
+      auth_url = http://controller:5000/
+      memcached_servers = controller:11211
+      auth_type = password
+      project_domain_name = Default
+      user_domain_name = Default
+      project_name = service
+      username = nova
+      password = 123
+- name: Adding management ip
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    insertafter: "[DEFAULT]"
+    block: |
+      # ...
+      my_ip = 192.168.56.1
+- name: Configuring vnc
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    insertafter: "[vnc]"
+    block: |
+      enabled = true
+      # ...
+      server_listen = $my_ip
+      server_proxyclient_address = $my_ip
+- name: configuring glance
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    insertafter: "[glance]"
+    block: |
+      # ...
+      api_servers = http://controller:9292
+- name: configuring oslo concurrency
+  ansible.builtin.blockinfile:
+    path: /etc/nova/nova.conf
+    insertafter: "[oslo_concurrency]"
+    block: |
+      # ...
+      lock_path = /var/lib/nova/tmp
+- name: populating nova-api database and configuring cells
+  ansible.builtin.command: "{{ item }}" 
+  with_items:
+    - su -s /bin/sh -c "nova-manage api_db sync" nova
+    - su -s /bin/sh -c "nova-manage cell_v2 map_cell0" nova
+    - su -s /bin/sh -c "nova-manage cell_v2 create_cell --name=cell1 --verbose" nova
+    - su -s /bin/sh -c "nova-manage db sync" nova
+
+- name: Restarting nova
+  ansible.builtin.service:
+    name: nova-api
+    state: restarted
+
+- name: Restarting nova-scheduler
+  ansible.builtin.service:
+    name: nova-scheduler
+    state: restarted
+
+- name: Restarting nova-conductor
+  ansible.builtin.service:
+    name: nova-conductor
+    state: restarted
+
+- name: Restarting nova-novncproxy
+  ansible.builtin.service:
+    name: nova-novncproxy
+    state: restarted
