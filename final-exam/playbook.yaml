@@ -20,4 +20,14 @@
     - debian-ftp
     - debian-motd
     - debian-nagios
-
+    
+- name: Working config for Fedora
+  hosts:
+    - fedora
+  vars_files:
+    - config.yaml
+  roles:
+    - fedora-clone
+    - fedora-ftp
+    - fedora-motd
+    - fedora-nagios
