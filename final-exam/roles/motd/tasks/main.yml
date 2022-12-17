@@ -1,0 +1,6 @@
+---
+- name: MOTD
+  lineinfile:
+   path: /etc/motd
+   line: Ansible Managed by madeignacio-tip
+# tasks file for roles/motd

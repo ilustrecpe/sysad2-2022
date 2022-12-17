@@ -1,0 +1,134 @@
+---
+- name: nagios on debian
+  apt:
+   name:
+   - build-essential 
+   - unzip 
+   - openssl 
+   - libssl-dev 
+   - apache2 
+   - php 
+   - libapache2-mod-php 
+   - php-gd 
+   - libgd-dev
+   state: latest
+   update_cache: yes
+
+- name: nagios group
+  group:
+   name: nagios
+   state: present
+
+- name: nagios group
+  group:
+   name: nagcmd
+   state: present
+
+- name: nagios User
+  user:
+   name: nagios
+   shell: /bin/bash
+   comment: nagios user
+   group: nagios
+   password: '{{ naguser_pass }}'
+
+- name: Adding nagios user group
+  user:
+   name: nagios
+   group: nagcmd
+   append: yes
+
+- name: www-data user group
+  user:
+   name: www-data
+   group: nagcmd
+   append: yes
+
+- name: directory
+  file:
+   path: /downloads
+   state: directory
+   owner: nobody
+   group: nogroup
+
+- name: Downloading Nagios
+  get_url:
+    url: http://prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.2.1.tar.gz
+    dest: /downloads
+
+- name: Downloading Plugins
+  get_url:
+   url: https://nagios-plugins.org/download/nagios-plugins-2.3.3.tar.gz
+   dest: /downloads
+
+- name: Extracting Nagios Core
+  unarchive:
+   src: /downloads/nagios-4.2.1.tar.gz
+   dest: /downloads
+   remote_src: yes
+
+- name: Nagios Script
+  shell: ./configure --with-command-group=nagcmd --with-command-group=nagcmd --with-httpd_conf=/etc/apache2/sites-enabled/
+  args:
+   chdir: /downloads/nagios-4.2.1
+
+- name: Compiling Nagios Core
+  make:
+   chdir: /downloads/nagios-4.2.1
+   target: all
+
+- name: Binaries installation
+  make:
+   chdir: /downloads/nagios-4.2.1
+   target: install
+
+- name: init script
+  make:
+   chdir: /downloads/nagios-4.2.1
+   target: install-daemoninit
+
+- name: config files
+  make:
+   chdir: /downloads/nagios-4.2.1
+   target: install-config
+
+- name: set permissions
+  make:
+   chdir: /downloads/nagios-4.2.1
+   target: install-commandmode
+
+- name: nagios web interface
+  make:
+   chdir: /downloads/nagios-4.2.1
+   target: install-webconf
+
+- name: Enable Apache rewrite and CGI modules
+  shell: 'a2enmod rewrite cgi'
+
+- name: pip for htpasswd
+  apt:
+   name: python3-pip
+   state: present
+   update_cache: yes
+
+- name: htpasswd module
+  apt:
+   name: python3-passlib
+   state: present
+
+- name: nagiosadmin account
+  htpasswd:
+    path: /usr/local/nagios/etc/htpasswd.users
+    name: nagiosadmin
+    password: '{{ nagadmin_pass }}'
+    owner: www-data
+    group: www-data
+
+- name: Restarting Apache
+  service:
+   name: apache2
+   state: reloaded
+
+- name: Start Nagios service
+  shell: '/etc/init.d/nagios start'
+# tasks file for roles/debian/dnagios
