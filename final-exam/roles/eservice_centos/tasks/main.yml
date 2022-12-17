@@ -14,14 +14,14 @@
 
 - name: CREATE FTP USER
   user:
-    name: hablaesc
+    name: wLodriga
     password: $5$x..8FgsTQg7/zcc2$iU/JpgM0Y4KomVFoQOPQoL5tnZ44twLRSkZOaILGBR.
     comment: "Created User!"
 
 - name: ADD DENYUSER IN etc/ssh/sshd_config
   lineinfile:
     path: /etc/ssh/sshd_config
-    line: "DenyUsers hablaesc"
+    line: "DenyUsers wLodriga"
   register: sshd_config
 
 - name: RESTART SSHD SERVICE
@@ -32,17 +32,17 @@
 
 - name: CREATE FTP DIRECTORY
   file:
-    path: /home/hablaesc/ftp
+    path: /home/wLodriga/ftp
     state: directory
-    owner: hablaesc
-    group: hablaesc
+    owner: wLodriga
+    group: wLodriga
 
 - name: CREATE FILE DIRECTORY
   file:
-    path: /home/hablaesc/ftp/files
+    path: /home/wLodriga/ftp/files
     state: directory
-    owner: hablaesc
-    group: hablaesc
+    owner: wLodriga
+    group: wLodriga
 
 - name: COPY vsftpd.conf
   copy:
