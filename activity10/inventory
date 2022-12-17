@@ -1,0 +1,13 @@
+[controller]
+192.168.53.7
+
+[compute1]
+192.168.53.8
+
+[controller:vars]
+ansible_ssh_user=ubuntu-2012146
+ansible_ssh_pass=ubuntu-2012146
+
+[compute1:vars]
+ansible_ssh_user=ubuntu-2012146
+ansible_ssh_pass=ubuntu-2012146
