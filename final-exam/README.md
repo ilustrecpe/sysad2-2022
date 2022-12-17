@@ -8,13 +8,10 @@
 └── roles
     ├── centos
     │   ├── ftp
-    │   │   ├── README.md
     │   │   ├── defaults
     │   │   │   └── main.yml
     │   │   ├── files
     │   │   ├── handlers
-    │   │   │   └── main.yml
-    │   │   ├── meta
     │   │   │   └── main.yml
     │   │   ├── tasks
     │   │   │   └── main.yml
@@ -25,13 +22,10 @@
     │   │   └── vars
     │   │       └── main.yml
     │   ├── git_clone
-    │   │   ├── README.md
     │   │   ├── defaults
     │   │   │   └── main.yml
     │   │   ├── files
     │   │   ├── handlers
-    │   │   │   └── main.yml
-    │   │   ├── meta
     │   │   │   └── main.yml
     │   │   ├── tasks
     │   │   │   └── main.yml
@@ -42,13 +36,10 @@
     │   │   └── vars
     │   │       └── main.yml
     │   └── nagios
-    │       ├── README.md
     │       ├── defaults
     │       │   └── main.yml
     │       ├── files
     │       ├── handlers
-    │       │   └── main.yml
-    │       ├── meta
     │       │   └── main.yml
     │       ├── tasks
     │       │   └── main.yml
@@ -60,13 +51,10 @@
     │           └── main.yml
     ├── debian
     │   ├── dftp
-    │   │   ├── README.md
     │   │   ├── defaults
     │   │   │   └── main.yml
     │   │   ├── files
     │   │   ├── handlers
-    │   │   │   └── main.yml
-    │   │   ├── meta
     │   │   │   └── main.yml
     │   │   ├── tasks
     │   │   │   └── main.yml
@@ -77,13 +65,10 @@
     │   │   └── vars
     │   │       └── main.yml
     │   ├── dgit_clone
-    │   │   ├── README.md
     │   │   ├── defaults
     │   │   │   └── main.yml
     │   │   ├── files
     │   │   ├── handlers
-    │   │   │   └── main.yml
-    │   │   ├── meta
     │   │   │   └── main.yml
     │   │   ├── tasks
     │   │   │   └── main.yml
@@ -94,13 +79,10 @@
     │   │   └── vars
     │   │       └── main.yml
     │   └── dnagios
-    │       ├── README.md
     │       ├── defaults
     │       │   └── main.yml
     │       ├── files
     │       ├── handlers
-    │       │   └── main.yml
-    │       ├── meta
     │       │   └── main.yml
     │       ├── tasks
     │       │   └── main.yml
@@ -111,13 +93,10 @@
     │       └── vars
     │           └── main.yml
     ├── motd
-    │   ├── README.md
     │   ├── defaults
     │   │   └── main.yml
     │   ├── files
     │   ├── handlers
-    │   │   └── main.yml
-    │   ├── meta
     │   │   └── main.yml
     │   ├── tasks
     │   │   └── main.yml
@@ -129,13 +108,10 @@
     │       └── main.yml
     └── mageia
         ├── sftp
-        │   ├── README.md
         │   ├── defaults
         │   │   └── main.yml
         │   ├── files
         │   ├── handlers
-        │   │   └── main.yml
-        │   ├── meta
         │   │   └── main.yml
         │   ├── tasks
         │   │   └── main.yml
@@ -146,13 +122,10 @@
         │   └── vars
         │       └── main.yml
         ├── sgit_clone
-        │   ├── README.md
         │   ├── defaults
         │   │   └── main.yml
         │   ├── files
         │   ├── handlers
-        │   │   └── main.yml
-        │   ├── meta
         │   │   └── main.yml
         │   ├── tasks
         │   │   └── main.yml
@@ -163,13 +136,10 @@
         │   └── vars
         │       └── main.yml
         └── snagios
-            ├── README.md
             ├── defaults
             │   └── main.yml
             ├── files
             ├── handlers
-            │   └── main.yml
-            ├── meta
             │   └── main.yml
             ├── tasks
             │   └── main.yml
@@ -180,4 +150,4 @@
             └── vars
                 └── main.yml
 ```
-94 directories, 85 files
+65 directories, 76 files
