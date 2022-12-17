@@ -1,0 +1,4 @@
+- hosts: debian
+  remote_user: root
+  roles:
+    - roles/debian_elastic
