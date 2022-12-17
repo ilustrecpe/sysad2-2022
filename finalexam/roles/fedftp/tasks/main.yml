@@ -1,5 +1,5 @@
 - name: Installing FTP 
-  apt:
+  yum:
     name: vsftpd
     state: latest
 

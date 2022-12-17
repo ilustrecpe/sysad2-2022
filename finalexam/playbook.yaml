@@ -1,27 +1,27 @@
 --- 
 
-- name: centos
-  hosts:
-    - centos
-  vars_files:
-    - config.yaml
-  roles:
-    - cprelims
-    - cftp
-    - cmotd
-    - cnagios
+#- name: centos
+  #  hosts:
+    #    - centos
+      #  vars_files:
+      #    - config.yaml
+      #  roles:
+    #    - cprelims
+    #    - cftp
+    #    - cmotd
+    #    - cnagios
 
-- name: debian
-become: true
-hosts:
-- debian
-vars_files:
-- config.yaml
-roles:
-    - debprelims
-    - debftp
-    - debmotd
-    - debnagios
+      #- name: debian
+      #become: true
+      #hosts:
+      #- debian
+      #vars_files:
+      #- config.yaml
+      #roles:
+      #   - debprelims
+      #    - debftp
+      # - debmotd
+      #  - debnagios
 
 - name: fedora
   become: true
@@ -33,4 +33,4 @@ roles:
     - fedora-prelim
     - fedora-ftp
     - fedora-motd
-      #- fedora-nagios
+    - fedora-nagios

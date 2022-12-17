@@ -7,6 +7,10 @@
 [debian]
 192.168.1.12
 
+[fedora:vars]
+ansible_ssh_user=apayor
+ansible_ssh_pass=rocket34125
+ansible_sudo_pass=rocket34125
 
 [centos:vars]
 ansible_ssh_user=root
