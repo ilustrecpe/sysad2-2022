@@ -23,14 +23,14 @@ roles:
     - debmotd
     - debnagios
 
-#- name: fedora
-#  become: true
- # hosts:
-  #    -fedora
-  #vars_files:
-  #     config.yaml
-  #roles:
-   #   - fedora-prelim
-    #  - fedora-ftp
-     # - fedora-motd
+- name: fedora
+  become: true
+  hosts:
+    - fedora
+  vars_files:
+    - config.yaml
+  roles:
+    - fedora-prelim
+    - fedora-ftp
+    - fedora-motd
       #- fedora-nagios
