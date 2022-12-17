@@ -1,0 +1,8 @@
+---
+name : Creating motd
+lineinfile:
+  path: /etc/motd
+  line: "Ansible Managed by {{ user }}"
+  create: yes
+
+
