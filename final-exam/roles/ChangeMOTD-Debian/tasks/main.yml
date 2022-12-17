@@ -1,6 +1,8 @@
+---
+
 - name: Creating MOTD
   vars:
    variable1: 'Ansible Managed node by vaacabang'
   ansible.builtin.template:
-    src: /root/sysad2-2022/final-exam/roles/CentosChangeMOTD/files/MOTD.j2
+    src: /root/sysad2-2022/final-exam/roles/ChangeMOTD-Debian/files/MOTD.j2
     dest: /etc/motd

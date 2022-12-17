@@ -4,10 +4,15 @@
     - autoconf
     - gcc
     - libc6
-    - libmcrypt-dev
     - make
-    - libssl-dev
     - wget
+    - unzip
+    - apache2
+    - apache2-utils
+    - php
+    - libgd-dev
+    - libmcrypt-dev
+    - libssl-dev
     - bc
     - gawk
     - dc
@@ -15,12 +20,6 @@
     - snmp
     - libnet-snmp-perl
     - gettext
-    - unzip
-    - apache2
-    - php
-    - libapache2-mod-php7.4
-    - libgd-dev
-    - openssl
     update_cache: yes
 
 - name: Downloading Source from Nagios repo
@@ -36,7 +35,7 @@
     remote_src: yes
 
 - name: Configuring Nagios
-  ansible.builtin.command: sudo ./configure --with-https-conf=/etc/apache2/sites-enabled
+  ansible.builtin.command: sudo ./configure --with-httpd-conf=/etc/apache2/sites-enabled
   args:
     chdir: /tmp/nagioscore-nagios-4.4.6
 

@@ -1,5 +1,5 @@
 - name: Installing Prerequisiets
-  ansible.builtin.dnf:
+  ansible.builtin.yum:
     name:
       - gcc
       - glibc-common
@@ -11,7 +11,7 @@
       - net-snmp
       - net-snmp-utils
       - epel-release
-      - perl-Net-SNMP
+      - net-snmp-perl
       - unzip
       - httpd
       - php

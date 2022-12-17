@@ -1,7 +1,12 @@
+- name: Installing Prerequisites
+  yum:
+    name: git
+    update_cache: yes
+
 - name: Cloning prelimexam
   ansible.builtin.git:
     repo: https://github.com/vaacabang/sysad2-2022.git
-    dest: /root/sysad2-2022/final-exam
+    dest: /root/sysad2-2022
     version: prelim-exam
 
 

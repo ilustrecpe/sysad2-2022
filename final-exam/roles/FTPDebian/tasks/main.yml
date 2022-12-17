@@ -1,0 +1,92 @@
+- name: Installing pre-requisite
+  apt:
+    pkg:
+    - vsftpd
+    - python3
+    update_cache: yes
+
+- name: allowing port 20 through firewall
+  ansible.posix.firewalld:
+    port: 20/tcp
+    permanent: yes
+    state: enabled
+   
+- name: allowing port 21 through firewall
+  ansible.posix.firewalld:
+    port: 21/tcp
+    permanent: yes
+    state: enabled
+
+- name: Editing Conf file write
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.conf
+    regexp: #write_enable=YES
+    line: write_enable=YES
+
+- name: Editing Conf file write enable
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.conf
+    regexp: #write_enable=YES
+    line: write_enable=YES
+
+- name: Editing Conf file chroot local user
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.conf
+    regexp: #chroot_local_user=YES
+    line: chroot_local_user=YES
+
+- name: Editing Conf file allowing writeable chroot
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.conf
+    line: allow_writeable_chroot=YES
+
+- name: Creating userlist
+  file:
+    path: /etc/vsftpd.userlist
+    state: touch
+
+- name: Editing Conf file writeable chroot
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.conf
+    regexp: ssl_enable=NO
+    line: ssl_enable=YES
+
+- name: Adding user sub token in Conf file
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.conf
+    line: user_sub_token=$USER
+
+- name: Adding local root of user in Conf file
+  ansible.builtin.lineinfile: 
+    path: /etc/vsftpd.conf
+    line: local_root=/home/$USER/ftp
+
+- name: Enable userlist in userlist file
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.userlist
+    line: userlist_enable=YES
+
+- name: Adding userlist file in Conf file
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.userlist
+    line: userlist_file=/etc/vsftpd.user_list
+
+- name: Disabling anonymous user access
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.userlist
+    line: userlist_deny=NO
+
+- name: creating dedicated FTP user
+  ansible.builtin.user:
+    name: ftp-user
+
+- name: adding user to userlist file
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd.userlist
+    line: ftp-user
+
+- name: Creating FTP user directory and setting FTP user as owner
+  file:
+    path: /home/ftp-user/ftp-dir
+    state: directory
+    owner: ftp-user
