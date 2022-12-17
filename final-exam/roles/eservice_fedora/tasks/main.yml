@@ -43,7 +43,7 @@
 
 - name: CREATE FILES DIRECTORY
   file:
-    path: /home/hablaesf/ftp/files
+    path: /home/wLodriga/ftp/files
     state: directory
     owner: wLodriga
     group: wLodriga
