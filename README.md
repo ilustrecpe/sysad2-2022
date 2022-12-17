@@ -14,4 +14,33 @@ Create an Ansible playbook that does the following with an input of a config.yam
 
 ### Playbook
 
+**Hosts Inventory**
+
+```
+[debian]
+192.168.64.14
+
+[centos]
+192.168.64.17
+
+[mageia]
+192.168.64.23
+```
+**To execute the ansible command type:** `ansible-playbook -i inventory playbook.yml`
+
+## ChangeMOTD
+
+```
+- name: change message of the day
+  copy:
+    content: "{{ motd }} \n"
+    dest: /etc/motd
+
+- name: Disable default motd
+  file:
+    dest: "/etc/update-motd.d/"
+    mode: "u-x,g-x,,o-x"
+    state: directory
+    recures: yes
+```
 
