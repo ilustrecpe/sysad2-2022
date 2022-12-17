@@ -1,5 +1,0 @@
-- hosts: ubuntu
-  remote_user: root
-  roles:
-    - roles/php_ubuntu
-  
