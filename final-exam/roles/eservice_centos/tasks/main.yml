@@ -1,0 +1,57 @@
+---
+# tasks file for eservice_centos
+- name: INSTALL vsftpd
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: STOP FIREWALL
+  service:
+    name: firewalld
+    state: stopped
+    enabled: no
+
+- name: CREATE FTP USER
+  user:
+    name: hablaesc
+    password: $5$x..8FgsTQg7/zcc2$iU/JpgM0Y4KomVFoQOPQoL5tnZ44twLRSkZOaILGBR.
+    comment: "Created User!"
+
+- name: ADD DENYUSER IN etc/ssh/sshd_config
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    line: "DenyUsers hablaesc"
+  register: sshd_config
+
+- name: RESTART SSHD SERVICE
+  service:
+    name: sshd
+    state: restarted
+  when: sshd_config.changed
+
+- name: CREATE FTP DIRECTORY
+  file:
+    path: /home/hablaesc/ftp
+    state: directory
+    owner: hablaesc
+    group: hablaesc
+
+- name: CREATE FILE DIRECTORY
+  file:
+    path: /home/hablaesc/ftp/files
+    state: directory
+    owner: hablaesc
+    group: hablaesc
+
+- name: COPY vsftpd.conf
+  copy:
+    src: vsftpd.conf
+    dest: /etc/vsftpd.conf
+  register: vstpd_config
+
+- name: RESTART vsftpd.conf
+  service:
+    name: vsftpd
+    state: restarted
+  when: vsftpd_config.changed

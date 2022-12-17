@@ -1,0 +1,15 @@
+---
+# tasks file for gitclone_debian
+- name: CREATE DIRECTORY
+  file:
+    path: /home/PipoyTheBest7/rep
+    state: directory
+    mode: '777'
+
+- name: CLONE PRELIM EXAM
+  git:
+    repo: 'https://github.com/PipoyTheBest7?tab=repositories'
+    dest: /home/PipoyTheBest7/rep
+    version: prelim-exam
+    clone: yes
+    update: yes
