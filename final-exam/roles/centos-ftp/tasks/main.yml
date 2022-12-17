@@ -1,0 +1,39 @@
+- name: Installing FTP 
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: start FTP server
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: FTP user create
+  user:
+    name: gedrei
+    password: ged156435
+
+- name: SSHD service restart
+  service:
+    name: sshd
+    state: restarted
+
+- name: configuration file
+  copy:
+    src: /etc/vsftpd/vsftpd.conf
+    dest: /etc/vsftpd/vsftpd.conf.default
+    remote_src: True
+
+
+- name: restrict FTP users
+  replace:
+    path: /etc/vsftpd/vsftpd.conf
+    regexp: '^anonymous_enable=YES'
+    replace: 'anonymous_enable=NO'
+
+- name: vsftpd restart
+  service:
+    name: vsftpd
+    state: restarted

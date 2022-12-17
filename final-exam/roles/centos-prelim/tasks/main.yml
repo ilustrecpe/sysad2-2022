@@ -1,0 +1,10 @@
+- name: Installing Git 
+  yum:
+    name: git
+    state: latest
+
+- name: Cloning Prelim Exam branch
+  git:
+    repo: 'https://github.com/mgascuevas-tip/sysad2-2022.git'
+    dest: /root/sysad2-2022/final-exam/prelim-exam
+    version: prelim-exam

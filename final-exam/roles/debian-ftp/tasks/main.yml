@@ -1,0 +1,18 @@
+- name: FTP server installation
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: FTP service startup
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: Creating ftp user
+  user:
+    name: gedrei
+    password: 12345678
+
+-

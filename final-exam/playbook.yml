@@ -1,0 +1,32 @@
+---
+#- name: CentOS
+#hosts:
+#- centos
+#vars_files:
+#- config.yaml
+#roles:
+    #- centos-prelim
+    #- centos-ftp
+    #- centos-motd
+    #- centos-nagios
+
+- name: Fedora
+  become: true
+  hosts:
+    - fedora
+  roles:
+    #- fedora-prelim
+    - fedora-ftp
+    - fedora-motd
+    - fedora-nagios
+
+#- name: Debian
+#become: true
+#hosts:
+#- debian
+#become_user: root
+#roles:
+    # - debian-prelim
+    #- debian-ftp
+    #- debian-motd
+      #- debian-nagios

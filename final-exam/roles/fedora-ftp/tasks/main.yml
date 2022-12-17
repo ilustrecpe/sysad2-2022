@@ -1,0 +1,17 @@
+- name: Installing FTP 
+  yum:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: start FTP server
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: FTP user create
+  user:
+    name: gedrei
+    password: ged156435
+
