@@ -1,0 +1,34 @@
+---
+- hosts: all
+  pre_tasks:
+
+  - name: Update Repository Index and Installing Updates for CentOS
+    package:
+      name: "*"
+      state: latest
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == 'CentOS' 
+  
+  - name: Update Repository Index And Installing Updates for Debian
+    package:
+      name: "*"
+      state: latest
+      update_cache: yes
+    changed_when: false
+    when: ansible_distribution == "Debian"
+
+  - name: Update Repository Index And Installing Updates for Fedora
+    package:
+      name: '*'
+      state: latest
+      type: patch
+    changed_when: false
+    when: ansible_distribution == 'Fedora' 
+
+- hosts: all
+  roles:
+    - install-docker
+    - enterprise-service
+    - monitoring-tools
+    - motd
