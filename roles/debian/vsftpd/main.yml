@@ -1,0 +1,48 @@
+- name: VSFTD installation
+  apt:
+    name: vsftpd
+    state: latest
+    update_cache: yes
+
+- name: stop firewall
+  service:
+    name: firewalld
+    state: stopped
+
+- name: start and enable vsftpd
+  service:
+    name: vsftpd
+    state: started
+    enabled: yes
+
+- name: create FTP user
+  user:
+    name: "{{ name }}"
+    password: "{{ password }}"
+    comment: "{{ user_comment }}"
+
+- name: create FTP directory
+  file:
+    path: "home/{{ name }}/ftp"
+    state: directory
+    owner: "{{ name }}"
+    group: "{{ name }}"
+    mode: '0755'
+
+- name: add FTP user
+  lineinfile:
+    path: /etc/vsftpd/user_list
+    line: "{{ name }}"
+  register: user_list
+
+- name: duplicate vsftpd.conf to destination
+  copy:
+    src: "{{ centos_vsftpd }}"
+    dest: /etc/vsftpd/vsftpd.conf
+  register: vsftpd_conf
+
+- name: restart VSFTPD
+  service:
+    name: vsftpd
+    state: restarted
+  when: user_list.changed or vsftpd_conf.changed
