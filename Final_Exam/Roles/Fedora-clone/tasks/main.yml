@@ -1,0 +1,11 @@
+---
+- name: Install git on Fedora
+  zypper:
+   name: git
+   state: latest
+
+- name: Clone Final Exam branch on Fedora
+  git:
+    repo: '{{ Final_exam }}'
+    dest: ./Final-exam
+    version: Final-exam
