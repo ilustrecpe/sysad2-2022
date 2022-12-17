@@ -1,0 +1,9 @@
+prelim_exam: https://github.com/kcsia-tip/sysad2-2022.git
+username: kcsia-tip
+writable_chroot: allow_writeable_chroot=YES
+ftp_config: "allow_weitable_chroot=YES\npasv_max_port=31000\nuserlist_file=/etc/vsftpd/user_list\nuserlist_deny=NO"
+ftp_debian: "pasv_enable=Yes\npasv_min_port=3000\npasv_max_port=31000\nuserlist_file=/etc/vsftpd/user_list\nuserlist_deny=NO"
+ftp_user: ftpuser
+ftp_pass: kcsiatip123
+naguser_pass: kcsiatip123
+nagadmin_pass: kcsiatip
