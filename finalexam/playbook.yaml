@@ -11,24 +11,26 @@
     - cmotd
     - cnagios
 
-#- name: ubuntu
-# hosts:
-   # - ubuntu
-   # vars_files:
-   # - config.yaml
-   #  roles:
-   # - uprelim
-   # - uftp
-   # - umotd
-   # - unagios
+- name: debian
+become: true
+hosts:
+- debian
+vars_files:
+- config.yaml
+roles:
+    - debprelims
+    - debftp
+    - debmotd
+    - debnagios
 
-      #- name: debian
-      #  hosts:
-   # - debian
-   #  vars_files:
-   # - config.yaml
-   #  roles:
-   # - dprelim
-   # - dftp
-   # - motd
-   # - dnagios
+#- name: Fedora
+#  become: true
+ # hosts:
+  #    -fedora
+  #vars_files:
+  #     config.yaml
+  #roles:
+   #   - fedora-prelim
+    #  - fedora-ftp
+     # - fedora-motd
+      #- fedora-nagios
