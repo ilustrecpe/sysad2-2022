@@ -1,0 +1,6 @@
+---
+- name: install prometheus and plugs
+  apt:
+    name:
+      - prometheus
+      - prometheus-node-exporter

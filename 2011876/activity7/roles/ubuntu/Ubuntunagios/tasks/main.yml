@@ -1,0 +1,8 @@
+---
+- name: install nagios and plugs
+  apt:
+    name:
+      - nagios4
+      - nagios-plugins-contrip
+      - nagios-nrppe-plugin
+    update_cache: yes
