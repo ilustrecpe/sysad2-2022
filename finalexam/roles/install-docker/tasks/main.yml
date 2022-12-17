@@ -1,0 +1,96 @@
+---
+- name: Installing Docker Dependencies (Debian)
+  apt:
+    name:
+      - apt-transport-https
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+      - software-properties-common
+      - python3
+      - python3-pip
+    state: latest
+  when: ansible_distribution == "Debian"
+
+- name: Get PGP Key (Debian)
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+  when: ansible_distribution == "Debian"
+- name: Adding Docker repository into sources list (Debian)
+  apt_repository:
+    repo: deb [arch=amd64] https://download.docker.com/linux/debian focal stable
+    state: present
+  when: ansible_distribution == "Debian"
+
+- name: Installing Docker Dependencies (CentOS)
+  yum:
+    name: 
+      - lvm2
+      - yum-utils
+      - python3
+      - python3-pip
+      - device-mapper-persistent-data
+    state: latest
+  when: ansible_distribution == "CentOS"
+
+- name: Adding Docker Repository (CentOS)
+  get_url:
+    url: https://download.docker.com/linux/centos/docker-ce.repo
+    dest: /etc/yum.repos.d/docer-ce.repo
+  when: ansible_distribution == "CentOS"
+
+- name: Installing Docker (CentOS)
+  package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == 'CentOS'
+
+- name: Installing Docker (Debian)
+  package:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == "Debian"
+
+- name: Installing Docker (Fedora)
+  package:
+    name: docker
+    state: latest
+    update_cache: yes
+  when: ansible_distribution == 'Fedora' 
+
+- name: Install Docker for Modules using pip 
+  pip:
+    name: docker
+
+- name: Run daemon-reload (Docker)
+  systemd: daemon_reload=yes
+
+- name: Allow Docker to run
+  systemd:
+    name: docker
+    enabled: yes
+    masked: no
+
+- name: Make sure that Docker is up and running
+  systemd: state=started name=docker
+
+- name: Check Docker group if state is present
+  group:
+    name: docker
+    state: present
+
+- name: Adding User to Docker group
+  user:
+    name: qcjmroden
+    groups: docker
+    append: yes
