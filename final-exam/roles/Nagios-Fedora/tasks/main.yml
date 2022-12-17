@@ -1,0 +1,81 @@
+- name: Installing Prerequisiets
+  ansible.builtin.dnf:
+    name:
+      - httpd
+      - php
+      - gcc
+      - glibc
+      - glibc-common
+      - gd
+      - gd-devel
+
+- name: Retrieving tar file from repository
+  ansible.builtin.get_url:
+    url: https://prdownloads.sourceforge.net/sourceforge/nagios/nagios-4.2.1.tar.gz
+    dest: /tmp/nagios-4.2.1.tar.gz
+    mode: '0440'
+
+- name: Unarchiving tar file
+  ansible.builtin.unarchive:
+    src: /tmp/nagios-4.2.1.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Configuring nagios
+  ansible.builtin.command: ./configure
+  args:
+    chdir: /tmp/nagios-4.2.1
+
+- name: Compiling Nagios
+  ansible.builtin.command: "{{ item }}"
+  args: 
+    chdir: /tmp/nagios-4.2.1
+  with_items:
+    - make clean
+    - make all
+    - make install
+    - make install-config
+    - make install-commandmode
+
+- name: Creating nagcmd group
+  ansible.builtin.group:
+    name: nagcmd
+    state: present
+
+- name: Adding apache user to nagcmd group
+  ansible.builtin.user:
+    name: apache
+    group: nagcmd
+
+- name: Adding nagios user to nagcmd group
+  ansible.builtin.user:
+    name: nagios
+    group: nagcmd
+
+- name: Configuring web interface
+  ansible.builtin.command: "{{ item }}"
+  with_items:
+    - make install-webconf
+    - htpasswd -c /usr/local/nagios/etc/htpasswd.users 123
+
+- name: Downloading Nagios Plugins tar from repo
+  ansible.builtin.get_url:
+    url: https://www.nagios-plugins.org/download/nagios-plugins-2.1.3.tar.gz
+    dest: /tmp/nagios-plugins-2.1.3.tar.gz
+    mode: '0440'
+
+- name: Unarchiving Plugins
+  ansible.builtin.unarchive:
+    src: /tmp/nagios-plugins-2.1.3.tar.gz
+    dest: /tmp/
+    remote_src: yes
+
+- name: Compiling and Installing Nagios
+  ansible.builtin.command: "{{ item }}"
+  args:
+    chdir: /tmp/nagios-plugins-2.1.3
+  with_items:
+    - ./configure --with-nagios-user=nagios --with-nagios-group=magios
+    - make
+    - make install
+    

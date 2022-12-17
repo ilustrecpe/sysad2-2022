@@ -1,0 +1,24 @@
+---
+#- hosts: centos
+#  become: true
+#  roles:
+#    - CentosChangeMOTD
+#    - ClonePrelimCentosFedora
+#    - FTPCentos
+#    - Nagios-Centos
+
+- hosts: debian
+  become: true
+  roles:
+    - ChangeMOTD-Debian
+    - ClonePrelimDebian
+    - FTPDebian
+    - Nagios-Debian
+
+#- hosts: fedora
+#  become: true
+#  roles:
+#    - FedoraChangeMOTD
+#    - ClonePrelimCentosFedora
+#    - FTPFedora
+#    - Nagios-Fedora

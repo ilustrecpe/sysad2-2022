@@ -1,0 +1,51 @@
+- name: Installing pre-requisite
+  yum:
+    name: vsftpd
+    update_cache: yes
+
+- name: enabling vsftpd service
+  ansible.builtin.service:
+    name: vsftpd
+    state: started
+
+- name: allowing port 21 through firewall
+  ansible.posix.firewalld:
+    port: 21/tcp
+    permanent: yes
+    state: enabled
+
+- name: allowing ftp service through firewall
+  ansible.posix.firewalld:
+    service: ftp
+    permanent: yes
+    state: enabled
+
+- name: creating config backup
+  ansible.builtin.copy:
+    src: /etc/vsftpd/vsftpd.conf
+    dest: /root/vsftpd.conf
+    remote_src: true
+
+- name: Editing vsftpd config file
+  ansible.builtin.lineinfile:
+    path: /etc/vsftpd/vsftpd.conf
+    regexp: anonymous_enable=YES
+    line: anonymous_enable=NO
+
+- name: editing ftp permissions
+  ansible.builtin.blockinfile:
+    path: /etc/vsftpd/user_list
+    block: |
+      local_enable=YES
+      write_enable=YES
+      userlist_enable = YES
+      userlist_file = /etc/vsftpd.userlist
+      userlist_deny = NO
+      chroot_local_user = YES
+      allow_writeable_chroot = YES
+    
+- name: restarting vsftpd
+  ansible.builtin.service:
+    name: vsftpd
+    state: restarted
+
