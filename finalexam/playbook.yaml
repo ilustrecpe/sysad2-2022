@@ -23,7 +23,7 @@ roles:
     - debmotd
     - debnagios
 
-#- name: Fedora
+#- name: fedora
 #  become: true
  # hosts:
   #    -fedora
