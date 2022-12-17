@@ -1,5 +1,0 @@
-- name: creating motd
-  lineinfile:
-     path: /etc/motd
-     line: "Ansible Managed by Apayor"
-     create: yes
