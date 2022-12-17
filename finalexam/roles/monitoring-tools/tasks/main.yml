@@ -1,0 +1,53 @@
+#Prometheus
+- name: Make a volume for Prometheus
+  docker_volume:
+    name: prometheus-data
+    driver: local
+
+- name: Begin Prometheus container
+  docker_container:
+    name: "prometheus"
+    image: "prom/prometheus:latest"
+    volumes:
+      - "prometheus-data:/prometheus"
+    command:
+      - "--config.file=/prometheus/prometheus.yml"
+    ports:
+    - "0.0.0.0:9090:9090/tcp"
+    state: started
+    log_driver: "json-file"
+    log_options:
+      max-size: "10m"
+      max-file: "3"
+
+- name: Copy the Prometheus config file to the remote servers
+  template:
+    src: prometheus.yml
+    dest: /tmp/prometheus.yml
+  changed_when: false
+
+- name: Copy the Prometheus config file inside the container.
+  shell: "docker cp /tmp/prometheus.yml prometheus:/prometheus/prometheus.yml"
+
+- name: Prometheus container should be restarted
+  shell: "docker restart prometheus"
+
+#Grafana
+- name: Create a Grafana Volume
+  docker_volume:
+    name: grafana-data
+    driver: local
+
+- name: Begin Grafana Container
+  docker_container:
+    name: "grafana"
+    image: "grafana/grafana:latest"
+    volumes:
+      - "grafana-data:/var/lib/grafana"
+    ports:
+    - "0.0.0.0:3000:3000/tcp"
+    state: started
+    log_driver: "json-file"
+    log_options:
+      max-size: "10m"
+      max-file: "3"
