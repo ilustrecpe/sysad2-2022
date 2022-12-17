@@ -1,0 +1,10 @@
+- name: install git in debian
+  apt:
+    name: git
+    state: latest
+
+- name: clone prelim-exam repository
+  git:
+    clone:
+      repo: prelim-exam
+      dest: https://github.com/apangilinan-tip/sysad2-2022.git

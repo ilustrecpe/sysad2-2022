@@ -1,0 +1,116 @@
+- name: install pre-requisite (java nginx)
+  apt:
+    name:
+      - openjdk-11-jdk
+      - nginx
+    status: latest
+    update_cache: yes
+
+- name: add elastic repository
+  apt_key: url "https://packages.elastic.co/GPG-KEY-elasticsearch"
+  state: present
+
+- name: install apt repo
+  apt:
+    name: apt-transport-https
+    state: latest
+    update_cache: yes
+
+- name: getting apt transport https
+  apt_repository:
+    filename: elastic-7.x
+    repo: deb https://artifacts.elastic.co/packages/7.x/apt stable main
+    state: present
+
+- name: installing elasticsearch
+  apt:
+    name: elasticsearch
+    state: present
+    update_cache: yes
+
+- name: update config file to allow access
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'network.host'
+    line: 'network.host "0.0.0.0"'
+
+- name: update port config
+  lineinfile:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: 'http.port'
+    line: 'http.port: 9200'
+
+- name: add discovery type
+  lineinfile:
+    dest: /etc/elasticsearch/jvm.options
+    regexp: '-Xms'
+    line: '-Xms512m'
+
+- name: Jvm Heap size
+  lineinfile:
+    dest: /etc/elasticsearch/jvm,options
+    regexp: '-Xms'
+    line: '-Xms512m'
+
+- name: Jvm heapsize maximum
+  lineinfile:
+    dest: /etc/elasticsearch/jvm.options'
+    regexp: '-Xmx'
+    line: '-Xmx512m'
+
+- name: Off ufw
+  service:
+    name: ufw
+    state: stopped
+    enabled: no
+
+- name: start and enable elasticsearch
+  service:
+    name: elasticsearch
+    state: started
+    enabled: yes
+
+- name: install Kibana
+  apt: 
+    name: kibana
+    state: latest
+    update_cache: yes
+
+- name: remove hashtag in serverport
+  lineinfile:
+    dest: /etc/kibana/kibana.yml
+    regexp: '#server.port'
+    line: 'serveer.port: 5601'
+
+- name: remove hashtag on server.host
+  lineinfile: 
+  dest: /etc/kibana/kibana.yml
+  regexp: '#server.host'
+  line: 'server.host: "0.0.0.0"'
+
+- name: remove hashtag on elasticsearch.hosts
+  lineinfile:
+    dest: /etc/kibana/kibana.yml
+    regexp: '#elasticsearch.hosts:'
+    line: 'elasticsearch.hosts: ["https://0.0.0.0:9200"]'
+
+- name: start and enable kibana
+  service:
+    name: kibana
+    state: started
+    enabled: yes
+
+- name: allow ufw
+  command: ufw allow 5601/tcp
+
+- name: install logstash
+  apt:
+    name: logstash
+    state: latest
+    update_cache: yes
+
+- name: start and install logstash
+  service:
+    name: logstash
+    state: started
+    enabled: yes

@@ -1,0 +1,17 @@
+git_repo: 'https://github.com/apangilinan-tip/sysad2-2022/tree/prelim-exam/prelim-exam'
+git_dest: 'https://github.com/apangilinan-tip/sysad2-2022.git'
+git_ver: 'prelim-exam'
+
+centos_vsftpd: centos_vsftpd/vsftpd.conf
+debian_vsftpd: debian_vsftpd/vsftpd.conf
+mageia_vsftpd: mageia_vsftpd/vsftpd.conf
+  
+name: ftpuser
+password: password
+
+motd: "Ansible Managed by apangilinan-tip"
+
+elasticsearch_hostname: elasticsearch
+logstash_hostname: logstash
+kibana_hostname: kibana
+
