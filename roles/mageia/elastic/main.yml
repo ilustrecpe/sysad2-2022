@@ -1,0 +1,105 @@
+- name: install prerequisite
+  urpmi:
+    name: java-11-openjdk-devel
+    state: latest
+    update_cache: yes
+
+- name: install elasticsearch repository
+  urpmi.addmedia:
+    name: Elastic_7.X_repo
+    baseurl: https://artifacts.elastic.co/packages.7.x/yum
+    gpgcheck: yes
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    enabled: yes
+    description: Elastic 7.X repo
+
+- name: install elasticsearch gpg key
+  rpm_key:
+    key: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    state: present
+
+- name: install elasticsearch
+  urpmi:
+    name: elasticsearch
+    state: present
+    update_cache: yes
+
+- name: update config file to allow access
+  urpmf:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    regexp: '#network.host:'
+    line: 'network.host: localhost'
+
+- name: update config to allow access
+  urpmf:
+    destfile: /etc/elasticsearch/elasticsearch.yml
+    line: 'http.port: 9200'
+
+- name: update time
+  urpmf:
+    dest: /usr/lib/systemd/systed/elasticsearch.service
+    regexp: 'TimeoutStartSec='
+    line: 'http:port: 9200'
+
+- name: enable and start elasticsearch
+  service: 
+    name: logstash
+    state: started
+    enabled: yes
+
+- name: install logstash repo
+  urpmi.addmedia:
+    name: elasticsearch
+    state: started
+    enabled: yes
+
+- name: install logstash
+  urpmi:
+    name: logstash
+    state: present
+    update_cache: yes
+
+- name: update config file
+  urpmf: 
+    dest: /etc/logstash/logstash.yml
+    regexp: 'http.host:'
+    line: 'http.host: 127.0.0.1'
+
+- name: start and enable logstash
+  service:
+    name: logstash
+    state: started
+    enabled: yes
+
+- name: install kibana repo
+  urpmi.addmedia:
+    name: Kibana 7.x packages
+    baseurl: https://artifacts.elastic.co/packages/7.x/yum
+    gpgcheck: yes
+    gpgkey: https://artifacts.elastic.co/GPG-KEY-elasticsearch
+    enabled: yes
+    description: Kibana-7.x
+
+- name: install Kibana
+  urpmi:
+    name: Kibana
+    state: present
+    update_cache: yes
+
+- name: update config server.host
+  urpmf:
+    destfile: /etc/kibana/kibana.yml
+    regexp: 'server.host'
+    line: 'server.host: 0.0.0.0'
+
+- name: update config file server.port
+  urpmf:
+    dest: /etc/kibana/kibana.yml
+    regexp: 'server.port'
+    line: 'server.port: 5601'
+
+- name: enable and start kibana
+  service:
+    name: kibana
+    state: started
+    enabled: yes
